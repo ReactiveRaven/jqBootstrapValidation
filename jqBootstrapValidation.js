@@ -231,23 +231,19 @@
 				if (settings.options.preventSubmit) {
 					var warningsFound = 0;
 					$siblingElements.trigger("change.validation").each(function (i, el) {
-						var $this = $(el);
-						var $controlGroup = $this.parents(".control-group").first();
-						var myValidators = $this.triggerHandler("getValidators.validation");
-						var value = getValue($this);
+						var $this = $(el),
+							$controlGroup = $this.parents(".control-group").first(),
+							myValidators = $this.triggerHandler("getValidators.validation"),
+							value = getValue($this);
+							
 						if (
 							$controlGroup.hasClass("warning") 
 							|| $this.triggerHandler("validation.validation", true).length
-							|| (
-								! value
-								&& myValidators["required"] 
-								&& myValidators["required"].length
-							)
 						) {
 							$controlGroup.removeClass("warning").addClass("error");
 							warningsFound++;
 						}
-					});
+					}).trigger("validationLostFocus.validation");
 					
 					if (warningsFound > 0) {
 						e.preventDefault();
