@@ -57,6 +57,15 @@
   data-validation-required-message=
     "You must agree to the terms and conditions"
 &gt;
+&lt;input type="checkbox"
+  name="qualityControl[]"
+  value="fast"
+  minchecked="2"
+  data-validation-minchecked-message="Choose two"
+  maxchecked="2"
+  data-validation-maxchecked-message=
+    "You can't have it all ways"
+&gt;
 </pre>
 				</div>
 				<div class="span6">
@@ -110,6 +119,27 @@
 						</div>
 					</form>
 				</div>
+			</div>
+			<h2>Installation</h2>
+			<div class="row">
+				<span class="span12">
+					<ol>
+						<li>Download <a href="https://raw.github.com/ReactiveRaven/jqBootstrapValidation/master/jqBootstrapValidation.js">jqBootstrapValidation</a> and put it on your server.</li>
+						<li>
+							Include the script tags on your page:
+							<pre class="prettyprint lang-html">
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt; &lt;!-- if you don't have jquery --&gt;
+&lt;script src="/js/jqBootstrapValidation.js"&gt;&lt;/script&gt;</pre>
+						</li>
+						<li>
+							Apply the jqBootstrapValidation plugin to the elements you want validation applied to
+							<pre class="prettyprint lang-html">
+&lt;script&gt;
+  $(function () { $("input,select,textarea").not("[type=submit]").bootstrapValidation(); } );
+&lt/script&gt;</pre>
+						</li>
+					</ol>
+				</span>
 			</div>
 		</div>
 	</body>
