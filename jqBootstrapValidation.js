@@ -19,6 +19,11 @@
 	}
 	
 	var defaults = {
+		options: {
+			lookupValidators: false, // TODO
+			sniffHtml: true, // sniff for 'required', 'maxlength', etc
+			preventSubmit: false // stop the form submit event from firing
+		},
 		validatorTypes: {
 			regex: {
 				name: "regex",
@@ -27,8 +32,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (!validator.regex.test(value) && ! validator.negative) 
-						|| (validator.regex.test(value) && validator.negative)
-					;
+						|| (validator.regex.test(value) && validator.negative);
 				}
 			},
 			required: {
@@ -38,8 +42,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (value == false && ! validator.negative)
-						|| (value == true && validator.negative)
-					;
+						|| (value == true && validator.negative);
 				}
 			},
 			match: {
@@ -53,8 +56,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (value != validator.element.val() && ! validator.negative) 
-						|| (value == validator.element.val() && validator.negative)
-					;
+						|| (value == validator.element.val() && validator.negative);
 				}
 			},
 			max: {
@@ -64,8 +66,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative) 
-						|| (parseFloat(value, 10) <= parseFloat(validator.max, 10) && validator.negative)
-					;
+						|| (parseFloat(value, 10) <= parseFloat(validator.max, 10) && validator.negative);
 				}
 			},
 			min: {
@@ -75,8 +76,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative) 
-						|| (parseFloat(value) >= parseFloat(validator.min) && validator.negative)
-					;
+						|| (parseFloat(value) >= parseFloat(validator.min) && validator.negative);
 				}
 			},
 			maxlength: {
@@ -86,8 +86,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return ((value.length > validator.maxlength) && ! validator.negative)
-						|| ((value.length <= validator.maxlength) && validator.negative)
-					;
+						|| ((value.length <= validator.maxlength) && validator.negative);
 				}
 			},
 			minlength: {
@@ -97,8 +96,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return ((value.length <= validator.minlength) && ! validator.negative) 
-						|| ((value.length > validator.minlength) && validator.negative)
-					;
+						|| ((value.length > validator.minlength) && validator.negative);
 				}
 			},
 			maxchecked: {
@@ -112,8 +110,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (validator.elements.filter(":checked").length > validator.maxchecked && ! validator.negative)
-						|| (validator.elements.filter(":checked").length <= validator.maxchecked && validator.negative)
-					;
+						|| (validator.elements.filter(":checked").length <= validator.maxchecked && validator.negative);
 				}
 			},
 			minchecked: {
@@ -127,8 +124,7 @@
 				},
 				validate: function ($this, value, validator) {
 					return (validator.elements.filter(":checked").length < validator.minchecked && ! validator.negative)
-						|| (validator.elements.filter(":checked").length >= validator.minchecked && validator.negative)
-					;
+						|| (validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
 				}
 			}
 		},
@@ -195,11 +191,6 @@
 				minchecked: 1,
 				message: "Check at least one option<!-- data-validation-checkone-message to override -->"
 			}
-		},
-		options: {
-			lookupValidators: false, // TODO
-			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: false // stop the form submit event from firing
 		}
 	};
 	
@@ -231,7 +222,7 @@
 	var methods = {	
 		init : function( options ) {
 
-			var settings = $.extend(defaults, options);
+			var settings = $.extend(true, defaults, options);
 			
 			var $siblingElements = this;
 			
@@ -240,8 +231,19 @@
 				if (settings.options.preventSubmit) {
 					var warningsFound = 0;
 					$siblingElements.trigger("change.validation").each(function (i, el) {
-						var $controlGroup = $(el).parents(".control-group").first();
-						if ($controlGroup.hasClass("warning")) {
+						var $this = $(el);
+						var $controlGroup = $this.parents(".control-group").first();
+						var myValidators = $this.triggerHandler("getValidators.validation");
+						var value = getValue($this);
+						if (
+							$controlGroup.hasClass("warning") 
+							|| $this.triggerHandler("validation.validation", true).length
+							|| (
+								! value
+								&& myValidators["required"] 
+								&& myValidators["required"].length
+							)
+						) {
 							$controlGroup.removeClass("warning").addClass("error");
 							warningsFound++;
 						}
@@ -346,7 +348,7 @@
 					// ---------------------------------------------------------
 					//                                                     EMAIL
 					// ---------------------------------------------------------
-					if ($this.attr("type") == "email") {
+					if ($this.attr("type").toLowerCase() == "email") {
 						message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
 						if ($this.data("validationValidemailMessage")) {
 							message = $this.data("validationValidemailMessage");
@@ -368,6 +370,7 @@
 					//                                                MAXCHECKED
 					// ---------------------------------------------------------
 					if ($this.attr("maxchecked") !== undefined) {
+						alert("Maxchecked");
 						message = "Too many options checked; Maximum of '" + $this.attr("maxchecked") + "' required<!-- data-validation-maxchecked-message to override -->";
 						if ($this.data("validationMaxcheckedMessage")) {
 							message = $this.data("validationMaxcheckedMessage");
@@ -544,7 +547,7 @@
 				
 				$this.bind(
 					"validation.validation", 
-					function (event) {
+					function (event, checkEmptyValues) {
 						
 						event = event; // not used
 						
@@ -553,18 +556,27 @@
 						// Get a list of the errors to apply
 						var errorsFound = [];
 
-						if (value || value.length) { // if its empty, reset.
+						if (value || value.length || checkEmptyValues) { // if its empty, reset.
 							
 							$.each(validators, function (validatorType, validatorTypeArray) {
 								$.each(validatorTypeArray, function (i, validator) {
 									if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
 										errorsFound.push(validator.message);
 									}	
-								})
+								});
 							});
 						}
 						
 						return errorsFound;
+					}
+				);
+					
+				$this.bind(
+					"getValidators.validation",
+					function (event) {
+						event = event; // not used
+						
+						return validators;
 					}
 				);
 					
@@ -606,9 +618,6 @@
 								$controlGroup.addClass("success");
 							}
 							$helpBlock.html($helpBlock.data("original-contents"));
-							if (e.type != "validation") {
-
-							}
 						}
 
 						if (e.type == "blur") {
@@ -618,7 +627,7 @@
 				);
 				$this.bind("validationLostFocus.validation", function () {
 					$controlGroup.removeClass("success");
-				})
+				});
 			});
 		},
 		destroy : function( ) {
