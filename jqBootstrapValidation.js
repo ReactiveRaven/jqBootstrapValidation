@@ -1,8 +1,6 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  * 
- * v1.0
- * 
  * http://www.github.com/ReactiveRaven/jqBootstrapValidation/
  */
 
@@ -220,17 +218,24 @@
 	}
 
 	var methods = {	
-		init : function( options ) {
+		init : function( options ) { // init just man, init just.
 
 			var settings = $.extend(true, defaults, options);
 			
 			var $siblingElements = this;
 			
-			$siblingElements.first().parents("form").bind("submit", function (e) {
+			$.unique(
+        $siblingElements.map(
+          function () {
+            var $this = $(this);
+            return $this.parents("form")[0];
+          }
+        )
+      ).bind("submit", function (e) {
 				var $form = $(this);
 				if (settings.options.preventSubmit) {
 					var warningsFound = 0;
-					$siblingElements.trigger("change.validation").each(function (i, el) {
+					$form.find("input,textarea,select").not("[type=submit]").trigger("change.validation").each(function (i, el) {
 						var $this = $(el),
 							$controlGroup = $this.parents(".control-group").first(),
 							myValidators = $this.triggerHandler("getValidators.validation"),
@@ -263,6 +268,8 @@
 				// =============================================================
 				//                                     SNIFF HTML FOR VALIDATORS
 				// =============================================================
+        
+        // *snort sniff snuffle*
 				
 				if (settings.options.sniffHtml) {
 					var message = "";
