@@ -281,8 +281,8 @@
 						if ($this.data("validationPatternMessage")) {
 							message = $this.data("validationPatternMessage");
 						}
-						$this.data("validationRegexMessage", message);
-						$this.data("validationRegexRegex", $this.attr("pattern"));
+						$this.data("validationPatternMessage", message);
+						$this.data("validationPatternRegex", $this.attr("pattern"));
 					}
 					// ---------------------------------------------------------
 					//                                                       MAX
