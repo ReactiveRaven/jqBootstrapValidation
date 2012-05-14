@@ -1,53 +1,53 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>jqBootstapValidation by ReactiveRaven</title>
+  <head>
+    <meta charset="utf-8">
+    <title>jqBootstapValidation by ReactiveRaven</title>
 
-		<link rel="stylesheet" href="css/prettify_bootstrap.css">
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="js/prettify.js"></script>
-		<script src="js/jqBootstrapValidation.js"></script>
-		
-		<script>
-			$(function () {
-				prettyPrint();
-				$("input,textarea,select").bootstrapValidation({options:{preventSubmit: true}});
-				
-				$("form").bind("submit", function (e) {
-					if (!e.isDefaultPrevented()) {
-						e.preventDefault();
-						alert("OK");
-					}
-				});
-        
+    <link rel="stylesheet" href="css/prettify_bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jQuery-1.7.2-min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/prettify.js"></script>
+    <script src="js/jqBootstrapValidation.js"></script>
+
+    <script>
+      $(function () {
+        prettyPrint();
+        $("input,textarea,select").bootstrapValidation({options:{preventSubmit: true}});
+
+        $("form").bind("submit", function (e) {
+          if (!e.isDefaultPrevented()) {
+            e.preventDefault();
+            alert("OK");
+          }
+        });
+
         $("a[data-toggle=\"tab\"]").click(function (e) {
           e.preventDefault();
           $(this).tab("show");
         })
-			});
-		</script>
-		
-	</head>
-	<body>
-		<div class="container">
-			<br />
-			<div class="row">
-				<div class="span6">
-					<h1>jqBootstapValidation</h1>
-					<p>A JQuery validation plugin for bootstrap forms.</p>
-				</div>
-				<div class="span6" style="text-align: right;">
-					<a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation">View on GitHub</a>
-					<a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/master">Download Zip</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span6">
-					<h2>It turns this</h2>
-					<pre class="prettyprint linenums lang-html pre-scrollable">
+      });
+    </script>
+
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <div class="row">
+        <div class="span6">
+          <h1>jqBootstapValidation</h1>
+          <p>A JQuery validation plugin for bootstrap forms.</p>
+        </div>
+        <div class="span6" style="text-align: right;">
+          <a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation">View on GitHub</a>
+          <a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/master">Download Zip</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span6">
+          <h2>It turns this</h2>
+          <pre class="prettyprint linenums lang-html pre-scrollable">
 &lt;input type="email" id="email" required&gt;
 &lt;input 
   name="emailAgain"
@@ -72,106 +72,125 @@
     "You can't have it all ways"
 &gt;
 </pre>
-				</div>
-				<div class="span6">
-					<h2>Into this</h2>
-					<form class="form-horizontal" novalidate>
-						<div class="control-group">
-							<label class="control-label" for="email">Email address</label>
-							<div class="controls">
-								<input type="email" name="email" id="email" required>
-								<p class="help-block">Email address we can contact you on</p>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="emailAgain">Email again</label>
-							<div class="controls">
-								<input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
-								<p class="help-block">And again, to check for speeling miskates</p>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="terms-and-conditions">Legal</label>
-							<div class="controls">
-								<label>
-									<input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
-									I agree to the <a href="#">terms and conditions</a>
-								</label>
-								<p class="help-block"></p>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">Quality Control</label>
-							<div class="controls">
-								<label>
-									<input type="checkbox" name="qualityControl[]" value="fast" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose two" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="You can't have it all ways" >
-									Fast
-								</label>
-								<label>
-									<input type="checkbox" name="qualityControl[]" value="cheap">
-									Cheap
-								</label>
-								<label>
-									<input type="checkbox" name="qualityControl[]" value="good">
-									Good
-								</label>
-								<p class="help-block"></p>
-							</div>
-						</div>
-						<div class="form-actions">
-							<button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button><br />
-							(go ahead, nothing is sent anywhere)
-						</div>
-					</form>
-				</div>
-			</div>
-			<h2>Installation</h2>
-			<div class="row">
-				<div class="span12">
-					<ol>
-						<li>
-							Download <a href="https://raw.github.com/ReactiveRaven/jqBootstrapValidation/master/jqBootstrapValidation.js">jqBootstrapValidation</a> and include the script tags on your page:
-							<pre class="prettyprint lang-html">
-&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt; &lt;!-- if you don't have jquery --&gt;
+        </div>
+        <div class="span6">
+          <h2>Into this</h2>
+          <form class="form-horizontal" novalidate>
+            <div class="control-group">
+              <label class="control-label" for="email">Email address</label>
+              <div class="controls">
+                <input type="email" name="email" id="email" required>
+                <p class="help-block">Email address we can contact you on</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="emailAgain">Email again</label>
+              <div class="controls">
+                <input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
+                <p class="help-block">And again, to check for speeling miskates</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="terms-and-conditions">Legal</label>
+              <div class="controls">
+                <label>
+                  <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
+                  I agree to the <a href="#">terms and conditions</a>
+                </label>
+                <p class="help-block"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Quality Control</label>
+              <div class="controls">
+                <label>
+                  <input type="checkbox" name="qualityControl[]" value="fast" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose two" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="You can't have it all ways" >
+                  Fast
+                </label>
+                <label>
+                  <input type="checkbox" name="qualityControl[]" value="cheap">
+                  Cheap
+                </label>
+                <label>
+                  <input type="checkbox" name="qualityControl[]" value="good">
+                  Good
+                </label>
+                <p class="help-block"></p>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button><br />
+              (go ahead, nothing is sent anywhere)
+            </div>
+          </form>
+        </div>
+      </div>
+      <h2>Installation</h2>
+      <div class="row">
+        <div class="span12">
+          <ol>
+            <li>
+              Download <a href="https://raw.github.com/ReactiveRaven/jqBootstrapValidation/master/jqBootstrapValidation.js">jqBootstrapValidation</a> and include the script tags on your page:
+              <pre class="prettyprint lang-html">
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt; &lt;!-- or use local jquery --&gt;
 &lt;script src="/js/jqBootstrapValidation.js"&gt;&lt;/script&gt;</pre>
-						</li>
-						<li>
-							Apply the jqBootstrapValidation plugin to the elements you want validation applied to
-							<pre class="prettyprint lang-html">
+            </li>
+            <li>
+              Apply the jqBootstrapValidation plugin to the elements you want validation applied to
+              <pre class="prettyprint lang-html">
 &lt;script&gt;
   $(function () { $("input,select,textarea").not("[type=submit]").bootstrapValidation(); } );
 &lt/script&gt;</pre>
-						</li>
+            </li>
             <li>
               jqBootstrapValidation will scan for HTML5 validator attributes directly on the elements, plus any extra options specified via data attributes.<br />
               See below.
             </li>
-					</ol>
-				</div>
-			</div>
+          </ol>
+        </div>
+      </div>
       <h2>Validators</h2>
       <div class="row">
-        <div class="span6">
-          <h3>Email address</h3>
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#validators_email_preview" data-toggle="tab">Example</a></li>
-              <li><a href="#validators_email_code" data-toggle="tab">Code</a></li>
+        <div clas="tabbable">
+          <div class="span4">
+            <ul class="nav-list nav well well-small">
+              <li class="nav-header">HTML5 based</li>
+              <li class="active"><a href="#validators_email" data-toggle="tab">Email</a></li>
+              <li><a href="#validators_required" data-toggle="tab">Required</a></li>
+              <li><a href="#validators_max" data-toggle="tab">Max</a></li>
+              <li><a href="#validators_min" data-toggle="tab">Min</a></li>
+              <li><a href="#validators_maxlength" data-toggle="tab">Max length</a></li>
+              <li><a href="#validators_minlength" data-toggle="tab">Min length</a></li>
+              <li><a href="#validators_pattern" data-toggle="tab">Pattern</a></li>
+              <li class="nav-header">Extras</li>
+              <li><a href="#validators_match" data-toggle="tab">Match</a></li>
+              <li><a href="#validators_maxchecked" data-toggle="tab">Max checked</a></li>
+              <li><a href="#validators_minchecked" data-toggle="tab">Min checked</a></li>
+              <li class="nav-header">Build your own</li>
             </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="validators_email_preview">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label">Email address</label>
-                    <div class="controls">
-                      <input type="email" />
-                      <p class="help-block"></p>
-                    </div>
+          </div>
+          <div class="span8 tab-content">
+            <div class="tab-pane active" id="validators_email">
+              <h3>Email address</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_email_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_email_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_email_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Email address</label>
+                        <div class="controls">
+                          <input type="email" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
                   </div>
-                </form>
-              </div>
-              <div class="tab-pane" id="validators_email_code">
-                <pre class="prettyprint lang-html linenums">
+                  <div class="tab-pane" id="validators_email_code">
+                    <pre class="prettyprint lang-html linenums">
 &lt;form class="form-horizontal"&gt;
   &lt;div class="control-group"&gt;
     &lt;label class="control-label"&gt;Email address&lt;/label&gt;
@@ -181,54 +200,54 @@
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/form&gt;</pre>
-              </div>
-            </div>
-          </div>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Req?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>type</td>
-                <td>email</td>
-                <td><i class="icon-ok"></i></td>
-              </tr>
-              <tr>
-                <td>data-validation-email-message</td>
-                <td>
-                  (your failure message)
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="span6">
-          <h3>Required</h3>
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#validators_required_preview" data-toggle="tab">Example</a></li>
-              <li><a href="#validators_required_code" data-toggle="tab">Code</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="validators_required_preview">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label">Type something</label>
-                    <div class="controls">
-                      <input type="text" name="some_field" required/>
-                      <p class="help-block"></p>
-                    </div>
                   </div>
-                </form>
+                </div>
               </div>
-              <div class="tab-pane" id="validators_required_code">
-                <pre class="prettyprint lang-html linenums">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>type</td>
+                    <td>email</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-email-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_required">
+              <h3>Required</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_required_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_required_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_required_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" name="some_field" required/>
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_required_code">
+                    <pre class="prettyprint lang-html linenums">
 &lt;form class="form-horizontal"&gt;
   &lt;div class="control-group"&gt;
     &lt;label class="control-label"&gt;Type something&lt;/label&gt;
@@ -238,63 +257,353 @@
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/form&gt;</pre>
+                  </div>
+                </div>
               </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>required</td>
+                    <td>(doesn't need a value)</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-required-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Req?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>required</td>
-                <td>(doesn't need a value)</td>
-                <td><i class="icon-ok"></i></td>
-              </tr>
-              <tr>
-                <td>data-validation-required-message</td>
-                <td>
-                  (your failure message)
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="row">
-        <div class="span6">
-          <h3>Confirm match</h3>
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#validators_match_preview" data-toggle="tab">Example</a></li>
-              <li><a href="#validators_match_code" data-toggle="tab">Code</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="validators_match_preview">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label">Type something</label>
-                    <div class="controls">
-                      <input type="text" name="some_field" />
-                      <p class="help-block"></p>
-                    </div>
+            <div class="tab-pane" id="validators_min">
+              <h3>Minimum</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_min_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_min_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_min_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type a number</label>
+                        <div class="controls">
+                          <input type="number" min="42" name="some_field" />
+                          <p class="help-block">Must be higher than 41</p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
                   </div>
-                  <div class="control-group">
-                    <label class="control-label">Type it again</label>
-                    <div class="controls">
-                      <input type="text" data-validation-match-match="some_field" name="some_other_field" />
-                      <p class="help-block"></p>
-                    </div>
+                  <div class="tab-pane" id="validators_min_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type a number&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input type="number" min="42" name="some_field" /&gt;
+      &lt;p class="help-block"&gt;Must be higher than 41&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
                   </div>
-                </form>
+                </div>
               </div>
-              <div class="tab-pane" id="validators_match_code">
-                <pre class="prettyprint lang-html linenums">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>min</td>
+                    <td>(minimum number to accept)</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-min-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_max">
+              <h3>Maximum</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_max_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_max_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_max_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type a number</label>
+                        <div class="controls">
+                          <input type="number" max="42" name="some_field" />
+                          <p class="help-block">Must be lower than 43</p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_max_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type a number&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input type="number" max="42" name="some_field" /&gt;
+      &lt;p class="help-block"&gt;Must be lower than 43&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>max</td>
+                    <td>(maximum number to accept)</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-max-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_maxlength">
+              <h3>Maximum Length</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_maxlength_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_maxlength_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_maxlength_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" maxlength="10" name="some_field" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_maxlength_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal" novalidate&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input type="text" maxlength="10" name="some_field" /&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>maxlength</td>
+                    <td>(maximum number of characters to accept)</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-maxlength-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_minlength">
+              <h3>Minimum Length</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_minlength_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_minlength_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_minlength_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" minlength="10" name="some_field" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_minlength_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal" novalidate&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input type="text" minlength="10" name="some_field" /&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>minlength</td>
+                    <td>(minimum number of characters to accept)</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-minlength-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_pattern">
+              <h3>Pattern</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_pattern_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_pattern_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_pattern_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" pattern="a.*z" data-validation-pattern-message="Must start with 'a' and end with 'z'" name="some_field" />
+                          <p class="help-block">Must start with 'a' and end with 'z'</p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_pattern_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input type="text" 
+        pattern="a.*z" 
+        data-validation-pattern-message="Must start with 'a' and end with 'z'" 
+        name="some_field"
+      /&gt;
+      &lt;p class="help-block"&gt;Must start with 'a' and end with 'z'&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>pattern</td>
+                    <td>
+                      <a href="http://www.regular-expressions.info/javascript.html">Regex</a> to determine if the input is acceptable<br />
+                      <span class="label label-important">Note</span> only expects <code>abc</code>, not <code>/^abc$/ig</code>
+                    </td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-pattern-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_match">
+              <h3>Confirm match</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_match_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_match_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_match_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" name="some_field" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="control-group">
+                        <label class="control-label">Type it again</label>
+                        <div class="controls">
+                          <input type="text" data-validation-match-match="some_field" name="some_other_field" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button></div></form>
+                  </div>
+                  <div class="tab-pane" id="validators_match_code">
+                    <pre class="prettyprint lang-html linenums">
 &lt;form class="form-horizontal"&gt;
   &lt;div class="control-group"&gt;
     &lt;label class="control-label"&gt;Type something&lt;/label&gt;
@@ -308,173 +617,244 @@
     &lt;div class="controls"&gt;
       &lt;input 
         type="text" 
-        data-validation-match-match=
-          "some_field" 
+        data-validation-match-match="some_field" 
         name="some_other_field" 
       /&gt;
       &lt;p class="help-block"&gt;&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/form&gt;</pre>
-              </div>
-            </div>
-          </div>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Req?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>data-validation-match-match</td>
-                <td>name of form field to match</td>
-                <td><i class="icon-ok"></i></td>
-              </tr>
-              <tr>
-                <td>data-validation-match-message</td>
-                <td>
-                  (your failure message)
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="span6">
-          <h3>Minimum</h3>
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#validators_min_preview" data-toggle="tab">Example</a></li>
-              <li><a href="#validators_min_code" data-toggle="tab">Code</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="validators_min_preview">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label">Type a number</label>
-                    <div class="controls">
-                      <input type="number" min="42" name="some_field" />
-                      <p class="help-block">Must be higher than 41</p>
-                    </div>
                   </div>
-                </form>
+                </div>
               </div>
-              <div class="tab-pane" id="validators_min_code">
-                <pre class="prettyprint lang-html linenums">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>data-validation-match-match</td>
+                    <td>name of form field to match</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-match-message</td>
+                    <td>
+                      (your failure message)
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_maxchecked">
+              <h3>Max checked options</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_maxchecked_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_maxchecked_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_maxchecked_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Select your two favourite colours</label>
+                        <div class="controls">
+                          <label class="checkbox"><input type="checkbox" name="some_field" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="Don't be greedy!" /> Red</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Orange</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Yellow</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Green</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Blue</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Indigo</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Violet</label>
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                          Test Validation <i class="icon-ok icon-white"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="validators_maxchecked_code">
+                    <span class="label label-important">
+                    <pre class="prettyprint lang-html linenums">
 &lt;form class="form-horizontal"&gt;
   &lt;div class="control-group"&gt;
-    &lt;label class="control-label"&gt;Type a number&lt;/label&gt;
+    &lt;label class="control-label"&gt;Select your two favourite colours&lt;/label&gt;
     &lt;div class="controls"&gt;
-      &lt;input type="number" min="42" name="some_field" /&gt;
-      &lt;p class="help-block"&gt;Must be higher than 41&lt;/p&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input 
+          type="checkbox" 
+          name="some_field" 
+          data-validation-maxchecked-maxchecked="2" 
+          data-validation-maxchecked-message="Don't be greedy!" 
+        /&gt; Red
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Orange
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Yellow
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Green
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Blue
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Indigo
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Violet
+      &lt;/label&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/form&gt;</pre>
+                  </div>
+                </div>
               </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>data-validation-maxchecked-maxchecked</td>
+                    <td>maximum number of options that may be checked</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-maxchecked-message</td>
+                    <td>
+                      your failure message
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane" id="validators_minchecked">
+              <h3>Max checked options</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_minchecked_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_minchecked_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_minchecked_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Select your two favourite colours</label>
+                        <div class="controls">
+                          <label class="checkbox"><input type="checkbox" name="some_field" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose at least two" /> Red</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Orange</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Yellow</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Green</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Blue</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Indigo</label>
+                          <label class="checkbox"><input type="checkbox" name="some_field" /> Violet</label>
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                          Test Validation <i class="icon-ok icon-white"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="validators_minchecked_code">
+                    <span class="label label-important">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Select your two favourite colours&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input 
+          type="checkbox" 
+          name="some_field" 
+          data-validation-minchecked-minchecked="2" 
+          data-validation-minchecked-message="Choose at least two" 
+        /&gt; Red
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Orange
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Yellow
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Green
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Blue
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Indigo
+      &lt;/label&gt;
+      &lt;label class="checkbox"&gt;
+        &lt;input type="checkbox" name="some_field" /&gt; Violet
+      &lt;/label&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>data-validation-minchecked-minchecked</td>
+                    <td>minimum number of options that may be checked</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-minchecked-message</td>
+                    <td>
+                      your failure message
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Req?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>min</td>
-                <td>(minimum number to accept)</td>
-                <td><i class="icon-ok"></i></td>
-              </tr>
-              <tr>
-                <td>data-validation-min-message</td>
-                <td>
-                  (your failure message)
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
       <div class="row">
         <div class="span6">
-          <h3>Maximum</h3>
-          <div class="tabbable">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#validators_max_preview" data-toggle="tab">Example</a></li>
-              <li><a href="#validators_max_code" data-toggle="tab">Code</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="validators_max_preview">
-                <form class="form-horizontal">
-                  <div class="control-group">
-                    <label class="control-label">Type a number</label>
-                    <div class="controls">
-                      <input type="number" max="42" name="some_field" />
-                      <p class="help-block">Must be lower than 43</p>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="tab-pane" id="validators_max_code">
-                <pre class="prettyprint lang-html linenums">
-&lt;form class="form-horizontal"&gt;
-  &lt;div class="control-group"&gt;
-    &lt;label class="control-label"&gt;Type a number&lt;/label&gt;
-    &lt;div class="controls"&gt;
-      &lt;input type="number" max="42" name="some_field" /&gt;
-      &lt;p class="help-block"&gt;Must be lower than 43&lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/form&gt;</pre>
-              </div>
-            </div>
-          </div>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Attribute</th>
-                <th>Value</th>
-                <th>Req?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>max</td>
-                <td>(maximum number to accept)</td>
-                <td><i class="icon-ok"></i></td>
-              </tr>
-              <tr>
-                <td>data-validation-max-message</td>
-                <td>
-                  (your failure message)
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="row">
-          <div class="span6">
-            <h3>Still to do</h3>
-            <ul class="well well-large">
-              <li>Max length</li>
-              <li>Min length</li>
-              <li>Max checked</li>
-              <li>Min checked</li>
-              <li>Pattern / Regex</li>
-            </ul>
-          </div>
+          <h3>Still to do</h3>
+          <ul class="well well-large">
+            <li>Min checked</li>
+            <li>Regex</li>
+            <li>Number</li>
+          </ul>
         </div>
       </div>
       <h2>Configuration</h2>
       <div class="row">
-        
+
       </div>
       <div class="row">
         <br />
@@ -492,6 +872,6 @@
         <br />
         <br />
       </div>
-		</div>
-	</body>
+    </div>
+  </body>
 </html>
