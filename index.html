@@ -10,11 +10,17 @@
     <script src="js/bootstrap.js"></script>
     <script src="js/prettify.js"></script>
     <script src="js/jqBootstrapValidation.js"></script>
+    <style>
+      h2
+      {
+        margin-top: 1em;
+      }
+    </style>
 
     <script>
       $(function () {
         prettyPrint();
-        $("input,textarea,select").bootstrapValidation({preventSubmit: true});
+        $("input,textarea,select").jqBootstrapValidation({preventSubmit: true});
 
         $("form").bind("submit", function (e) {
           if (!e.isDefaultPrevented()) {
@@ -139,8 +145,8 @@
               Apply the jqBootstrapValidation plugin to the elements you want validation applied to
               <pre class="prettyprint lang-html">
 &lt;script&gt;
-  $(function () { $("input,select,textarea").not("[type=submit]").bootstrapValidation(); } );
-&lt/script&gt;</pre>
+  $(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+&lt;/script&gt;</pre>
             </li>
             <li>
               jqBootstrapValidation will scan for HTML5 validator attributes directly on the elements, plus any extra options specified via data attributes.<br />
@@ -1065,6 +1071,10 @@
               <li class="nav-header">Options</li>
               <li class="active"><a href="#configuration_options_sniffhtml" data-toggle="tab">Sniff HTML</a></li>
               <li><a href="#configuration_options_preventsubmit" data-toggle="tab">Prevent submit</a></li>
+              <li class="nav-header">Extending</li>
+              <li><a href="#configuration_extend_events" data-toggle="tab">Events</a></li>
+              <li><a href="#configuration_extend_functions" data-toggle="tab">Functions</a></li>
+              <li><a href="#configuration_extend_override" data-toggle="tab">Overrides</a></li>
             </ul>
           </div>
           <div class="span8 tab-content">
@@ -1087,6 +1097,174 @@
               <p>
                 If you decide this isn't what you want, you can allow submitting of potentially invalid data for validation server-side (or in case you think someone might have a genuine case for exceptional data).
                 <code>$(...).jqBootstrapValidation({preventSubmit: false});</code>
+              </p>
+            </div>
+            <div class="tab-pane" id="configuration_extend_events">
+              <h3>Events</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#configuration_extend_events_validation" data-toggle="tab">Validation</a></li>
+                  <li><a href="#configuration_extend_events_getValidators" data-toggle="tab">getValidators</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="configuration_extend_events_validation">
+                    <h4>validation.validation</h4>
+                    <p>
+                      Returns an array of validation errors for a given object.
+                    </p>
+                    <p>
+                      If no errors are found, returns an empty array.
+                    </p>
+                    <p>
+                      <span class="label label-info">Note</span> Must be called on a single element via <a href="http://api.jquery.com/triggerHandler/">triggerHandler</a>.<br /> 
+                      To collect all errors for a set of elements, you could use an <a href="http://api.jquery.com/jQuery.each/">each</a> loop:
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+var errorMessages = [];
+$("...").each(function (i, el) {
+  errorMessages = errorMessages.concat(
+      $(this).triggerHandler("validation.validation")
+  );
+});</pre>
+                    If you just want a list of all error messages for a group of elements, see the "collectErrors" jqBoostrapValidation function.
+                  </div>
+                  <div class="tab-pane" id="configuration_extend_events_getValidators">
+                    <h4>getValidators.validation</h4>
+                    <p>
+                      Returns the internal array of valiators for inspection.
+                    </p>
+                    <span class="label label-info">Note</span> Must be called on a single element via <a href="http://api.jquery.com/triggerHandler/">triggerHandler</a>.
+                    <pre class="prettyprint linenums well well-small">
+var myValidators = $("...").first().triggerHandler("getValidators.validation");</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="configuration_extend_functions">
+              <h3>Functions</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#configuration_extend_functions_destroy" data-toggle="tab">Destroy</a></li>
+                  <li><a href="#configuration_extend_functions_collectErrors" data-toggle="tab">Collect errors</a></li>
+                  <li><a href="#configuration_extend_functions_override" data-toggle="tab">Override</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="configuration_extend_functions_destroy">
+                    <h4>destroy</h4>
+                    <p>
+                      Removes all jqBootstrapValidation events attached to the given elements, and resets their control-block classes and help-block text to their original values.
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+$("...").jqBootstrapValidation("destroy");</pre>
+                  </div>
+                  <div class="tab-pane" id="configuration_extend_functions_collectErrors">
+                    <h4>collectErrors</h4>
+                    <p>
+                      Collects an array of all the error messages associated with the given set of elements.
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+var errors = $("...").jqBootstrapValidation("collectErrors");</pre>
+                  </div>
+                  <div class="tab-pane" id="configuration_extend_functions_override">
+                    <h4>override</h4>
+                    <p>
+                      Overrides the internal array, to change the behaviour of default functions, add extra validators, and so on.
+                    </p>
+                    <p>
+                      <span class="label label-warning">WARNING</span> This function has the potential to break jqBootstrapValidation.<br />
+                      You should only use the override function if you are certain you need to, or if you're adding new validators
+                    </p>
+                    <p>
+                      Because this is a big topic, it has it's own section. See the "Overrides" configuration option.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <p>
+                
+              </p>
+            </div>
+            <div class="tab-pane" id="configuration_extend_override">
+              <h3>Override</h3>
+              <span class="label label-warning">WARNING</span> This function has the potential to break jqBootstrapValidation. Tread carefully.<br />
+              <span class="label label-info">Question</span> If you override core values, who else will need to know?<br />
+              
+              <p>
+                This section is still being written. The current sections in the defaults object are:
+              </p>
+              
+              <ul>
+                <li>options</li>
+                <li>methods</li>
+                <li>validatorTypes</li>
+                <li>builtInValidators</li>
+              </ul>
+              
+              <p>
+                You may find it useful to check the source code to learn more about what you can override at this stage.
+              </p>
+              
+              <pre class="well well-small prettyprint linenums">
+$.jqBootstrapValidation(
+  "override", 
+  {
+    options: 
+    {
+      preventSubmit: false
+    },
+    builtInValidators: 
+    {
+      required: 
+      {
+        message: "This is required! Fill it in!"
+      }
+    }
+  }
+);</pre>
+              <p>
+                The override function will take the value you give, and write it over (exactly) matching keys. For example, in the example above, the <code>options</code> key would still contain <code>sniffHtml: true</code> after your input had been applied, but <code>preventSubmit</code> would now be false.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>FAQ</h2>
+      <div class="row">
+        <div class="tabbable">
+          <div class="span4">
+            <ul class="nav-list nav well well-small">
+              <li class="active"><a href="#faq_formats" data-toggle="tab">Where is the date/time/tel validator?</a></li>
+              <li class="nav-header"></li>
+              <li><a href="#faq_ask" data-toggle="tab">Where do I ask a question?</a></li>
+              <li><a href="#faq_bug" data-toggle="tab">Where do I report a bug?</a></li>
+            </ul>
+          </div>
+          <div class="span8 tab-content">
+            <div class="tab-pane active" id="faq_formats">
+              <h3>Where is the date/time/tel/currency validator?</h3>
+              <p>
+                Simply put, I'm in the UK and you probably aren't. English might not even be your first language.
+              </p>
+              <p>
+                I can't possibly know how you write dates, when even the UK and USA can't agree.
+              </p>
+              <p>
+                I can't find a nice cross platform way of detecting someone's region preferences easily. If there is enough demand (<a href="http://www.twitter.com/ReactiveRaven">@ReactiveRaven</a>) I'll add region support, but for now you may be better finding a non-restrictive regex for your local format.
+              </p>
+            </div>
+            <div class="tab-pane" id="faq_ask">
+              <h3>Where do I ask a question?</h3>
+              <p>
+                The best place to reach me is on twitter <a href="http://www.twitter.com/ReactiveRaven">@ReactiveRaven</a>. 
+              </p>
+              <p>
+                If you think you've found a bug, please do file an <a href="https://github.com/ReactiveRaven/jqBootstrapValidation/issues">issue</a> on github or better yet, <a href="https://github.com/ReactiveRaven/jqBootstrapValidation">fork</a> and send a pull request.
+              </p>
+            </div>
+            <div class="tab-pane" id="faq_bug">
+              <h3>Where do I report a bug?</h3>
+              <p>
+                If you've found a bug, please do file an <a href="https://github.com/ReactiveRaven/jqBootstrapValidation/issues">issue</a> on github or better yet, <a href="https://github.com/ReactiveRaven/jqBootstrapValidation">fork</a> and send a pull request.
               </p>
             </div>
           </div>
