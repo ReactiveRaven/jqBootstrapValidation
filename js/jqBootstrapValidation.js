@@ -220,7 +220,9 @@
 	var methods = {	
 		init : function( options ) { // init just man, init just.
 
-			var settings = $.extend(true, defaults, options);
+			var settings = $.extend(true, {}, defaults);
+      
+      settings.options = $.extend(true, settings.options, options);
 			
 			var $siblingElements = this;
 			
@@ -232,7 +234,9 @@
           }
         )
       ).bind("submit", function (e) {
+          console.log("Checking submit");
 				var $form = $(this);
+        console.log(settings.options);
 				if (settings.options.preventSubmit) {
 					var warningsFound = 0;
 					$form.find("input,textarea,select").not("[type=submit]").trigger("change.validation").each(function (i, el) {
@@ -252,7 +256,10 @@
 					
 					if (warningsFound > 0) {
 						e.preventDefault();
-					}
+            console.log("Errors found!");
+					} else {
+            console.log("No errors found!");
+          }
 				}
 			})
 

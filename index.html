@@ -14,7 +14,7 @@
     <script>
       $(function () {
         prettyPrint();
-        $("input,textarea,select").bootstrapValidation({options:{preventSubmit: true}});
+        $("input,textarea,select").bootstrapValidation({preventSubmit: true});
 
         $("form").bind("submit", function (e) {
           if (!e.isDefaultPrevented()) {
@@ -149,6 +149,11 @@
           </ol>
         </div>
       </div>
+      
+      <!-- ################################################################# -->
+      <!--                                                        VALIDATORS -->
+      <!-- ################################################################# -->
+      
       <h2>Validators</h2>
       <div class="row">
         <div clas="tabbable">
@@ -169,9 +174,11 @@
               <li><a href="#validators_minchecked" data-toggle="tab">Min checked</a></li>
               <li><a href="#validators_regex" data-toggle="tab">Regex</a></li>
               <li class="nav-header">Build your own</li>
+              <li><a href="#validators_create_mix" data-toggle="tab">Mix and multiply</a></li>
             </ul>
           </div>
           <div class="span8 tab-content">
+            <!-- ========================================== VALIDATORS_EMAIL -->
             <div class="tab-pane active" id="validators_email">
               <h3>Email address</h3>
               <div class="tabbable">
@@ -229,6 +236,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ======================================= VALIDATORS_REQUIRED -->
             <div class="tab-pane" id="validators_required">
               <h3>Required</h3>
               <div class="tabbable">
@@ -286,6 +294,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ============================================ VALIDATORS_MIN -->
             <div class="tab-pane" id="validators_min">
               <h3>Minimum</h3>
               <div class="tabbable">
@@ -343,6 +352,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ============================================ VALIDATORS_MAX -->
             <div class="tab-pane" id="validators_max">
               <h3>Maximum</h3>
               <div class="tabbable">
@@ -400,6 +410,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ====================================== VALIDATORS_MAXLENGTH -->
             <div class="tab-pane" id="validators_maxlength">
               <h3>Maximum Length</h3>
               <div class="tabbable">
@@ -457,6 +468,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ====================================== VALIDATORS_MINLENGTH -->
             <div class="tab-pane" id="validators_minlength">
               <h3>Minimum Length</h3>
               <div class="tabbable">
@@ -514,6 +526,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ======================================== VALIDATORS_PATTERN -->
             <div class="tab-pane" id="validators_pattern">
               <h3>Pattern</h3>
               <div class="tabbable">
@@ -578,6 +591,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ========================================== VALIDATORS_MATCH -->
             <div class="tab-pane" id="validators_match">
               <h3>Confirm match</h3>
               <div class="tabbable">
@@ -653,6 +667,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ===================================== VALIDATORS_MAXCHECKED -->
             <div class="tab-pane" id="validators_maxchecked">
               <h3>Max checked options</h3>
               <div class="tabbable">
@@ -747,6 +762,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ===================================== VALIDATORS_MINCHECKED -->
             <div class="tab-pane" id="validators_minchecked">
               <h3>Max checked options</h3>
               <div class="tabbable">
@@ -841,6 +857,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ========================================== VALIDATORS_REGEX -->
             <div class="tab-pane" id="validators_regex">
               <h3>Regex matching</h3>
               <div class="tabbable">
@@ -907,6 +924,7 @@
                 </tbody>
               </table>
             </div>
+            <!-- ========================================= VALIDATORS_NUMBER -->
             <div class="tab-pane" id="validators_number">
               <h3>Numbers</h3>
               <div class="tabbable">
@@ -970,14 +988,115 @@
                 </tbody>
               </table>
             </div>
+            <!-- ===================================== VALIDATORS_CREATE_MIX -->
+            <div class="tab-pane" id="validators_create_mix">
+              <h3>Mix and multiply validators</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_create_mix_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_create_mix_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_create_mix_preview">
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" data-validation-uppercase-regex="([^a-z]*[A-Z]*)*" data-validation-uppercase-message="Must be uppercase" data-validation-containsnumber-regex="([^0-9]*[0-9]+[^0-9]*)+" data-validation-containsnumber-message="Needs at least one number" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                          Test Validation <i class="icon-ok icon-white"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="validators_create_mix_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input 
+        type="text" 
+        data-validation-uppercase-regex="([^a-z]*[A-Z]*)*" 
+        data-validation-uppercase-message="Must be uppercase" 
+        data-validation-containsnumber-regex="([^0-9]*[0-9]+)+" 
+        data-validation-containsnumber-message="Needs at least one number" 
+      /&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <p>
+                Have you noticed how all the validation messages data-attributes look the same? 
+              </p>
+              <code>data-validation-<em>validatorname</em>-message</code>
+              <p>
+                Validators are attached with names, so you can have multiple of 
+                the same validator if you just name them differently.
+              </p>
+              <p>
+                In the form above, I've added two Regex validators, one requiring uppercase, the other requiring at least one number. 
+                Because they are named differently ('uppercase' and 'containsnumber' respectively) they are both applied rather than cancelling eachother out.
+              </p>
+              <p>
+                You can also use the HTML5 validators multiple times by specifying them in data-attribute format, such as <code>data-validator-myvalidator-maxlength=10</code> to use the <code>maxlength</code> HTML5 validator, for example.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+      
+      <!-- ################################################################# -->
+      <!--                                                     CONFIGURATION -->
+      <!-- ################################################################# -->
+      
       <h2>Configuration</h2>
       <div class="row">
-
+        <div class="tabbable">
+          <div class="span4">
+            <ul class="nav-list nav well well-small">
+              <li class="nav-header">Options</li>
+              <li class="active"><a href="#configuration_options_sniffhtml" data-toggle="tab">Sniff HTML</a></li>
+              <li><a href="#configuration_options_preventsubmit" data-toggle="tab">Prevent submit</a></li>
+            </ul>
+          </div>
+          <div class="span8 tab-content">
+            <div class="tab-pane active" id="configuration_options_sniffhtml">
+              <h3>sniffHtml</h3>
+              <p>
+                Internally, jqBootstrapValidation only uses data attributes. 
+                By default, it will also sniff for native HTML5 form validation attributes, as detailed above.
+              </p>
+              <p>
+                If you decide this isn't what you want, you can restrict jqBootstrapValidation to only data attributes by setting sniffHtml to false when calling it on your form elements.
+                <code>$(...).jqBootstrapValidation({sniffHtml: false});</code>
+              </p>
+            </div>
+            <div class="tab-pane" id="configuration_options_preventsubmit">
+              <h3>preventSubmit</h3>
+              <p>
+                By default, jqBootstrapValidtion will prevent forms from submitting if any of their elements fail validation by jqBootstrapValidation.
+              </p>
+              <p>
+                If you decide this isn't what you want, you can allow submitting of potentially invalid data for validation server-side (or in case you think someone might have a genuine case for exceptional data).
+                <code>$(...).jqBootstrapValidation({preventSubmit: false});</code>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row">
+        <div class="span3 offset9">
+          Created by David Godfrey<br />
+          AKA <a href="http://www.twitter.com/ReactiveRaven">@ReactiveRaven</a>
+        </div>
         <br />
         <br />
         <br />
