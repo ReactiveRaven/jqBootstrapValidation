@@ -4,12 +4,18 @@
  * http://www.github.com/ReactiveRaven/jqBootstrapValidation/
  */
 
+/* This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://sam.zoy.org/wtfpl/COPYING for more details. */
+
 (function( $ ){
 	
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: false // stop the form submit event from firing
+			preventSubmit: true // stop the form submit event from firing
 		},
     methods: {
       init : function( options ) {
@@ -43,13 +49,6 @@
                 warningsFound++;
               }
             }).trigger("validationLostFocus.validation");
-
-            if (warningsFound > 0) {
-              e.preventDefault();
-              console.log("Errors found!");
-            } else {
-              console.log("No errors found!");
-            }
           }
         })
 
@@ -138,7 +137,7 @@
             // ---------------------------------------------------------
             //                                                    NUMBER
             // ---------------------------------------------------------
-            if ($this.attr("type") == "number") {
+            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() == "number") {
               message = settings.builtInValidators.number.message;
               if ($this.data("validationNumberMessage")) {
                 message = $this.data("validationNumberMessage");
@@ -148,7 +147,7 @@
             // ---------------------------------------------------------
             //                                                     EMAIL
             // ---------------------------------------------------------
-            if ($this.attr("type").toLowerCase() == "email") {
+            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() == "email") {
               message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
               if ($this.data("validationValidemailMessage")) {
                 message = $this.data("validationValidemailMessage");
@@ -170,7 +169,6 @@
             //                                                MAXCHECKED
             // ---------------------------------------------------------
             if ($this.attr("maxchecked") !== undefined) {
-              alert("Maxchecked");
               message = "Too many options checked; Maximum of '" + $this.attr("maxchecked") + "' required<!-- data-validation-maxchecked-message to override -->";
               if ($this.data("validationMaxcheckedMessage")) {
                 message = $this.data("validationMaxcheckedMessage");
