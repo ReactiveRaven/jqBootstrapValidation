@@ -83,24 +83,26 @@
             // ---------------------------------------------------------
             //                                                       MAX
             // ---------------------------------------------------------
-            if ($this.attr("max") !== undefined) {
-              message = "Too high: Maximum of '" + $this.attr("max") + "'<!-- data-validation-max-message to override -->";
+            if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
+              var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
+              message = "Too high: Maximum of '" + max + "'<!-- data-validation-max-message to override -->";
               if ($this.data("validationMaxMessage")) {
                 message = $this.data("validationMaxMessage");
               }
               $this.data("validationMaxMessage", message);
-              $this.data("validationMaxMax", $this.attr("max"));
+              $this.data("validationMaxMax", max);
             }
             // ---------------------------------------------------------
             //                                                       MIN
             // ---------------------------------------------------------
-            if ($this.attr("min") !== undefined) {
-              message = "Too low: Minimum of '" + $this.attr("min") + "'<!-- data-validation-min-message to override -->";
+            if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
+              var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
+              message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
               if ($this.data("validationMinMessage")) {
                 message = $this.data("validationMinMessage");
               }
               $this.data("validationMinMessage", message);
-              $this.data("validationMinMin", $this.attr("min"));
+              $this.data("validationMinMin", min);
             }
             // ---------------------------------------------------------
             //                                                 MAXLENGTH
@@ -127,7 +129,7 @@
             // ---------------------------------------------------------
             //                                                  REQUIRED
             // ---------------------------------------------------------
-            if ($this.attr("required") !== undefined) {
+            if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
               message = settings.builtInValidators.required.message;
               if ($this.data("validationRequiredMessage")) {
                 message = $this.data("validationRequiredMessage");
@@ -321,8 +323,6 @@
           //                                         STORE FALLBACK VALUES
           // =============================================================
 
-          // Keep the original contents of the help-block for when we 
-          // need to reset back.
           $helpBlock.data(
             "original-contents", 
             (
@@ -331,12 +331,32 @@
                 : $helpBlock.html()
             )
           );
+          
+          $helpBlock.data(
+            "original-role",
+            (
+              $helpBlock.data("original-role")
+                ? $helpBlock.data("original-role")
+                : $helpBlock.attr("role")
+            )
+          )
 
-          // Keep the original classes to put back in case we are 
-          // destroyed :(
           $controlGroup.data(
             "original-classes", 
-            $controlGroup.attr("class")
+            (
+              $controlGroup.data("original-clases")
+                ? $controlGroup.data("original-classes")
+                : $controlGroup.attr("class")
+            )
+          );
+            
+          $this.data(
+            "original-aria-invalid", 
+            (
+              $this.data("original-aria-invalid")
+                ? $this.data("original-aria-invalid")
+                : $this.attr("aria-invalid")
+            )
           );
 
           // =============================================================
@@ -398,9 +418,16 @@
               var errorsFound = [];
 
               $controlGroup.find("input,textarea,select").each(function (i, el) {
+                var oldCount = errorsFound.length;
                 $.each($(el).triggerHandler("validation.validation"), function (j, message) {
                   errorsFound.push(message);
                 });
+                if (errorsFound.length > oldCount) {
+                  $(el).attr("aria-invalid", "true");
+                } else {
+                  var original = $this.data("original-aria-invalid");
+                  $(el).attr("aria-invalid", (original !== undefined ? original : false));
+                }
               });
 
               $form.find("input,select,textarea").not($this).not("[name=\"" + $this.attr("name") + "\"]").trigger("validationLostFocus.validation");
@@ -409,7 +436,7 @@
 
               if (errorsFound.length) {
                 $controlGroup.removeClass("success error").addClass("warning");
-                $helpBlock.html("<ul><li>" + errorsFound.join("</li><li>") + "</li></ul>");
+                $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>");
               } else {
                 $controlGroup.removeClass("warning error success");
                 if (value.length > 0) {
@@ -444,6 +471,10 @@
             $helpBlock.html($helpBlock.data("original-contents"));
             // reset classes
             $controlGroup.attr("class", $controlGroup.data("original-classes"));
+            // reset aria
+            $this.attr("aria-invalid", $this.data("original-aria-invalid"));
+            // reset role
+            $helpBlock.attr("role", $this.data("original-role"));
 
           }
         );
