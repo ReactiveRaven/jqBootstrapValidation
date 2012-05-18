@@ -9,7 +9,7 @@
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: false // stop the form submit event from firing
+			preventSubmit: true // stop the form submit event from firing
 		},
     methods: {
       init : function( options ) {
