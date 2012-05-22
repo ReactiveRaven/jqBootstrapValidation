@@ -49,6 +49,9 @@
                 warningsFound++;
               }
             }).trigger("validationLostFocus.validation");
+            if (warningsFound) {
+              e.preventDefault();
+            }
           }
         })
 
