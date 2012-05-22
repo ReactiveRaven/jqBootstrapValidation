@@ -598,7 +598,32 @@
 					return (validator.elements.filter(":checked").length < validator.minchecked && ! validator.negative)
 						|| (validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
 				}
-			}
+			},
+      dateformat: {
+        name: 'dateformat',
+        regexes: {
+          dateOffsets: /^([+-][mdy][0-9]+ ?)+$/gi
+        },
+        init: function ($this, name) {
+          var maxDate = $this.data("validation" + name + "Maxdate");
+          var minDate = $this.data("validation" + name + "Mindate");
+          
+          if (maxDate != undefined && maxDate.match(this.regexes.dateOffsets)) {
+            var matches = this.regexes.dateOffsets.exec(maxDate);
+            
+          }
+          
+          return {
+            dateformat: $this.data("validation" + name + "Dateformat"), 
+            numberMask: regexFromString($this.data("validation" + name + "Dateformat").replace(/[mdy]/ig, "[0-9]")),
+            maxDate: maxDate,
+            minDate: minDate
+          };
+        },
+        validate: function ($this, value, validator) {
+          
+        }
+      }
 		},
 		builtInValidators: {
 			email: {
@@ -692,13 +717,7 @@
 	}
   
   function regexFromString(inputstring) {
-		// http://stackoverflow.com/questions/874709/converting-user-input-string-to-regular-expression#answer-874742
-
-		//var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
-		//var pattern = inputstring.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1');
-		var regex = new RegExp("^" + inputstring + "$"); //pattern, flags);
-
-		return regex;	
+		return new RegExp("^" + inputstring + "$");	
 	}
 
 	$.fn.jqBootstrapValidation = function( method ) {
