@@ -567,8 +567,8 @@
 					return {minlength: $this.data("validation" + name + "Minlength")};
 				},
 				validate: function ($this, value, validator) {
-					return ((value.length <= validator.minlength) && ! validator.negative) 
-						|| ((value.length > validator.minlength) && validator.negative);
+					return ((value.length < validator.minlength) && ! validator.negative) 
+						|| ((value.length >= validator.minlength) && validator.negative);
 				}
 			},
 			maxchecked: {
