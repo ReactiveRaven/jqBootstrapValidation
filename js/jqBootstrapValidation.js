@@ -516,8 +516,8 @@
 					return {};
 				},
 				validate: function ($this, value, validator) {
-					return (value == false && ! validator.negative)
-						|| (value == true && validator.negative);
+					return (value.length == 0  && ! validator.negative)
+						|| (value.length > 0 && validator.negative);
 				}
 			},
 			match: {
@@ -634,7 +634,7 @@
 			number: {
 				name: "Number",
 				type: "regex",
-				regex: "[+-]?\\\d+(\\\.\\\d*)?",
+				regex: "([+-]?\\\d+(\\\.\\\d*)?([eE][+-]?[0-9]+)?)?",
 				message: "Must be a number<!-- data-validator-number-message to override -->"
 			},
 			integer: {

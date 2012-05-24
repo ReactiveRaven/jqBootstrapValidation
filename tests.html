@@ -42,7 +42,6 @@ and open the template in the editor.
             testCount++;
             $el.val(params.Value);
             if ($el.val() != params.Value) {
-              console.log("Value '" + params.Value + "' rejected by the browser");
               failures.push("Could not test '" + testName + "' as the value '" + params.Value + "' was rejected by the browser");
             } else {
               var includeEmpty = (params.Empty ? true : false);
@@ -222,6 +221,12 @@ and open the template in the editor.
             
             data-testing-invalid-value="sausages"
             data-testing-invalid-message='["failed"]'
+            
+            data-testing-fakedecimals-value="..4.22"
+            data-testing-fakedecimals-message='["failed"]'
+            
+            data-testing-exponents-value="-0.1e+1"
+            data-testing-exponents-message='[]'
             
             data-testing-decimal-value="12.34"
             data-testing-decimal-message='[]'
