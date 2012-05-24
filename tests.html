@@ -1,0 +1,245 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test cases for jqBootstrapValidation</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/prettify.css" />
+    <script src="js/jQuery-1.7.2-min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/json2.js"></script>
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script>
+      $(function () {
+        $("input,checkbox,textarea").not("[type=submit],[type=image]").jqBootstrapValidation({preventSubmit: true});
+      });
+      
+      $(function () {
+        
+        var foundAnyErrors = false;
+        var testCount = 0;
+        
+        $(".testme").each(function (i, el) {
+          var $el = $(el);
+          var tests = {};
+          var fieldName = $el.attr("name");
+          $.each($el.data(), function (key, val) {
+            if (key.match(/^testing[A-Z]/)) {
+              var matches = /^testing([A-Z][^A-Z]+)([A-Z][^A-Z]+)$/.exec(key);
+              if (!tests[matches[1]]) {
+                tests[matches[1]] = {};
+              }
+              tests[matches[1]][matches[2]] = val;
+            }
+          });
+          
+          var failures = [];
+          
+          $.each(tests, function (testName, params) {
+            testCount++;
+            $el.val(params.Value);
+            if ($el.val() != params.Value) {
+              failures.push("Could not test '" + testName + "' as the value '" + params.Value + "' was rejected by the browser");
+            } else {
+              var includeEmpty = (params.Empty ? true : false);
+              var message = $el.triggerHandler("validation.validation", includeEmpty);
+              if (
+                JSON.stringify(message, null, 2) != JSON.stringify(params.Message, null, 2) 
+              ) {
+                foundAnyErrors = true;
+                failures.push("Failed '" + testName + "'");
+                $el.parents(".control-group").addClass("error");
+                console.log("Failed on field '" + fieldName + "' on test '" + testName + "' as received unexpected response:");
+                console.log(message);
+                console.log("when expecting:");
+                console.log(params.Message);
+              }
+            }
+          });
+          if (failures.length) {
+            $el.parents(".control-group").find(".help-block").html(failures.join("<br />"));
+          } else {
+            $el.parents(".control-group").find(".help-block").html("OK");
+          }
+        });
+        
+        if (!foundAnyErrors) {
+          console.log("Ran " + testCount + " tests with no errors found");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="form" novalidate="novalidate">
+        <div class="control-group">
+          <input 
+            class="testme" 
+            type="text"
+            name="min" 
+            min="10" 
+            data-validation-min-message='failed'
+
+            data-testing-empty-value="" 
+            data-testing-empty-message="[]"
+
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='[]'
+            data-testing-emptydeep-empty="true"
+
+            data-testing-invalid-value="sausages" 
+            data-testing-invalid-message='[]' 
+
+            data-testing-too_low-value="5" 
+            data-testing-too_low-message='["failed"]' 
+
+            data-testing-ok-value="10" 
+            data-testing-ok-message="[]" 
+
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="email"
+            data-validation-validemail-message="failed"
+
+            data-testing-empty-value=""
+            data-testing-empty-message="[]"
+
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-noat-value="testtest.com"
+            data-testing-noat-message='["failed"]'
+            
+            data-testing-notld-value="test@test"
+            data-testing-notld-message='["failed"]'
+
+            data-testing-ok-value="test@test.com"
+            data-testing-ok-message="[]"
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="email_data_attributes"
+            data-validation-validemail-message="failed"
+
+            data-testing-empty-value=""
+            data-testing-empty-message="[]"
+
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-noat-value="testtest.com"
+            data-testing-noat-message='["failed"]'
+            
+            data-testing-notld-value="test@test"
+            data-testing-notld-message='["failed"]'
+
+            data-testing-ok-value="test@test.com"
+            data-testing-ok-message="[]"
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="maxmin"
+            
+            max="8"
+            min="8"
+            
+            data-validation-max-message="failedmax"
+            data-validation-min-message="failedmin"
+            
+            data-testing-toolow-value="7.9"
+            data-testing-toolow-message='["failedmin"]'
+            
+            data-testing-toohigh-value="8.1"
+            data-testing-toohigh-message='["failedmax"]'
+            
+            data-testing-empty-value=""
+            data-testing-empty-message="[]"
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message="[]"
+            data-testing-emptydeep-empty="true"
+
+            data-testing-ok-value="8"
+            data-testing-ok-message="[]"
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="required"
+            
+            required
+            
+            data-validation-required-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-falsy-value="0"
+            data-testing-falsy-message="[]"
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
+
+            data-testing-ok-value="testing"
+            data-testing-ok-message="[]"
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="number"
+            data-validation-number-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='[]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-invalid-value="sausages"
+            data-testing-invalid-message='["failed"]'
+            
+            data-testing-fakedecimals-value="..4.22"
+            data-testing-fakedecimals-message='["failed"]'
+            
+            data-testing-exponents-value="-0.1e+1"
+            data-testing-exponents-message='[]'
+            
+            data-testing-decimal-value="12.34"
+            data-testing-decimal-message='[]'
+            
+            data-testing-negative-value="-42"
+            data-testing-negative-message="[]"
+
+            data-testing-ok-value="42"
+            data-testing-ok-message='[]'
+          />
+          <div class="help-block">...</div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
