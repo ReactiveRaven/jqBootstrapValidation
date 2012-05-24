@@ -15,7 +15,9 @@
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: true // stop the form submit event from firing
+			preventSubmit: true, // stop the form submit event from firing
+      submitError: false,
+      submitSuccess: false
 		},
     methods: {
       init : function( options ) {
@@ -35,25 +37,34 @@
           )
         ).bind("submit", function (e) {
           var $form = $(this);
-          if (settings.options.preventSubmit) {
-            var warningsFound = 0;
-            $form.find("input,textarea,select").not("[type=submit]").trigger("change.validation").each(function (i, el) {
-              var $this = $(el),
-                $controlGroup = $this.parents(".control-group").first();
+          var warningsFound = 0;
+          var $inputs = $form.find("input,textarea,select").not("[type=submit]");
+          $inputs.trigger("change.validation").each(function (i, el) {
+            var $this = $(el),
+              $controlGroup = $this.parents(".control-group").first();
 
-              if (
-                $controlGroup.hasClass("warning") 
-                || $this.triggerHandler("validation.validation", true).length
-              ) {
-                $controlGroup.removeClass("warning").addClass("error");
-                warningsFound++;
-              }
-            }).trigger("validationLostFocus.validation");
-            if (warningsFound) {
+            if (
+              $controlGroup.hasClass("warning") 
+              || $this.triggerHandler("validation.validation", true).length
+            ) {
+              $controlGroup.removeClass("warning").addClass("error");
+              warningsFound++;
+            }
+          }).trigger("validationLostFocus.validation");
+          if (warningsFound) {
+            if (settings.options.preventSubmit) {
               e.preventDefault();
             }
+            $form.addClass("error");
+            if ($.isFunction(settings.options.submitError)) {
+              settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
+            }
+          } else {
+            if ($.isFunction(settings.options.submitSuccess)) {
+              settings.options.submitSuccess($form, e);
+            }
           }
-        })
+        });
 
         return this.each(function(){
 
@@ -483,14 +494,21 @@
         );
 
       },
-      collectErrors : function() {
+      collectErrors : function(includeEmpty) {
 
-        var errorMessages = [];
+        var errorMessages = {};
         this.each(function (i, el) {
-          errorMessages = errorMessages.concat(
-              $(this).triggerHandler("validation.validation")
-          );
+          var $el = $(el);
+          var name = $el.attr("name");
+          var errors = $el.triggerHandler("validation.validation", includeEmpty);
+          errorMessages[name] = $.extend(true, errors, errorMessages[name]);
         });
+        
+        $.each(errorMessages, function (i, el) {
+          if (el.length == 0) {
+            delete errorMessages[i];
+          }
+        })
 
         return errorMessages;
 
@@ -695,13 +713,7 @@
 	}
   
   function regexFromString(inputstring) {
-		// http://stackoverflow.com/questions/874709/converting-user-input-string-to-regular-expression#answer-874742
-
-		//var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
-		//var pattern = inputstring.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1');
-		var regex = new RegExp("^" + inputstring + "$"); //pattern, flags);
-
-		return regex;	
+		return new RegExp("^" + inputstring + "$");	
 	}
 
 	$.fn.jqBootstrapValidation = function( method ) {

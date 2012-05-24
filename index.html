@@ -1071,6 +1071,7 @@
               <li class="nav-header">Options</li>
               <li class="active"><a href="#configuration_options_sniffhtml" data-toggle="tab">Sniff HTML</a></li>
               <li><a href="#configuration_options_preventsubmit" data-toggle="tab">Prevent submit</a></li>
+              <li><a href="#configuration_options_submiterror" data-toggle="tab">Submit Error</a></li>
               <li class="nav-header">Extending</li>
               <li><a href="#configuration_extend_events" data-toggle="tab">Events</a></li>
               <li><a href="#configuration_extend_functions" data-toggle="tab">Functions</a></li>
@@ -1097,6 +1098,57 @@
               <p>
                 If you decide this isn't what you want, you can allow submitting of potentially invalid data for validation server-side (or in case you think someone might have a genuine case for exceptional data).
                 <code>$(...).jqBootstrapValidation({preventSubmit: false});</code>
+              </p>
+            </div>
+            <div class="tab-pane" id="configuration_options_submiterror">
+              <h3>submitError</h3>
+              <p>
+                A javascript callback, used when a user is attempting to submit a form with invalid input.
+              </p>
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      $form
+                    </td>
+                    <td>
+                      The form element which has the user attempted to submit (wrapped in jQuery)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      event
+                    </td>
+                    <td>
+                      The submit event (note this may have already been cancelled before you receive it depending on your preventSubmit option).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      errors
+                    </td>
+                    <td>
+                      An object consisting of the names of fields as keys, and the array of errors as values.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                If you decide you want to react to the invalid submit attempt, you can write a function directly into the jqBootstrapValidation call:
+                <pre class="prettyprint well well-small">$(/*...*/).jqBootstrapValidation(
+  {
+    submitError: function ($form, event, errors) { 
+      /* ... */ 
+    }
+  }
+);</pre>
+              <span class="label label-info">Note:</span> The event parameter is a full jQuery event and may be manipulated as normal.
               </p>
             </div>
             <div class="tab-pane" id="configuration_extend_events">
@@ -1160,10 +1212,15 @@ $("...").jqBootstrapValidation("destroy");</pre>
                   <div class="tab-pane" id="configuration_extend_functions_collectErrors">
                     <h4>collectErrors</h4>
                     <p>
-                      Collects an array of all the error messages associated with the given set of elements.
+                      Collects an object containing arrays of all error messages associated with each invalid element.
                     </p>
                     <pre class="prettyprint linenums well well-small">
 var errors = $("...").jqBootstrapValidation("collectErrors");</pre>
+                    <pre class="prettyprint well well-small">
+{
+  "username": ["...", "..."],
+  "password": ["...", "..."]
+}</pre>
                   </div>
                   <div class="tab-pane" id="configuration_extend_functions_override">
                     <h4>override</h4>
