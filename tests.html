@@ -41,18 +41,23 @@ and open the template in the editor.
           $.each(tests, function (testName, params) {
             testCount++;
             $el.val(params.Value);
-            var includeEmpty = (params.Empty ? true : false);
-            var message = $el.triggerHandler("validation.validation", includeEmpty);
-            if (
-              JSON.stringify(message, null, 2) != JSON.stringify(params.Message, null, 2)
-            ) {
-              foundAnyErrors = true;
-              failures.push("Failed '" + testName + "'");
-              $el.parents(".control-group").addClass("error");
-              console.log("Failed on field '" + fieldName + "' on test '" + testName + "' as received unexpected response:");
-              console.log(message);
-              console.log("when expecting:");
-              console.log(params.Message);
+            if ($el.val() != params.Value) {
+              console.log("Value '" + params.Value + "' rejected by the browser");
+              failures.push("Could not test '" + testName + "' as the value '" + params.Value + "' was rejected by the browser");
+            } else {
+              var includeEmpty = (params.Empty ? true : false);
+              var message = $el.triggerHandler("validation.validation", includeEmpty);
+              if (
+                JSON.stringify(message, null, 2) != JSON.stringify(params.Message, null, 2) 
+              ) {
+                foundAnyErrors = true;
+                failures.push("Failed '" + testName + "'");
+                $el.parents(".control-group").addClass("error");
+                console.log("Failed on field '" + fieldName + "' on test '" + testName + "' as received unexpected response:");
+                console.log(message);
+                console.log("when expecting:");
+                console.log(params.Message);
+              }
             }
           });
           if (failures.length) {
@@ -70,7 +75,7 @@ and open the template in the editor.
   </head>
   <body>
     <div class="container">
-      <form class="form" novalidate>
+      <form class="form" novalidate="novalidate">
         <div class="control-group">
           <input 
             class="testme" 
@@ -190,12 +195,42 @@ and open the template in the editor.
             data-testing-empty-value=""
             data-testing-empty-message='[]'
             
+            data-testing-falsy-value="0"
+            data-testing-falsy-message="[]"
+            
             data-testing-emptydeep-value=""
             data-testing-emptydeep-message='["failed"]'
             data-testing-emptydeep-empty="true"
 
             data-testing-ok-value="testing"
             data-testing-ok-message="[]"
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="number"
+            data-validation-number-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='[]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-invalid-value="sausages"
+            data-testing-invalid-message='["failed"]'
+            
+            data-testing-decimal-value="12.34"
+            data-testing-decimal-message='[]'
+            
+            data-testing-negative-value="-42"
+            data-testing-negative-message="[]"
+
+            data-testing-ok-value="42"
+            data-testing-ok-message='[]'
           />
           <div class="help-block">...</div>
         </div>
