@@ -20,19 +20,25 @@
     <script>
       $(function () {
         prettyPrint();
-        $("input,textarea,select").jqBootstrapValidation({preventSubmit: true});
-
-        $("form").bind("submit", function (e) {
-          if (!e.isDefaultPrevented()) {
-            e.preventDefault();
-            alert("OK");
+        $("input,textarea,select").jqBootstrapValidation(
+          {
+            preventSubmit: true,
+            submitError: function ($form, event, errors) {
+              // Here I do nothing, but you could do something like display 
+              // the error messages to the user, log, etc.
+            },
+            submitSuccess: function ($form, event) {
+              alert("OK");
+              event.preventDefault();
+            }
           }
-        });
+        );
 
         $("a[data-toggle=\"tab\"]").click(function (e) {
           e.preventDefault();
           $(this).tab("show");
-        })
+        });
+        
       });
     </script>
 
@@ -1072,6 +1078,7 @@
               <li class="active"><a href="#configuration_options_sniffhtml" data-toggle="tab">Sniff HTML</a></li>
               <li><a href="#configuration_options_preventsubmit" data-toggle="tab">Prevent submit</a></li>
               <li><a href="#configuration_options_submiterror" data-toggle="tab">Submit Error</a></li>
+              <li><a href="#configuration_options_submitsuccess" data-toggle="tab">Submit Success</a></li>
               <li class="nav-header">Extending</li>
               <li><a href="#configuration_extend_events" data-toggle="tab">Events</a></li>
               <li><a href="#configuration_extend_functions" data-toggle="tab">Functions</a></li>
@@ -1144,6 +1151,49 @@
                 <pre class="prettyprint well well-small">$(/*...*/).jqBootstrapValidation(
   {
     submitError: function ($form, event, errors) { 
+      /* ... */ 
+    }
+  }
+);</pre>
+              <span class="label label-info">Note:</span> The event parameter is a full jQuery event and may be manipulated as normal.
+              </p>
+            </div>
+            <div class="tab-pane" id="configuration_options_submitsuccess">
+              <h3>submitSuccess</h3>
+              <p>
+                A javascript callback, used when a user is attempting to submit a form with valid input.
+              </p>
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      $form
+                    </td>
+                    <td>
+                      The form element which has the user attempted to submit (wrapped in jQuery)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      event
+                    </td>
+                    <td>
+                      The submit event (note this may have already been cancelled before you receive it depending on your preventSubmit option).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                If you decide you want to react to the submit attempt, you can write a function directly into the jqBootstrapValidation call:
+                <pre class="prettyprint well well-small">$(/*...*/).jqBootstrapValidation(
+  {
+    submitSuccess: function ($form, event) { 
       /* ... */ 
     }
   }
