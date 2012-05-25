@@ -19,7 +19,9 @@
 
     <script>
       $(function () {
+        
         prettyPrint();
+        
         $("input,textarea,select").jqBootstrapValidation(
           {
             preventSubmit: true,
@@ -58,7 +60,7 @@
       </div>
       <div class="row">
         <div class="span6">
-          <h2>It turns this</h2>
+          <h2 id="itturnsthis">It turns this</h2>
           <pre class="prettyprint linenums lang-html pre-scrollable">
 &lt;input type="email" id="email" required&gt;
 &lt;input 
@@ -86,7 +88,7 @@
 </pre>
         </div>
         <div class="span6">
-          <h2>Into this</h2>
+          <h2 id="intothis">Into this</h2>
           <form class="form-horizontal" novalidate>
             <div class="control-group">
               <label class="control-label" for="email">Email address</label>
@@ -137,7 +139,7 @@
           </form>
         </div>
       </div>
-      <h2>Installation</h2>
+      <h2 id="installation">Installation</h2>
       <div class="row">
         <div class="span12">
           <ol>
@@ -166,7 +168,7 @@
       <!--                                                        VALIDATORS -->
       <!-- ################################################################# -->
       
-      <h2>Validators</h2>
+      <h2 id="validators">Validators</h2>
       <div class="row">
         <div clas="tabbable">
           <div class="span4">
@@ -1069,7 +1071,7 @@
       <!--                                                     CONFIGURATION -->
       <!-- ################################################################# -->
       
-      <h2>Configuration</h2>
+      <h2 id="configuration">Configuration</h2>
       <div class="row">
         <div class="tabbable">
           <div class="span4">
@@ -1148,7 +1150,7 @@
               </table>
               <p>
                 If you decide you want to react to the invalid submit attempt, you can write a function directly into the jqBootstrapValidation call:
-                <pre class="prettyprint well well-small">$(/*...*/).jqBootstrapValidation(
+                <pre class="prettyprint linenums well well-small">$(/*...*/).jqBootstrapValidation(
   {
     submitError: function ($form, event, errors) { 
       /* ... */ 
@@ -1191,7 +1193,7 @@
               </table>
               <p>
                 If you decide you want to react to the submit attempt, you can write a function directly into the jqBootstrapValidation call:
-                <pre class="prettyprint well well-small">$(/*...*/).jqBootstrapValidation(
+                <pre class="prettyprint linenums well well-small">$(/*...*/).jqBootstrapValidation(
   {
     submitSuccess: function ($form, event) { 
       /* ... */ 
@@ -1335,7 +1337,7 @@ $.jqBootstrapValidation(
           </div>
         </div>
       </div>
-      <h2>FAQ</h2>
+      <h2 id="faq">FAQ</h2>
       <div class="row">
         <div class="tabbable">
           <div class="span4">

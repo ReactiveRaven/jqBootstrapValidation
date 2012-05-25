@@ -396,7 +396,7 @@
                   $.each(validatorTypeArray, function (i, validator) {
                     if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                       errorsFound.push(validator.message);
-                    }	
+                    }
                   });
                 });
               }
