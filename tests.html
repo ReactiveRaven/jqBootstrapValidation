@@ -106,7 +106,7 @@ and open the template in the editor.
           <input 
             class="testme"
             type="email"
-            data-validation-validemail-message="failed"
+            data-validation-email-message="failed"
 
             data-testing-empty-value=""
             data-testing-empty-message="[]"
@@ -210,6 +210,7 @@ and open the template in the editor.
           <input 
             class="testme"
             type="number"
+            name="number"
             data-validation-number-message="failed"
             
             data-testing-empty-value=""
@@ -235,6 +236,75 @@ and open the template in the editor.
             data-testing-negative-message="[]"
 
             data-testing-ok-value="42"
+            data-testing-ok-message='[]'
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="minlength"
+            minlength="5"
+            data-validation-minlength-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-short-value="123"
+            data-testing-short-message='["failed"]'
+
+            data-testing-ok-value="12345"
+            data-testing-ok-message='[]'
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="maxlength"
+            maxlength="5"
+            data-validation-maxlength-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='[]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-too_long-value="123456"
+            data-testing-too_long-message='["failed"]'
+
+            data-testing-ok-value="12345"
+            data-testing-ok-message='[]'
+          />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            class="testme"
+            type="text"
+            name="pattern"
+            pattern="(a.*z)?"
+            data-validation-pattern-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='[]'
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='[]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-invalid-value="notvalid"
+            data-testing-invalid-message='["failed"]'
+
+            data-testing-ok-value="alphabetz"
             data-testing-ok-message='[]'
           />
           <div class="help-block">...</div>
