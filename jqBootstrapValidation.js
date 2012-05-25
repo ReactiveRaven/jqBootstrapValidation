@@ -60,6 +60,7 @@
               settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
             }
           } else {
+            $form.removeClass("error");
             if ($.isFunction(settings.options.submitSuccess)) {
               settings.options.submitSuccess($form, e);
             }
