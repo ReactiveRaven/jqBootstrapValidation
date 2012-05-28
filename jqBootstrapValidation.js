@@ -15,7 +15,9 @@
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: true // stop the form submit event from firing
+			preventSubmit: true, // stop the form submit event from firing
+      submitError: false,
+      submitSuccess: false
 		},
     methods: {
       init : function( options ) {
@@ -35,22 +37,35 @@
           )
         ).bind("submit", function (e) {
           var $form = $(this);
-          if (settings.options.preventSubmit) {
-            var warningsFound = 0;
-            $form.find("input,textarea,select").not("[type=submit]").trigger("change.validation").each(function (i, el) {
-              var $this = $(el),
-                $controlGroup = $this.parents(".control-group").first();
+          var warningsFound = 0;
+          var $inputs = $form.find("input,textarea,select").not("[type=submit]");
+          $inputs.trigger("change.validation").each(function (i, el) {
+            var $this = $(el),
+              $controlGroup = $this.parents(".control-group").first();
 
-              if (
-                $controlGroup.hasClass("warning") 
-                || $this.triggerHandler("validation.validation", true).length
-              ) {
-                $controlGroup.removeClass("warning").addClass("error");
-                warningsFound++;
-              }
-            }).trigger("validationLostFocus.validation");
+            if (
+              $controlGroup.hasClass("warning") 
+              || $this.triggerHandler("validation.validation", true).length
+            ) {
+              $controlGroup.removeClass("warning").addClass("error");
+              warningsFound++;
+            }
+          }).trigger("validationLostFocus.validation");
+          if (warningsFound) {
+            if (settings.options.preventSubmit) {
+              e.preventDefault();
+            }
+            $form.addClass("error");
+            if ($.isFunction(settings.options.submitError)) {
+              settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
+            }
+          } else {
+            $form.removeClass("error");
+            if ($.isFunction(settings.options.submitSuccess)) {
+              settings.options.submitSuccess($form, e);
+            }
           }
-        })
+        });
 
         return this.each(function(){
 
@@ -153,6 +168,8 @@
               message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
               if ($this.data("validationValidemailMessage")) {
                 message = $this.data("validationValidemailMessage");
+              } else if ($this.data("validationEmailMessage")) {
+                message = $this.data("validationEmailMessage");
               }
               $this.data("validationValidemailMessage", message);
             }
@@ -480,14 +497,21 @@
         );
 
       },
-      collectErrors : function() {
+      collectErrors : function(includeEmpty) {
 
-        var errorMessages = [];
+        var errorMessages = {};
         this.each(function (i, el) {
-          errorMessages = errorMessages.concat(
-              $(this).triggerHandler("validation.validation")
-          );
+          var $el = $(el);
+          var name = $el.attr("name");
+          var errors = $el.triggerHandler("validation.validation", includeEmpty);
+          errorMessages[name] = $.extend(true, errors, errorMessages[name]);
         });
+        
+        $.each(errorMessages, function (i, el) {
+          if (el.length == 0) {
+            delete errorMessages[i];
+          }
+        })
 
         return errorMessages;
 
@@ -513,8 +537,8 @@
 					return {};
 				},
 				validate: function ($this, value, validator) {
-					return (value == false && ! validator.negative)
-						|| (value == true && validator.negative);
+					return (value.length == 0  && ! validator.negative)
+						|| (value.length > 0 && validator.negative);
 				}
 			},
 			match: {
@@ -567,8 +591,8 @@
 					return {minlength: $this.data("validation" + name + "Minlength")};
 				},
 				validate: function ($this, value, validator) {
-					return ((value.length <= validator.minlength) && ! validator.negative) 
-						|| ((value.length > validator.minlength) && validator.negative);
+					return ((value.length < validator.minlength) && ! validator.negative) 
+						|| ((value.length >= validator.minlength) && validator.negative);
 				}
 			},
 			maxchecked: {
@@ -656,7 +680,7 @@
 			number: {
 				name: "Number",
 				type: "regex",
-				regex: "[+-]?\\\d+(\\\.\\\d*)?",
+				regex: "([+-]?\\\d+(\\\.\\\d*)?([eE][+-]?[0-9]+)?)?",
 				message: "Must be a number<!-- data-validator-number-message to override -->"
 			},
 			integer: {
