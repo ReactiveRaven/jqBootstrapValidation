@@ -391,7 +391,7 @@
               // Get a list of the errors to apply
               var errorsFound = [];
 
-              if (value || value.length || checkEmptyValues) { // if its empty, reset.
+              if (value || value.length || checkEmptyValues || validators.required.length) { // if its empty, reset.
 
                 $.each(validators, function (validatorType, validatorTypeArray) {
                   $.each(validatorTypeArray, function (i, validator) {
