@@ -625,20 +625,50 @@
 			},
       dateformat: {
         name: 'dateformat',
+        options: {
+          placeholderCharacters: ["y", "m", "d"]
+        },
         regexes: {
           dateOffsets: /^([+-][mdy][0-9]+ ?)+$/gi
         },
         init: function ($this, name) {
-          var maxDate = $this.data("validation" + name + "Maxdate");
-          var minDate = $this.data("validation" + name + "Mindate");
+//          var maxDate = $this.data("validation" + name + "Maxdate");
+//          var minDate = $this.data("validation" + name + "Mindate");
+//          
+//          if (maxDate != undefined && maxDate.match(this.regexes.dateOffsets)) {
+//            var matches = this.regexes.dateOffsets.exec(maxDate);
+//            
+//          }
+          //(dd-mm-yy)
+          // 31-02-12
           
-          if (maxDate != undefined && maxDate.match(this.regexes.dateOffsets)) {
-            var matches = this.regexes.dateOffsets.exec(maxDate);
+          var dateformat = (
+            $this.data("validation" + name + "Dateformat") 
+              ? $this.data("validation" + name + "Dateformat") 
+              : "yyyy-mm-dd"
+          );
             
-          }
+          var regexes = {};
+          
+          $.each(
+            this.options.placeholderCharacters, 
+            function (i, el) {
+              var regex = new RegExp("[" + el + "]+", "i");
+              if (el.match(regex)) {
+                var matches = regex.exec(el);
+                if (el.indexOf(matches[0]) >= 0) {
+                  var start = el.indexOf(matches[0]);
+                  var length = matches[0].length;
+                  // NOW WHAT?
+                }
+              }
+            }
+          );
+            
+          
           
           return {
-            dateformat: $this.data("validation" + name + "Dateformat"), 
+            dateformat: $this.data("validation" + name + "Dateformat"),
             numberMask: regexFromString($this.data("validation" + name + "Dateformat").replace(/[mdy]/ig, "[0-9]")),
             maxDate: maxDate,
             minDate: minDate
