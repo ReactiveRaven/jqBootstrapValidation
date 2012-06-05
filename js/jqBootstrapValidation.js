@@ -502,7 +502,7 @@
         var errorMessages = {};
         this.each(function (i, el) {
           var $el = $(el);
-          var name = $el.attr("name");
+          var $name = $el.attr("name");
           var errors = $el.triggerHandler("validation.validation", includeEmpty);
           errorMessages[name] = $.extend(true, errors, errorMessages[name]);
         });
