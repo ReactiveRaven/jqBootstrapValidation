@@ -591,7 +591,7 @@
                     <td>pattern</td>
                     <td>
                       <a href="http://www.regular-expressions.info/javascript.html">Regex</a> to determine if the input is acceptable<br />
-                      <span class="label label-important">Note</span> only expects <code>abc</code>, not <code>/^abc$/ig</code>
+                      <span class="label label-info">Note</span> only expects <code>abc</code>, not <code>/^abc$/ig</code>
                     </td>
                     <td><i class="icon-ok"></i></td>
                   </tr>
@@ -1280,7 +1280,7 @@ var errors = $("...").jqBootstrapValidation("collectErrors");</pre>
                       Overrides the internal array, to change the behaviour of default functions, add extra validators, and so on.
                     </p>
                     <p>
-                      <span class="label label-warning">WARNING</span> This function has the potential to break jqBootstrapValidation.<br />
+                      <span class="label label-important">WARNING</span> This has the potential to break jqBootstrapValidation. Tread carefully.<br />
                       You should only use the override function if you are certain you need to, or if you're adding new validators
                     </p>
                     <p>
@@ -1295,44 +1295,148 @@ var errors = $("...").jqBootstrapValidation("collectErrors");</pre>
             </div>
             <div class="tab-pane" id="configuration_extend_override">
               <h3>Override</h3>
-              <span class="label label-warning">WARNING</span> This function has the potential to break jqBootstrapValidation. Tread carefully.<br />
-              <span class="label label-info">Question</span> If you override core values, who else will need to know?<br />
+              <span class="label label-important">WARNING</span> This has the potential to break jqBootstrapValidation. Tread carefully.<br /><br />
               
               <p>
-                This section is still being written. The current sections in the defaults object are:
+                Internally, all of jqBootstrapValidation's functions are stored in one big object, which you can override by calling the "override" function with a new object to merge on top of it. Anything you don't set, is left as it was.
               </p>
-              
-              <ul>
-                <li>options</li>
-                <li>methods</li>
-                <li>validatorTypes</li>
-                <li>builtInValidators</li>
-              </ul>
-              
               <p>
-                You may find it useful to check the source code to learn more about what you can override at this stage.
+                Note that as the objects are merged together, you can define your own extra functions, options, etc.
+              </p>
+              <p>
+                This allows you to <a href="http://paulirish.com/2010/duck-punching-with-jquery/">duck punch</a> your own solutions, and set up the options in one place rather than on every call to <code>.jqBootstrapValidation()</code>
               </p>
               
-              <pre class="well well-small prettyprint linenums">
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#configuration_extend_override_options" data-toggle="tab">Options</a></li>
+                  <li><a href="#configuration_extend_override_methods" data-toggle="tab">Methods</a></li>
+                  <li><a href="#configuration_extend_override_validatortypes" data-toggle="tab">Validator Types</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="configuration_extend_override_options">
+                    <h4>options</h4>
+                    <p>
+                      <span class="label label-warning">Question</span> If you override the defaults, will you need to tell anyone else?
+                    </p>
+                    <p>
+                      You can override the default options by calling the 'override' function and setting the 'options' key with the values you'd use when calling <code>.jqBootstrapValidation()</code> on a set of elements. As this updates the internal object, all subsequent calls to <code>.jqBootstrapValidation()</code> will use the new options.
+                    </p>
+                    <p>
+                      For example, to stop jqBootstrapValidation from preventing an invalid form from being submitted by default:
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+$.jqBootstrapValidation("override", {options: {preventSubmit: false}});</pre>
+                  </div>
+                  <div class="tab-pane" id="configuration_extend_override_methods">
+                    <h4>methods</h4>
+                    <p>
+                      Allows you to override the methods you can call on jqBootstrapValidation:
+                    </p>
+                    <table class="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Function</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>init</td>
+                          <td>Used when you call jqBootstrapValidation on a set of elements to set up the validators and events.</td>
+                        </tr>
+                        <tr>
+                          <td>destroy</td>
+                          <td>Removes all hooks jqBootstrapValidation has set on the given set of elements</td>
+                        </tr>
+                        <tr>
+                          <td>collectErrors</td>
+                          <td>returns an array containing the errors generated by the given collection of elements (or an empty object if none)</td>
+                        </tr>
+                        <tr>
+                          <td>override</td>
+                          <td>this function, used to override other functions</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p>
+                      For example, to prevent anyone from overriding anything else once you're done:
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+$.jqBootstrapValidation("override", {methods: {override: function () {} }});</pre>
+                  </div>
+                  <div class="tab-pane" id="configuration_extend_override_validatortypes">
+                    <h4>validatorTypes</h4>
+                    <p>
+                      Allows you to override the validation methods used when validating a field. Gives access to the 'init' and 'validate' validator methods.
+                    </p>
+                    <p>
+                      If your test is too complex for a regex, this is the primary method of adding a custom validator.
+                    </p>
+                    <p>
+                      For example, to check if a username is already taken on a registration form:
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
 $.jqBootstrapValidation(
   "override", 
   {
-    options: 
+    validatorTypes: 
     {
-      preventSubmit: false
-    },
-    builtInValidators:
-    {
-      required: 
+      rraven_username_available: 
       {
-        message: "This is required! Fill it in!"
+        name: 'rraven_username_available',
+        init: function ($this, name)
+        {
+          return {triggerCallback: true, hasFailed: false};
+        },
+        validate: function ($this, value, validator) 
+        {
+
+          if (validator.triggerCallback)
+          {
+            validator.triggerCallback = false;
+            $.get(
+              {
+                url: "http://www.example.com/check_username_available",
+                data: {username: value},
+                success: function (data) {
+                  if (!data.ok)
+                  {
+                    validator.message = "'" + value + "' already taken";
+                    validator.hasFailed = true;
+                  }
+                  else
+                  {
+                    validator.hasFailed = false;
+                  }
+                  $this.trigger("change.validation"); // update field!
+                }
+              }
+            );
+          } 
+          else
+          {
+            validator.triggerCallback = true;
+            return validator.hasFailed;
+          }
+        }
       }
     }
   }
 );</pre>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              
               <p>
-                The override function will take the value you give, and write it over (exactly) matching keys. For example, in the example above, the <code>options</code> key would still contain <code>sniffHtml: true</code> after your input had been applied, but <code>preventSubmit</code> would now be false.
+                This section is still being written. The current sections to-do are:
               </p>
+              
+              <ul>
+                <li>validatorTypes</li>
+                <li>builtInValidators</li>
+              </ul>
             </div>
           </div>
         </div>
