@@ -60,6 +60,7 @@
               settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
             }
           } else {
+            $form.removeClass("error");
             if ($.isFunction(settings.options.submitSuccess)) {
               settings.options.submitSuccess($form, e);
             }
@@ -396,7 +397,7 @@
                   $.each(validatorTypeArray, function (i, validator) {
                     if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                       errorsFound.push(validator.message);
-                    }
+                    }	
                   });
                 });
               }
