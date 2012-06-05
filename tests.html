@@ -14,7 +14,7 @@ and open the template in the editor.
     <script src="js/jqBootstrapValidation.js"></script>
     <script>
       $(function () {
-        $("input,checkbox,textarea").not("[type=submit],[type=image]").jqBootstrapValidation({preventSubmit: true});
+        $("input,checkbox,textarea,select").not("[type=submit],[type=image]").jqBootstrapValidation({preventSubmit: true});
       });
       
       $(function () {
@@ -307,6 +307,25 @@ and open the template in the editor.
             data-testing-ok-value="alphabetz"
             data-testing-ok-message='[]'
           />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <select
+            class="testme"
+            name="select"
+            
+            required
+            data-validation-required-message="failed"
+            
+            data-testing-pattern-value="test"
+            data-testing-pattern-message="[]"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='["failed"]'
+          >
+            <option value="">-- Select the option --</option>
+            <option value="test">Test</option>
+          </select>
           <div class="help-block">...</div>
         </div>
       </form>
