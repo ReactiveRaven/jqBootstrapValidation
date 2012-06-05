@@ -44,8 +44,13 @@ and open the template in the editor.
           
           $.each(tests, function (testName, params) {
             testCount++;
-            $el.val(params.Value);
-            if ($el.val() != params.Value) {
+            if (params.Checked !== undefined) {
+              $el.attr("checked", !!(params.Checked));
+            }
+            if (params.Value !== undefined) {
+              $el.val(params.Value);
+            }
+            if ($el.val() != params.Value && params.Value !== undefined) {
               failures.push("Could not test '" + testName + "' as the value '" + params.Value + "' was rejected by the browser");
             } else {
               var message = $el.triggerHandler("validation.validation", {includeEmpty: !!(params.Empty), submitting: !!(params.Submit)});
@@ -145,6 +150,10 @@ and open the template in the editor.
             data-testing-emptydeep-value=""
             data-testing-emptydeep-message='["failed"]'
             data-testing-emptydeep-empty="true"
+            
+            data-testing-emptysubmit-value=""
+            data-testing-emptysubmit-message='["failed"]'
+            data-testing-emptysubmit-submit="true"
             
             data-testing-mismatch-value="fail@fail.com"
             data-testing-mismatch-message='["failed"]'
@@ -360,8 +369,6 @@ and open the template in the editor.
           </select>
           <div class="help-block">...</div>
         </div>
-      </form>
-      <form>
         <div class="control-group">
           <input
             class="testme"
@@ -380,8 +387,6 @@ and open the template in the editor.
           
           <div class="help-block">...</div>
         </div>
-      </form>
-      <form>
         <div class="control-group">
           <input 
             class="testme"
@@ -401,6 +406,115 @@ and open the template in the editor.
           />
           
           <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input name="email" value="test@test.com" />
+          <input 
+            class="testme"
+            name="emailmatchsubmit"
+            type="text"
+            
+            data-validation-match-match="email"
+            data-validation-match-message="mismatch"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='["mismatch"]'
+            data-testing-empty-submit="true"
+            
+            data-testing-ok-value="test@test.com"
+            data-testing-ok-message='[]'
+            data-testing-ok-submit="true"
+          />
+          
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input 
+            type="checkbox"
+            value="okay"
+            name="checkboxsubmit"
+            class="testme"
+            
+            required
+            data-validation-required-message="required"
+            
+            data-testing-off-checked="0"
+            data-testing-off-message='[]'
+            
+            data-testing-offsubmit-checked="0"
+            data-testing-offsubmit-message='["required"]'
+            data-testing-offsubmit-submit="true"
+            
+            data-testing-on-checked="1"
+            data-testing-on-message='[]'
+          />
+          <div class="help-block"></div>
+        </div>
+      </form>
+      <form>
+        <div class="control-group">
+          <label class="control-label">Quality Control</label>
+          <div class="controls">
+            <label class="checkbox">
+              <input 
+                class="testme"
+                type="checkbox" 
+                name="qualityControl[]" 
+                value="fast"
+                
+                data-validation-minchecked-minchecked="2"
+                data-validation-minchecked-message="low"
+                
+                data-testing-low-checked="0"
+                data-testing-low-message='["low"]'
+                data-testing-low-submit="true"
+                
+                data-testing-ok-checked="1"
+                data-testing-ok-message='[]'
+                data-testing-ok-submit="true"
+              />
+              Fast
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="qualityControl[]" value="cheap" checked="checked">
+              Cheap
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="qualityControl[]" value="good">
+              Good
+            </label>
+            <p class="help-block"></p>
+          </div>
+        </div>
+      </form>
+      <form>
+        <div class="control-group">
+          <label class="control-label">Quality Control</label>
+          <div class="controls">
+            <label class="checkbox">
+              <input 
+                class="testme"
+                type="checkbox" 
+                name="qualityControl[]" 
+                value="fast"
+                data-validation-maxchecked-maxchecked="2" 
+                data-validation-maxchecked-message="high"
+                
+                data-testing-greedy-checked="1"
+                data-testing-greedy-message='["high"]'
+              />
+              Fast
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="qualityControl[]" value="cheap" checked="checked">
+              Cheap
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="qualityControl[]" value="good" checked="checked">
+              Good
+            </label>
+            <p class="help-block"></p>
+          </div>
         </div>
       </form>
     </div>
