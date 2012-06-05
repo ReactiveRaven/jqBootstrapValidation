@@ -17,10 +17,14 @@ and open the template in the editor.
         $("input,checkbox,textarea,select").not("[type=submit],[type=image]").jqBootstrapValidation({preventSubmit: true});
       });
       
+      var allowSubmitting = false;
+      
       $(function () {
         
         var foundAnyErrors = false;
         var testCount = 0;
+        
+        $("form").bind("submit", function (event) {if (!allowSubmitting) { event.preventDefault(); } return allowSubmitting;});
         
         $(".testme").each(function (i, el) {
           var $el = $(el);
@@ -44,8 +48,7 @@ and open the template in the editor.
             if ($el.val() != params.Value) {
               failures.push("Could not test '" + testName + "' as the value '" + params.Value + "' was rejected by the browser");
             } else {
-              var includeEmpty = (params.Empty ? true : false);
-              var message = $el.triggerHandler("validation.validation", includeEmpty);
+              var message = $el.triggerHandler("validation.validation", {includeEmpty: !!(params.Empty), submitting: !!(params.Submit)});
               if (
                 JSON.stringify(message, null, 2) != JSON.stringify(params.Message, null, 2) 
               ) {
@@ -106,6 +109,7 @@ and open the template in the editor.
           <input 
             class="testme"
             type="email"
+            name="email"
             data-validation-email-message="failed"
 
             data-testing-empty-value=""
@@ -124,6 +128,30 @@ and open the template in the editor.
             data-testing-ok-value="test@test.com"
             data-testing-ok-message="[]"
           />
+          <div class="help-block">...</div>
+        </div>
+        <div class="control-group">
+          <input
+            class="testme"
+            type="text"
+            name="emailmatch"
+            
+            data-validation-match-match="email"
+            data-validation-match-message="failed"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message="[]"
+            
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
+            
+            data-testing-mismatch-value="fail@fail.com"
+            data-testing-mismatch-message='["failed"]'
+            
+            data-testing-ok-value="test@test.com"
+            data-testing-ok-message="[]"
+          >
           <div class="help-block">...</div>
         </div>
         <div class="control-group">
@@ -317,19 +345,61 @@ and open the template in the editor.
             required
             data-validation-required-message="failed"
             
-            data-testing-filled-value="test"
-            data-testing-filled-message="[]"
+            data-testing-emptydeep-value=""
+            data-testing-emptydeep-message='["failed"]'
+            data-testing-emptydeep-empty="true"
             
             data-testing-empty-value=""
             data-testing-empty-message='[]'
             
-            data-testing-emptydeep-value=""
-            data-testing-emptydeep-message='["failed"]'
-            data-testing-emptydeep-empty="true"
+            data-testing-ok-value="test"
+            data-testing-ok-message="[]"
           >
             <option value="">-- Select the option --</option>
             <option value="test">Test</option>
           </select>
+          <div class="help-block">...</div>
+        </div>
+      </form>
+      <form>
+        <div class="control-group">
+          <input
+            class="testme"
+            name="emailsubmit"
+            type="email" 
+            data-validation-email-message="invalid"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message="[]"
+            data-testing-empty-submit="true"
+            
+            data-testing-invalid-value="invalid"
+            data-testing-invalid-message='["invalid"]'
+            data-testing-invalid-submit="true"
+          />
+          
+          <div class="help-block">...</div>
+        </div>
+      </form>
+      <form>
+        <div class="control-group">
+          <input 
+            class="testme"
+            name="emailrequiredsubmit"
+            type="email"
+            required
+            data-validation-email-message="invalid"
+            data-validation-required-message="required"
+            
+            data-testing-empty-value=""
+            data-testing-empty-message='["required"]'
+            data-testing-empty-submit="true"
+            
+            data-testing-invalid-value="invalid"
+            data-testing-invalid-message='["invalid"]'
+            data-testing-invalid-submit="true"
+          />
+          
           <div class="help-block">...</div>
         </div>
       </form>

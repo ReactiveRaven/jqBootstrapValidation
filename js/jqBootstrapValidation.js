@@ -38,14 +38,12 @@
         ).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit]");
-          $inputs.trigger("change.validation").each(function (i, el) {
+          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");
+          $inputs.trigger("submit.validation").each(function (i, el) {
             var $this = $(el),
               $controlGroup = $this.parents(".control-group").first();
-
             if (
-              $controlGroup.hasClass("warning") 
-              || $this.triggerHandler("validation.validation", true).length
+              $controlGroup.hasClass("warning")
             ) {
               $controlGroup.removeClass("warning").addClass("error");
               warningsFound++;
@@ -382,7 +380,7 @@
 
           $this.bind(
             "validation.validation", 
-            function (event, checkEmptyValues) {
+            function (event, params) {
 
               event = event; // not used
 
@@ -391,16 +389,15 @@
               // Get a list of the errors to apply
               var errorsFound = [];
 
-              if (value || value.length || checkEmptyValues) { // if its empty, reset.
-
-                $.each(validators, function (validatorType, validatorTypeArray) {
+              $.each(validators, function (validatorType, validatorTypeArray) {
+                if (value || value.length || (params && params.includeEmpty) || (settings.validatorTypes[validatorType].blockSubmit && (params && params.submitting))) {
                   $.each(validatorTypeArray, function (i, validator) {
                     if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                       errorsFound.push(validator.message);
                     }	
                   });
-                });
-              }
+                }
+              });
 
               return errorsFound;
             }
@@ -419,6 +416,12 @@
           //                                             WATCH FOR CHANGES
           // =============================================================
           $this.bind(
+            "submit.validation", 
+            function () { 
+              return $this.triggerHandler("change.validation", {submitting: true});
+            }
+          );
+          $this.bind(
             [
               "keyup",
               "focus",
@@ -428,7 +431,7 @@
               "keypress",
               "change"
             ].join(".validation ") + ".validation", 
-            function (e) {
+            function (e, params) {
 
               var value = getValue($this);
 
@@ -436,7 +439,7 @@
 
               $controlGroup.find("input,textarea,select").each(function (i, el) {
                 var oldCount = errorsFound.length;
-                $.each($(el).triggerHandler("validation.validation"), function (j, message) {
+                $.each($(el).triggerHandler("validation.validation", params), function (j, message) {
                   errorsFound.push(message);
                 });
                 if (errorsFound.length > oldCount) {
@@ -503,7 +506,7 @@
         this.each(function (i, el) {
           var $el = $(el);
           var name = $el.attr("name");
-          var errors = $el.triggerHandler("validation.validation", includeEmpty);
+          var errors = $el.triggerHandler("validation.validation", {includeEmpty: true});
           errorMessages[name] = $.extend(true, errors, errorMessages[name]);
         });
         
@@ -539,7 +542,8 @@
 				validate: function ($this, value, validator) {
 					return (value.length == 0  && ! validator.negative)
 						|| (value.length > 0 && validator.negative);
-				}
+				},
+        blockSubmit: true
 			},
 			match: {
 				name: "match",
