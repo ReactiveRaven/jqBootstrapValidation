@@ -610,7 +610,7 @@
 				init: function ($this, name) {
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
 					elements.bind("click.validation", function () {
-						$this.trigger("change.validation");
+						$this.trigger("change.validation", {includeEmpty: true});
 					});
 					return {maxchecked: $this.data("validation" + name + "Maxchecked"), elements: elements};
 				},
@@ -625,7 +625,7 @@
 				init: function ($this, name) {
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
 					elements.bind("click.validation", function () {
-						$this.trigger("change.validation");
+						$this.trigger("change.validation", {includeEmpty: true});
 					});
 					return {minchecked: $this.data("validation" + name + "Minchecked"), elements: elements};
 				},
