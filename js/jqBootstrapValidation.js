@@ -743,5 +743,9 @@
 		}    
 
 	};
+  
+  $.jqBootstrapValidation = function (options) {
+    $("input,select,textarea,button,checkbox,radio").not("[type=image],[type=submit]").jqBootstrapValidation(options);
+  }
 
 })( jQuery );
