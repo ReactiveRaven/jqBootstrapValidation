@@ -1,7 +1,7 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  * 
- * http://www.github.com/ReactiveRaven/jqBootstrapValidation/
+ * http://ReactiveRaven.github.com/jqBootstrapValidation/
  */
 
 /* This program is free software. It comes without any warranty, to
@@ -524,6 +524,18 @@
         return errorMessages;
 
       },
+      hasErrors: function() {
+        
+        var errorMessages = [];
+        
+        this.each(function (i, el) {
+          errorMessages = errorMessages.concat(
+            $(el).triggerHandler("getValidators.validation") ? $(el).triggerHandler("validation.validation", {submitting: true}) : []
+          );
+        });
+        
+        return (errorMessages.length > 0);
+      },
       override : function (newDefaults) {
         defaults = $.extend(true, defaults, newDefaults);
       }
@@ -743,9 +755,9 @@
 		}    
 
 	};
-  
+
   $.jqBootstrapValidation = function (options) {
-    $("input,select,textarea,button,checkbox,radio").not("[type=image],[type=submit]").jqBootstrapValidation(options);
+    $(":input").not("[type=image],[type=submit]").jqBootstrapValidation(options);
   }
 
 })( jQuery );

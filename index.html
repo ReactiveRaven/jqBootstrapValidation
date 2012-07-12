@@ -21,7 +21,7 @@
       $(function () {
         
         prettyPrint();
-        
+       
         $("input,textarea,select").jqBootstrapValidation(
           {
             preventSubmit: true,
@@ -1263,6 +1263,7 @@ var myValidators = $("...").first().triggerHandler("getValidators.validation");<
                   <li class="active"><a href="#configuration_extend_functions_destroy" data-toggle="tab">Destroy</a></li>
                   <li><a href="#configuration_extend_functions_collectErrors" data-toggle="tab">Collect errors</a></li>
                   <li><a href="#configuration_extend_functions_override" data-toggle="tab">Override</a></li>
+                  <li><a href="#configuration_extend_functions_hasErrors" data-toggle="tab">Has Errors</a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="configuration_extend_functions_destroy">
@@ -1299,11 +1300,18 @@ var errors = $("...").jqBootstrapValidation("collectErrors");</pre>
                       Because this is a big topic, it has it's own section. See the "Overrides" configuration option.
                     </p>
                   </div>
+                  <div class="tab-pane" id="configuration_extend_functions_hasErrors">
+                    <h4>hasErrors</h4>
+                    <p>
+                      Returns true if the given collection of elements would show an error when submitted.
+                    </p>
+                    <pre class="prettyprint linenums well well-small">
+if ($("...").jqBootstrapValidation("hasErrors")) {
+  alert("Something is wrong!");
+}</pre>
+                  </div>
                 </div>
               </div>
-              <p>
-                
-              </p>
             </div>
             <div class="tab-pane" id="configuration_extend_override">
               <h3>Override</h3>
@@ -1459,6 +1467,7 @@ $.jqBootstrapValidation(
           <div class="span4">
             <ul class="nav-list nav well well-small">
               <li class="active"><a href="#faq_formats" data-toggle="tab">Where is the date/time/tel validator?</a></li>
+              <li><a href="#faq_callbackvalidator" data-toggle="tab">What about an AJAX validator?</a></li>
               <li class="nav-header"></li>
               <li><a href="#faq_ask" data-toggle="tab">Where do I ask a question?</a></li>
               <li><a href="#faq_bug" data-toggle="tab">Where do I report a bug?</a></li>
@@ -1475,6 +1484,18 @@ $.jqBootstrapValidation(
               </p>
               <p>
                 I can't find a nice cross platform way of detecting someone's region preferences easily. If there is enough demand (<a href="http://www.twitter.com/ReactiveRaven">@ReactiveRaven</a>) I'll add region support, but for now you may be better finding a non-restrictive regex for your local format.
+              </p>
+            </div>
+            <div class="tab-pane" id="faq_callbackvalidator">
+              <h3>What about a callback/AJAX validator?</h3>
+              <p>
+                Good question!
+              </p>
+              <p>
+                There has been interest in this, and it seems like a good idea for including in the next release.
+              </p>
+              <p>
+                Right now, you're probably better off doing ajax checks separately from your validation. It won't stop the user submitting invalid data, but you were going to check that on the server too, right? ;)
               </p>
             </div>
             <div class="tab-pane" id="faq_ask">
