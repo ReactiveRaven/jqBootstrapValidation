@@ -541,6 +541,50 @@
       }
     },
 		validatorTypes: {
+      ajax: {
+        name: "ajax",
+        init: function ($this, name) {
+          var validator = {
+            validatorName: name,
+            url: $this.data("validation" + name + "Ajax"),
+            lastValue: $this.val(),
+            lastValid: true,
+            lastFinished: true
+          };
+          return validator;
+        },
+        validate: function ($this, value, validator) {
+          if (validator.lastValue == value && validator.lastFinished == true) {
+            return validator.lastValid == false;
+          }
+          
+          validator.lastValue = value;
+          validator.lastValid = true;
+          validator.lastFinished = false;
+          $.ajax({
+            url: validator.url,
+            data: "value=" + value,
+            dataType: "json",
+            success: function (data) {
+              if (validator.lastValue == data.value) {
+                validator.lastValid = (data.valid);
+                validator.message = data.message;
+                validator.lastFinished = true;
+                $this.data("validation" + validator.validatorName + "Message", validator.message);
+                $this.trigger("change.validation");
+              }
+            },
+            failure: function () {
+              validator.lastValid = true;
+              validator.message = "ajax call failed";
+              validator.lastFinished = true;
+            }
+          });
+          
+          return true;
+          
+        }
+      },
 			regex: {
 				name: "regex",
 				init: function ($this, name) {
