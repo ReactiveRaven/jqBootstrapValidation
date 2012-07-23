@@ -1,6 +1,8 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  * 
+ * v1.3.1
+ *
  * http://ReactiveRaven.github.com/jqBootstrapValidation/
  */
 
