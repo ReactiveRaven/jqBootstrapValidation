@@ -541,6 +541,113 @@
       }
     },
 		validatorTypes: {
+      callback: {
+        name: "callback",
+        init: function ($this, name) {
+          return {
+            validatorName: name,
+            callback: $this.data("validation" + name + "Callback"),
+            lastValue: $this.val(),
+            lastValid: true,
+            lastFinished: true
+          };
+        },
+        validate: function ($this, value, validator) {
+          if (validator.lastValue == value && validator.lastFinished) {
+            return !validator.lastValid;
+          }
+          
+          if (validator.lastFinished == true)
+          {
+            validator.lastValue = value;
+            validator.lastValid = true;
+            validator.lastFinished = false;
+
+            var rrjqbvValidator = validator;
+            var rrjqbvThis = $this;
+            executeFunctionByName(
+              validator.callback, 
+              window, 
+              $this, 
+              value, 
+              function (data) {
+                if (rrjqbvValidator.lastValue == data.value) {
+                  rrjqbvValidator.lastValid = data.valid;
+                  if (data.message) {
+                    rrjqbvValidator.message = data.message;
+                  }
+                  rrjqbvValidator.lastFinished = true;
+                  rrjqbvThis.data("validation" + rrjqbvValidator.validatorName + "Message", rrjqbvValidator.message);
+                  // Timeout is set to avoid problems with the events being considered 'already fired'
+                  setTimeout(function () {
+                    rrjqbvThis.trigger("change.validation");
+                  }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
+                }
+              }
+            );
+          }
+          
+          return false;
+          
+        }
+      },
+      ajax: {
+        name: "ajax",
+        init: function ($this, name) {
+          return {
+            validatorName: name,
+            url: $this.data("validation" + name + "Ajax"),
+            lastValue: $this.val(),
+            lastValid: true,
+            lastFinished: true
+          };
+        },
+        validate: function ($this, value, validator) {
+          console.log($this);
+          if (validator.lastValue == value && validator.lastFinished == true) {
+            return validator.lastValid == false;
+          }
+          
+          if (validator.lastFinished == true)
+          {
+            validator.lastValue = value;
+            validator.lastValid = true;
+            validator.lastFinished = false;
+            $.ajax({
+              url: validator.url,
+              data: "value=" + value + "&field=" + $this.attr("name"),
+              dataType: "json",
+              success: function (data) {
+                if (validator.lastValue == data.value) {
+                  validator.lastValid = (data.valid);
+                  if (data.message) {
+                    validator.message = data.message;
+                  }
+                  validator.lastFinished = true;
+                  $this.data("validation" + validator.validatorName + "Message", validator.message);
+                  // Timeout is set to avoid problems with the events being considered 'already fired'
+                  setTimeout(function () {
+                    $this.trigger("change.validation");
+                  }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
+                }
+              },
+              failure: function () {
+                validator.lastValid = true;
+                validator.message = "ajax call failed";
+                validator.lastFinished = true;
+                $this.data("validation" + validator.validatorName + "Message", validator.message);
+                // Timeout is set to avoid problems with the events being considered 'already fired'
+                setTimeout(function () {
+                  $this.trigger("change.validation");
+                }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
+              }
+            });
+          }
+          
+          return false;
+          
+        }
+      },
 			regex: {
 				name: "regex",
 				init: function ($this, name) {
@@ -742,7 +849,23 @@
   function regexFromString(inputstring) {
 		return new RegExp("^" + inputstring + "$");	
 	}
-
+  
+  /**
+   * Thanks to Jason Bunting via StackOverflow.com
+   * 
+   * http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string#answer-359910
+   * Short link: http://tinyurl.com/executeFunctionByName
+  **/
+  function executeFunctionByName(functionName, context /*, args*/) {
+    var args = Array.prototype.slice.call(arguments).splice(2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for(var i = 0; i < namespaces.length; i++) {
+      context = context[namespaces[i]];
+    }
+    return context[func].apply(this, args);
+  }
+  
 	$.fn.jqBootstrapValidation = function( method ) {
 
 		if ( defaults.methods[method] ) {
