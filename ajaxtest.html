@@ -8,14 +8,23 @@
     <script>
       $(function () {
         $.jqBootstrapValidation();
-      })
+      });
+      
+      function testUsername($input, value, callback) {
+        var response = {
+          value: value, 
+          valid: /^[A-Z][a-zA-Z0-9-_]+$/.test(value),
+          message: (/^[A-Z]/.test(value) ? "Must only contain letters, numbers, minus or underscode" : "Must start with a capital")
+        };
+        callback(response);
+      }
     </script>
   </head>
   <body>
     <div class="container">
       <form class="form" novalidate="novalidate">
         <div class="control-group">
-          <input type="text" name="ajaxtest" data-validation-testing-ajax='validate.php' />
+          <input type="text" name="ajaxtest" data-validation-testing-callback='testUsername' />
           <div class="help-block">...</div>
         </div>
       </form>

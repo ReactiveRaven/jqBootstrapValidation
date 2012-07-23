@@ -182,7 +182,7 @@
       
       <h2 id="validators">Validators</h2>
       <div class="row">
-        <div clas="tabbable">
+        <div class="tabbable">
           <div class="span4">
             <ul class="nav-list nav well well-small">
               <li class="nav-header">HTML5 based</li>
@@ -199,6 +199,8 @@
               <li><a href="#validators_maxchecked" data-toggle="tab">Max checked</a></li>
               <li><a href="#validators_minchecked" data-toggle="tab">Min checked</a></li>
               <li><a href="#validators_regex" data-toggle="tab">Regex</a></li>
+              <li><a href="#validators_callback" data-toggle="tab">Callback</a></li>
+              <li><a href="#validators_ajax" data-toggle="tab">AJAX</a></li>
               <li class="nav-header">Build your own</li>
               <li><a href="#validators_create_mix" data-toggle="tab">Mix and multiply</a></li>
             </ul>
@@ -790,7 +792,7 @@
             </div>
             <!-- ===================================== VALIDATORS_MINCHECKED -->
             <div class="tab-pane" id="validators_minchecked">
-              <h3>Max checked options</h3>
+              <h3>Min checked options</h3>
               <div class="tabbable">
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#validators_minchecked_preview" data-toggle="tab">Example</a></li>
@@ -949,6 +951,237 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <!-- ========================================== VALIDATORS_CALLBACK -->
+            <div class="tab-pane" id="validators_callback">
+              <h3>Javascript Callback</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_callback_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_callback_code" data-toggle="tab">Code</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_callback_preview">
+                    <script>
+                      function demo_callback_function($el, value, callback) {
+                        callback({
+                          value: value,
+                          valid: /a.*z/.test(value),
+                          message: "Must start with 'a' and end with 'z'"
+                        });
+                      }
+                    </script>
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" data-validation-callback-callback="demo_callback_function" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                          Test Validation <i class="icon-ok icon-white"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="validators_callback_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;script&gt;
+  function demo_callback_function($el, value, callback) {
+    callback({
+      value: value,
+      valid: /a.*z/.test(value),
+      message: "Must start with 'a' and end with 'z'"
+    });
+  }
+&lt;/script&gt;
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input 
+        type="text" 
+        data-validation-callback-callback="demo_callback_function" 
+      /&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>data-validation-callback-callback</td>
+                    <td>name of the callback function</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-callback-message</td>
+                    <td>
+                      your failure message<br />
+                      <span class="label label-info">Note:</span> You can include this in the callback response in stead, to customise against the user's error
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The callback function will be passed the element (wrapped in 
+                jQuery), the field value, and a response function to call when 
+                ready.
+              </p>
+              <p>
+                The response function expects a single variable, a hash 
+                containing 'value', 'valid' and optionally 'message'.
+              </p>
+              <p>
+                The value must be returned, as this is checked against the 
+                current value and stale responses are ignored. The 'valid' item 
+                in the hash should evaluate to true only if the given value is 
+                valid. The message item in the hash, if given, will override 
+                the current message on the validator.
+              </p>
+              <p>
+                Sound a bit complex? Don't worry and take a look at the code 
+                tab, its pretty self explanatory.
+              </p>
+              <p>
+                <span class="label label-warning">Warning:</span> While waiting 
+                for your function to use the callback, the validator assumes 
+                the field is valid. This is to guard against a something failing 
+                and stopping the user from submitting the form. If your 
+                callback takes a long time, the user could be able to submit 
+                the form with invalid data without realising.
+              </p>
+            </div>
+            <!-- ========================================== VALIDATORS_AJAX -->
+            <div class="tab-pane" id="validators_ajax">
+              <h3>AJAX</h3>
+              <div class="tabbable">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#validators_ajax_preview" data-toggle="tab">Example</a></li>
+                  <li><a href="#validators_ajax_code" data-toggle="tab">Code</a></li>
+                  <li><a href="#validators_ajax_server" data-toggle="tab">Server</a></li>
+                  <li><a href="#validators_ajax_response" data-toggle="tab">Response</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="validators_ajax_preview">
+                    <p>
+                      <span class="label label-important">Note:</span> As github doesn't offer dynamic pages yet, this form is only an example and accepts everything
+                    </p>
+                    <form class="form-horizontal">
+                      <div class="control-group">
+                        <label class="control-label">Type something</label>
+                        <div class="controls">
+                          <input type="text" name="ajax_input" data-validation-ajax-ajax="/path/to/validator/script" />
+                          <p class="help-block"></p>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                          Test Validation <i class="icon-ok icon-white"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="validators_ajax_code">
+                    <pre class="prettyprint lang-html linenums">
+&lt;form class="form-horizontal"&gt;
+  &lt;div class="control-group"&gt;
+    &lt;label class="control-label"&gt;Type something&lt;/label&gt;
+    &lt;div class="controls"&gt;
+      &lt;input 
+        type="text" 
+        name="ajax_input"
+        data-validation-ajax-ajax="/path/to/validator/script" 
+      /&gt;
+      &lt;p class="help-block"&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</pre>
+                  </div>
+                  <div class="tab-pane" id="validators_ajax_server">
+                    <pre class="prettyprint lang-php linenums">
+&lt;?php
+  echo json_encode(
+    array(
+      "value" =&gt; $_REQUEST["value"],
+      "valid" =&gt; preg_match("/^[A-Z].*$/", $_REQUEST["value"]),
+      "message" =&gt; "Must start with an uppercase letter"
+    )
+  );</pre>
+                  </div>
+                  <div class="tab-pane" id="validators_ajax_response">
+                    <pre class="prettyprint lang-json linenums">
+{
+  "value": "test",
+  "valid": 0,
+  "message": "Must start with an uppercase letter"
+}</pre>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Req?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>data-validation-ajax-ajax</td>
+                    <td>path to the validation page on the server</td>
+                    <td><i class="icon-ok"></i></td>
+                  </tr>
+                  <tr>
+                    <td>data-validation-ajax-message</td>
+                    <td>
+                      your failure message<br />
+                      <span class="label label-info">Note:</span> You can include this in the ajax response in stead, to customise against the user's error
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The ajax call will be passed the field name and the field value.
+              </p>
+              <p>
+                The response is expected as a JSON hash 
+                containing 'value', 'valid' and optionally 'message'.
+              </p>
+              <p>
+                Value must be returned, as this is checked against the 
+                current value so stale responses are ignored. The 'valid' item 
+                in the hash should evaluate to true only if the given value is 
+                valid. The message item in the hash, if given, will override 
+                the current message on the validator.
+              </p>
+              <p>
+                Sound a bit complex? Don't worry and take a look at the server 
+                tab, its pretty self explanatory.
+              </p>
+              <p>
+                <span class="label label-warning">Warning:</span> While waiting 
+                for your function to use the ajax, the validator assumes 
+                the field is valid. This is to guard against a something failing 
+                and stopping the user from submitting the form. If your 
+                ajax takes a long time, the user could be able to submit 
+                the form with invalid data without realising.
+              </p>
             </div>
             <!-- ========================================= VALIDATORS_NUMBER -->
             <div class="tab-pane" id="validators_number">
@@ -1169,7 +1402,7 @@
     }
   }
 );</pre>
-              <span class="label label-info">Note:</span> The event parameter is a full jQuery event and may be manipulated as normal.
+                <span class="label label-info">Note:</span> The event parameter is a full jQuery event and may be manipulated as normal.
               </p>
             </div>
             <div class="tab-pane" id="configuration_options_submitsuccess">
