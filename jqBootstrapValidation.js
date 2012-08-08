@@ -17,9 +17,9 @@
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: true, // stop the form submit event from firing
-      submitError: false,
-      submitSuccess: false
+			preventSubmit: true, // stop the form submit event from firing if validation fails
+			submitError: false,
+			submitSuccess: false
 		},
     methods: {
       init : function( options ) {
