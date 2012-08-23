@@ -36,7 +36,7 @@
               var $this = $(this);
               return $this.parents("form")[0];
             }
-          )
+          ).toArray()
         ).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
