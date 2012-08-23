@@ -30,14 +30,13 @@
 
         var $siblingElements = this;
 
-        $.unique(
-          $siblingElements.map(
-            function () {
-              var $this = $(this);
-              return $this.parents("form")[0];
-            }
-          )
-        ).bind("submit", function (e) {
+        var uniqueForms = $.unique(
+          $siblingElements.map( function () {
+            return $(this).parents("form")[0];
+          }).toArray()
+        );
+
+        $(uniqueForms).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
           var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");
