@@ -80,6 +80,12 @@
             $form = $this.parents("form").first(),
             validatorNames = [];
 
+          // create message container if not exists
+          if (!$helpBlock.length) {
+              $helpBlock = $('<div class="help-block" />');
+              $controlGroup.find('.controls').append($helpBlock);
+          }
+
           // =============================================================
           //                                     SNIFF HTML FOR VALIDATORS
           // =============================================================
