@@ -1,7 +1,7 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  * 
- * v1.3.2
+ * v1.3.3
  *
  * http://ReactiveRaven.github.com/jqBootstrapValidation/
  */
@@ -14,12 +14,17 @@
 
 (function( $ ){
 	
+	var createdElements = [];
+	
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
 			preventSubmit: true, // stop the form submit event from firing if validation fails
 			submitError: false,
-			submitSuccess: false
+			submitSuccess: false,
+			autoAdd: {
+				helpBlocks: true
+			}
 		},
     methods: {
       init : function( options ) {
@@ -27,7 +32,7 @@
         var settings = $.extend(true, {}, defaults);
 
         settings.options = $.extend(true, settings.options, options);
-
+				
         var $siblingElements = this;
 
         var uniqueForms = $.unique(
@@ -81,9 +86,10 @@
             validatorNames = [];
 
           // create message container if not exists
-          if (!$helpBlock.length) {
+          if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
               $helpBlock = $('<div class="help-block" />');
               $controlGroup.find('.controls').append($helpBlock);
+							createdElements.push($helpBlock[0]);
           }
 
           // =============================================================
@@ -507,7 +513,11 @@
             $this.attr("aria-invalid", $this.data("original-aria-invalid"));
             // reset role
             $helpBlock.attr("role", $this.data("original-role"));
-
+						// remove all elements we created
+						if (createdElements.indexOf($helpBlock[0]) > -1) {
+							$helpBlock.remove();
+						}
+						
           }
         );
 
