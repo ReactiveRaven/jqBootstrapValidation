@@ -1,6 +1,8 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  * 
+ * v1.3.3
+ *
  * http://ReactiveRaven.github.com/jqBootstrapValidation/
  */
 
@@ -12,12 +14,17 @@
 
 (function( $ ){
 	
+	var createdElements = [];
+	
 	var defaults = {
 		options: {
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
-			preventSubmit: true, // stop the form submit event from firing
-      submitError: false,
-      submitSuccess: false
+			preventSubmit: true, // stop the form submit event from firing if validation fails
+			submitError: false,
+			submitSuccess: false,
+			autoAdd: {
+				helpBlocks: true
+			}
 		},
     methods: {
       init : function( options ) {
@@ -25,17 +32,16 @@
         var settings = $.extend(true, {}, defaults);
 
         settings.options = $.extend(true, settings.options, options);
-
+				
         var $siblingElements = this;
 
-        $.unique(
-          $siblingElements.map(
-            function () {
-              var $this = $(this);
-              return $this.parents("form")[0];
-            }
-          )
-        ).bind("submit", function (e) {
+        var uniqueForms = $.unique(
+          $siblingElements.map( function () {
+            return $(this).parents("form")[0];
+          }).toArray()
+        );
+
+        $(uniqueForms).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
           var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");
@@ -78,6 +84,13 @@
             $helpBlock = $controlGroup.find(".help-block").first(),
             $form = $this.parents("form").first(),
             validatorNames = [];
+
+          // create message container if not exists
+          if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
+              $helpBlock = $('<div class="help-block" />');
+              $controlGroup.find('.controls').append($helpBlock);
+							createdElements.push($helpBlock[0]);
+          }
 
           // =============================================================
           //                                     SNIFF HTML FOR VALIDATORS
@@ -500,7 +513,11 @@
             $this.attr("aria-invalid", $this.data("original-aria-invalid"));
             // reset role
             $helpBlock.attr("role", $this.data("original-role"));
-
+						// remove all elements we created
+						if (createdElements.indexOf($helpBlock[0]) > -1) {
+							$helpBlock.remove();
+						}
+						
           }
         );
 

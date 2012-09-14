@@ -67,7 +67,7 @@
         </div>
         <div class="span6" style="text-align: right;">
           <a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation">View on GitHub</a>
-          <a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/1.3.2">Download v1.3.2</a>
+          <a class="btn btn-large btn-inverse" href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/1.3.3">Download v1.3.3</a>
         </div>
       </div>
       <div class="row">
@@ -1059,10 +1059,10 @@
               <p>
                 <span class="label label-warning">Warning:</span> While waiting 
                 for your function to use the callback, the validator assumes 
-                the field is valid. This is to guard against a something failing 
-                and stopping the user from submitting the form. If your 
-                callback takes a long time, the user could be able to submit 
-                the form with invalid data without realising.
+                the field is valid. This is to guard against something failing 
+                server-side and stopping the user from submitting the form. If 
+                your callback takes a long time, the user could be able to 
+                submit the form with invalid data without realising.
               </p>
             </div>
             <!-- ========================================== VALIDATORS_AJAX -->
@@ -1326,6 +1326,7 @@
               <li><a href="#configuration_options_preventsubmit" data-toggle="tab">Prevent submit</a></li>
               <li><a href="#configuration_options_submiterror" data-toggle="tab">Submit Error</a></li>
               <li><a href="#configuration_options_submitsuccess" data-toggle="tab">Submit Success</a></li>
+              <li><a href="#configuration_options_autoadd" data-toggle="tab">Auto-add elements</a></li>
               <li class="nav-header">Extending</li>
               <li><a href="#configuration_extend_events" data-toggle="tab">Events</a></li>
               <li><a href="#configuration_extend_functions" data-toggle="tab">Functions</a></li>
@@ -1446,6 +1447,16 @@
   }
 );</pre>
               <span class="label label-info">Note:</span> The event parameter is a full jQuery event and may be manipulated as normal.
+              </p>
+            </div>
+						<div class="tab-pane" id="configuration_options_autoadd">
+              <h3>autoAdd</h3>
+              <p>
+                If your form is missing help blocks, for example if you don't want an empty element hanging around near 'terms and conditions' check boxes where no explanation would normally be needed, jqBootstrapValidation will add them for you automatically.
+              </p>
+              <p>
+                If you decide this isn't what you want, for example if you only want the error styling without a warning message, you can stop jqBootstrapValidation from creating extra elements.
+                <code>$(...).jqBootstrapValidation({autoAdd: {helpBlocks: false}});</code>
               </p>
             </div>
             <div class="tab-pane" id="configuration_extend_events">
@@ -1600,7 +1611,7 @@ $.jqBootstrapValidation("override", {options: {preventSubmit: false}});</pre>
                         </tr>
                         <tr>
                           <td>destroy</td>
-                          <td>Removes all hooks jqBootstrapValidation has set on the given set of elements</td>
+                          <td>Removes all hooks jqBootstrapValidation has set on the given set of elements, and any extra elements jqBootstrapValidaiton has added.</td>
                         </tr>
                         <tr>
                           <td>collectErrors</td>
@@ -1621,13 +1632,13 @@ $.jqBootstrapValidation("override", {methods: {override: function () {} }});</pr
                   <div class="tab-pane" id="configuration_extend_override_validatortypes">
                     <h4>validatorTypes</h4>
                     <p>
-                      Allows you to override the validation methods used when validating a field. Gives access to the 'init' and 'validate' validator methods.
+                      Allows you to override the validation methods used when validating a field. You must write the <code>init</code> and <code>validate</code> functions.
                     </p>
                     <p>
                       If your test is too complex for a regex, this is the primary method of adding a custom validator.
                     </p>
-                    <p>
-                      For example, to check if a username is already taken on a registration form:
+										                    <p>
+                      For example:
                     </p>
                     <pre class="prettyprint linenums well well-small">
 $.jqBootstrapValidation(
@@ -1635,48 +1646,150 @@ $.jqBootstrapValidation(
   {
     validatorTypes: 
     {
-      rraven_username_available: 
+      check_username_ok: // the name of our validator
       {
-        name: 'rraven_username_available',
+        // the 'name' attribute must match the name used above
+        name: 'check_something_important',
         init: function ($this, name)
         {
-          return {triggerCallback: true, hasFailed: false};
+          return {
+            like: "green eggs and ham",
+            iAm: "sam i am"
+          };
         },
         validate: function ($this, value, validator) 
         {
+          console.log(validator.like);
+          // "green eggs and ham"
+          console.log(validator.iAm);
+          // "sam i am"
+          console.log(validator.message);
+          // -- the message displayed for errors --
 
-          if (validator.triggerCallback)
-          {
-            validator.triggerCallback = false;
-            $.get(
-              {
-                url: "http://www.example.com/check_username_available",
-                data: {username: value},
-                success: function (data) {
-                  if (!data.ok)
-                  {
-                    validator.message = "'" + value + "' already taken";
-                    validator.hasFailed = true;
-                  }
-                  else
-                  {
-                    validator.hasFailed = false;
-                  }
-                  $this.trigger("change.validation"); // update field!
-                }
-              }
-            );
-          } 
-          else
-          {
-            validator.triggerCallback = true;
-            return validator.hasFailed;
-          }
+          validator.message = "You can override the message here";
+          
+          // Perform some checks on the value
+          okValue = value.length > 5 && anExternalCheck(value);
+          
+          // true for valid values, false to display error message
+          return okValue;
         }
       }
     }
   }
 );</pre>
+										<table class="table table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>Attribute</th>
+													<th>Type</th>
+													<th>Description</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														init()
+													</td>
+													<td>
+														function
+													</td>
+													<td>
+														<p>
+															Called on each element passed to jqBootstrapValidation that uses the current validator.
+														</p>
+														<p>
+															Returns an object with values that will be copied onto the validator object for future use.
+														</p>
+														<table class="table table-bordered table-striped">
+															<thead>
+																<tr>
+																	<th>Parameter</th>
+																	<th>Description</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>
+																		$this
+																	</td>
+																	<td>
+																		The element passed to jqBootstrapValidation (wrapped in jQuery)
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		name
+																	</td>
+																	<td>
+																		The name given to this validator in the html, eg `peter` from `data-validation-peter-myvalidator`
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														validate()
+													</td>
+													<td>
+														function
+													</td>
+													<td>
+														<p>
+															Called on each element as it is validated.
+														</p>
+														<p>
+															Returns false if an error is found.
+														</p>
+														<table class="table table-bordered table-striped">
+															<thead>
+																<tr>
+																	<th>Parameter</th>
+																	<th>Description</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>
+																		$this
+																	</td>
+																	<td>
+																		The element to be validated (wrapped in jQuery)
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		value
+																	</td>
+																	<td>
+																		The current value of the element
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		validator
+																	</td>
+																	<td>
+																		The validator object. Note you can access attributes returned from the init function.
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<td>message</td>
+													<td>
+														string
+													</td>
+													<td>
+														Message displayed when the validator fails.
+													</td>
+												</tr>
+											</tbody>
+										</table>
                   </div>
                 </div>
               </div>
@@ -1700,7 +1813,6 @@ $.jqBootstrapValidation(
           <div class="span4">
             <ul class="nav-list nav well well-small">
               <li class="active"><a href="#faq_formats" data-toggle="tab">Where is the date/time/tel validator?</a></li>
-              <li><a href="#faq_callbackvalidator" data-toggle="tab">What about an AJAX validator?</a></li>
               <li class="nav-header"></li>
               <li><a href="#faq_ask" data-toggle="tab">Where do I ask a question?</a></li>
               <li><a href="#faq_bug" data-toggle="tab">Where do I report a bug?</a></li>
@@ -1717,18 +1829,6 @@ $.jqBootstrapValidation(
               </p>
               <p>
                 I can't find a nice cross platform way of detecting someone's region preferences easily. If there is enough demand (<a href="http://www.twitter.com/ReactiveRaven">@ReactiveRaven</a>) I'll add region support, but for now you may be better finding a non-restrictive regex for your local format.
-              </p>
-            </div>
-            <div class="tab-pane" id="faq_callbackvalidator">
-              <h3>What about a callback/AJAX validator?</h3>
-              <p>
-                Good question!
-              </p>
-              <p>
-                There has been interest in this, and it seems like a good idea for including in the next release.
-              </p>
-              <p>
-                Right now, you're probably better off doing ajax checks separately from your validation. It won't stop the user submitting invalid data, but you were going to check that on the server too, right? ;)
               </p>
             </div>
             <div class="tab-pane" id="faq_ask">
