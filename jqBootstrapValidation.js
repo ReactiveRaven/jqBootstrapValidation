@@ -18,6 +18,7 @@
 	
 	var defaults = {
 		options: {
+			prependExistingHelpBlock: false,
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
 			preventSubmit: true, // stop the form submit event from firing if validation fails
 			submitError: false,
@@ -474,7 +475,8 @@
 
               if (errorsFound.length) {
                 $controlGroup.removeClass("success error").addClass("warning");
-                $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>");
+                $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
+                                ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
               } else {
                 $controlGroup.removeClass("warning error success");
                 if (value.length > 0) {
