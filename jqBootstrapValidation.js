@@ -1,6 +1,6 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
- * 
+ *
  * v1.3.3
  *
  * http://ReactiveRaven.github.com/jqBootstrapValidation/
@@ -13,9 +13,9 @@
  * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
 (function( $ ){
-	
+
 	var createdElements = [];
-	
+
 	var defaults = {
 		options: {
 			prependExistingHelpBlock: false,
@@ -33,7 +33,7 @@
         var settings = $.extend(true, {}, defaults);
 
         settings.options = $.extend(true, settings.options, options);
-				
+
         var $siblingElements = this;
 
         var uniqueForms = $.unique(
@@ -47,7 +47,7 @@
           var warningsFound = 0;
           var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");
           $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
-          
+
           $inputs.each(function (i, el) {
             var $this = $(el),
               $controlGroup = $this.parents(".control-group").first();
@@ -58,9 +58,9 @@
               warningsFound++;
             }
           });
-          
+
           $inputs.trigger("validationLostFocus.validation");
-          
+
           if (warningsFound) {
             if (settings.options.preventSubmit) {
               e.preventDefault();
@@ -276,7 +276,7 @@
           } while (validatorNamesToInspect.length > 0)
 
           // =============================================================
-          //                                       SET UP VALIDATOR ARRAYS 
+          //                                       SET UP VALIDATOR ARRAYS
           // =============================================================
 
           var validators = {};
@@ -286,16 +286,16 @@
             var message = $this.data("validation" + el + "Message");
             var hasOverrideMessage = (message != undefined);
             var foundValidator = false;
-            message = 
+            message =
               (
-                message 
-                  ? message 
+                message
+                  ? message
                   : "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
               )
             ;
 
             $.each(
-              settings.validatorTypes, 
+              settings.validatorTypes,
               function (validatorType, validatorTemplate) {
                 if (validators[validatorType] == undefined) {
                   validators[validatorType] = [];
@@ -307,7 +307,7 @@
                       {
                         name: formatValidatorName(validatorTemplate.name),
                         message: message
-                      }, 
+                      },
                       validatorTemplate.init($this, el)
                     )
                   );
@@ -346,7 +346,7 @@
                   }
                 );
               }
-            } 
+            }
 
             if (! foundValidator) {
               $.error("Cannot find validation info for '" + el + "'");
@@ -358,14 +358,14 @@
           // =============================================================
 
           $helpBlock.data(
-            "original-contents", 
+            "original-contents",
             (
-              $helpBlock.data("original-contents") 
-                ? $helpBlock.data("original-contents") 
+              $helpBlock.data("original-contents")
+                ? $helpBlock.data("original-contents")
                 : $helpBlock.html()
             )
           );
-          
+
           $helpBlock.data(
             "original-role",
             (
@@ -376,16 +376,16 @@
           )
 
           $controlGroup.data(
-            "original-classes", 
+            "original-classes",
             (
               $controlGroup.data("original-clases")
                 ? $controlGroup.data("original-classes")
                 : $controlGroup.attr("class")
             )
           );
-            
+
           $this.data(
-            "original-aria-invalid", 
+            "original-aria-invalid",
             (
               $this.data("original-aria-invalid")
                 ? $this.data("original-aria-invalid")
@@ -398,7 +398,7 @@
           // =============================================================
 
           $this.bind(
-            "validation.validation", 
+            "validation.validation",
             function (event, params) {
 
               event = event; // not used
@@ -413,7 +413,7 @@
                   $.each(validatorTypeArray, function (i, validator) {
                     if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                       errorsFound.push(validator.message);
-                    }	
+                    }
                   });
                 }
               });
@@ -435,8 +435,8 @@
           //                                             WATCH FOR CHANGES
           // =============================================================
           $this.bind(
-            "submit.validation", 
-            function () { 
+            "submit.validation",
+            function () {
               return $this.triggerHandler("change.validation", {submitting: true});
             }
           );
@@ -449,7 +449,7 @@
               "keydown",
               "keypress",
               "change"
-            ].join(".validation ") + ".validation", 
+            ].join(".validation ") + ".validation",
             function (e, params) {
 
               var value = getValue($this);
@@ -500,7 +500,7 @@
         return this.each(
           function() {
 
-            var 
+            var
               $this = $(this),
               $controlGroup = $this.parents(".control-group").first(),
               $helpBlock = $controlGroup.find(".help-block").first();
@@ -519,7 +519,7 @@
 						if (createdElements.indexOf($helpBlock[0]) > -1) {
 							$helpBlock.remove();
 						}
-						
+
           }
         );
 
@@ -533,7 +533,7 @@
           var errors = $el.triggerHandler("validation.validation", {includeEmpty: true});
           errorMessages[name] = $.extend(true, errors, errorMessages[name]);
         });
-        
+
         $.each(errorMessages, function (i, el) {
           if (el.length == 0) {
             delete errorMessages[i];
@@ -544,15 +544,15 @@
 
       },
       hasErrors: function() {
-        
+
         var errorMessages = [];
-        
+
         this.each(function (i, el) {
           errorMessages = errorMessages.concat(
             $(el).triggerHandler("getValidators.validation") ? $(el).triggerHandler("validation.validation", {submitting: true}) : []
           );
         });
-        
+
         return (errorMessages.length > 0);
       },
       override : function (newDefaults) {
@@ -575,7 +575,7 @@
           if (validator.lastValue == value && validator.lastFinished) {
             return !validator.lastValid;
           }
-          
+
           if (validator.lastFinished == true)
           {
             validator.lastValue = value;
@@ -585,10 +585,10 @@
             var rrjqbvValidator = validator;
             var rrjqbvThis = $this;
             executeFunctionByName(
-              validator.callback, 
-              window, 
-              $this, 
-              value, 
+              validator.callback,
+              window,
+              $this,
+              value,
               function (data) {
                 if (rrjqbvValidator.lastValue == data.value) {
                   rrjqbvValidator.lastValid = data.valid;
@@ -605,9 +605,9 @@
               }
             );
           }
-          
+
           return false;
-          
+
         }
       },
       ajax: {
@@ -626,7 +626,7 @@
           if (validator.lastValue == value && validator.lastFinished == true) {
             return validator.lastValid == false;
           }
-          
+
           if (validator.lastFinished == true)
           {
             validator.lastValue = value;
@@ -662,9 +662,9 @@
               }
             });
           }
-          
+
           return false;
-          
+
         }
       },
 			regex: {
@@ -673,7 +673,7 @@
 					return {regex: regexFromString($this.data("validation" + name + "Regex"))};
 				},
 				validate: function ($this, value, validator) {
-					return (!validator.regex.test(value) && ! validator.negative) 
+					return (!validator.regex.test(value) && ! validator.negative)
 						|| (validator.regex.test(value) && validator.negative);
 				}
 			},
@@ -698,7 +698,7 @@
 					return {"element": element};
 				},
 				validate: function ($this, value, validator) {
-					return (value != validator.element.val() && ! validator.negative) 
+					return (value != validator.element.val() && ! validator.negative)
 						|| (value == validator.element.val() && validator.negative);
 				},
         blockSubmit: true
@@ -709,7 +709,7 @@
 					return {max: $this.data("validation" + name + "Max")};
 				},
 				validate: function ($this, value, validator) {
-					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative) 
+					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative)
 						|| (parseFloat(value, 10) <= parseFloat(validator.max, 10) && validator.negative);
 				}
 			},
@@ -719,7 +719,7 @@
 					return {min: $this.data("validation" + name + "Min")};
 				},
 				validate: function ($this, value, validator) {
-					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative) 
+					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative)
 						|| (parseFloat(value) >= parseFloat(validator.min) && validator.negative);
 				}
 			},
@@ -739,7 +739,7 @@
 					return {minlength: $this.data("validation" + name + "Minlength")};
 				},
 				validate: function ($this, value, validator) {
-					return ((value.length < validator.minlength) && ! validator.negative) 
+					return ((value.length < validator.minlength) && ! validator.negative)
 						|| ((value.length >= validator.minlength) && validator.negative);
 				}
 			},
@@ -839,19 +839,19 @@
 			}
 		}
 	};
-	
+
 	var formatValidatorName = function (name) {
 		return name
 			.toLowerCase()
 			.replace(
-				/(^|\s)([a-z])/g , 
+				/(^|\s)([a-z])/g ,
 				function(m,p1,p2) {
 					return p1+p2.toUpperCase();
 				}
 			)
 		;
 	}
-	
+
 	var getValue = function ($this) {
 		// Extract the value we're talking about
 		var value = $this.val();
@@ -864,14 +864,14 @@
 		}
 		return value;
 	}
-  
+
   function regexFromString(inputstring) {
-		return new RegExp("^" + inputstring + "$");	
+		return new RegExp("^" + inputstring + "$");
 	}
-  
+
   /**
    * Thanks to Jason Bunting via StackOverflow.com
-   * 
+   *
    * http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string#answer-359910
    * Short link: http://tinyurl.com/executeFunctionByName
   **/
@@ -884,7 +884,7 @@
     }
     return context[func].apply(this, args);
   }
-  
+
 	$.fn.jqBootstrapValidation = function( method ) {
 
 		if ( defaults.methods[method] ) {
@@ -894,7 +894,7 @@
 		} else {
 		$.error( 'Method ' +  method + ' does not exist on jQuery.jqBootstrapValidation' );
 			return null;
-		}    
+		}
 
 	};
 
