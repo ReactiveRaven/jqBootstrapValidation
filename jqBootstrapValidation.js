@@ -899,7 +899,7 @@
 	};
 
   $.jqBootstrapValidation = function (options) {
-    $(":input").not("[type=image],[type=submit]").jqBootstrapValidation(options);
+    $(":input").not("[type=image],[type=submit]").jqBootstrapValidation.apply(this,arguments);
   }
 
 })( jQuery );
