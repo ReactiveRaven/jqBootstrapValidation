@@ -471,7 +471,7 @@
 
               $form.find("input,select,textarea").not($this).not("[name=\"" + $this.attr("name") + "\"]").trigger("validationLostFocus.validation");
 
-              errorsFound = $.unique(errorsFound);
+              errorsFound = $.unique(errorsFound.sort());
 
               if (errorsFound.length) {
                 $controlGroup.removeClass("success error").addClass("warning");
