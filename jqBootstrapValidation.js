@@ -470,9 +470,13 @@
               errorsFound = $.unique(errorsFound.sort());
 
               if (errorsFound.length) {
-                $controlGroup.removeClass("success error").addClass("warning");
-                $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
-                                ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
+                if (errorsFound.length == 1) {
+                  $helpBlock.html(errorsFound[0] + 
+                    ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
+                } else {
+                  $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
+                    ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
+                }
               } else {
                 $controlGroup.removeClass("warning error success");
                 if (value.length > 0) {
