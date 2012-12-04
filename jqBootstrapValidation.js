@@ -171,7 +171,7 @@
             // ---------------------------------------------------------
             //                                                    NUMBER
             // ---------------------------------------------------------
-            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() == "number") {
+            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
               message = settings.builtInValidators.number.message;
               if ($this.data("validationNumberMessage")) {
                 message = $this.data("validationNumberMessage");
@@ -181,7 +181,7 @@
             // ---------------------------------------------------------
             //                                                     EMAIL
             // ---------------------------------------------------------
-            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() == "email") {
+            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
               message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
               if ($this.data("validationValidemailMessage")) {
                 message = $this.data("validationValidemailMessage");
@@ -219,14 +219,14 @@
           // =============================================================
 
           // Get named validators
-          if ($this.data("validation") != undefined) {
+          if ($this.data("validation") !== undefined) {
             validatorNames = $this.data("validation").split(",");
           }
 
           // Get extra ones defined on the element's data attributes
           $.each($this.data(), function (i, el) {
             var parts = i.replace(/([A-Z])/g, ",$1").split(",");
-            if (parts[0] == "validation" && parts[1]) {
+            if (parts[0] === "validation" && parts[1]) {
               validatorNames.push(parts[1]);
             }
           });
@@ -251,7 +251,7 @@
             // Pull out the new validator names from each shortcut
             newValidatorNamesToInspect = [];
             $.each(validatorNamesToInspect, function(i, el) {
-              if ($this.data("validation" + el + "Shortcut") != undefined) {
+              if ($this.data("validation" + el + "Shortcut") !== undefined) {
                 // Are these custom validators?
                 // Pull them out!
                 $.each($this.data("validation" + el + "Shortcut").split(","), function(i2, el2) {
@@ -261,7 +261,7 @@
                 // Is this a recognised built-in?
                 // Pull it out!
                 var validator = settings.builtInValidators[el.toLowerCase()];
-                if (validator.type.toLowerCase() == "shortcut") {
+                if (validator.type.toLowerCase() === "shortcut") {
                   $.each(validator.shortcut.split(","), function (i, el) {
                     el = formatValidatorName(el);
                     newValidatorNamesToInspect.push(el);
@@ -284,7 +284,7 @@
           $.each(validatorNames, function (i, el) {
             // Set up the 'override' message
             var message = $this.data("validation" + el + "Message");
-            var hasOverrideMessage = (message != undefined);
+            var hasOverrideMessage = (message !== undefined);
             var foundValidator = false;
             message =
               (
@@ -297,7 +297,7 @@
             $.each(
               settings.validatorTypes,
               function (validatorType, validatorTemplate) {
-                if (validators[validatorType] == undefined) {
+                if (validators[validatorType] === undefined) {
                   validators[validatorType] = [];
                 }
                 if (!foundValidator && $this.data("validation" + el + formatValidatorName(validatorTemplate.name)) !== undefined) {
@@ -324,17 +324,17 @@
               }
               var validatorType = validator.type.toLowerCase();
 
-              if (validatorType == "shortcut") {
+              if (validatorType === "shortcut") {
                 foundValidator = true;
               } else {
                 $.each(
                   settings.validatorTypes,
                   function (validatorTemplateType, validatorTemplate) {
-                    if (validators[validatorTemplateType] == undefined) {
+                    if (validators[validatorTemplateType] === undefined) {
                       validators[validatorTemplateType] = [];
                     }
-                    if (!foundValidator && validatorType == validatorTemplateType.toLowerCase()) {
-                      $this.data("validation" + el + formatValidatorName(validatorTemplate.name), validator[validatorTemplate.name.toLowerCase()])
+                    if (!foundValidator && validatorType === validatorTemplateType.toLowerCase()) {
+                      $this.data("validation" + el + formatValidatorName(validatorTemplate.name), validator[validatorTemplate.name.toLowerCase()]);
                       validators[validatorType].push(
                         $.extend(
                           validator,
@@ -373,7 +373,7 @@
                 ? $helpBlock.data("original-role")
                 : $helpBlock.attr("role")
             )
-          )
+          );
 
           $controlGroup.data(
             "original-classes",
@@ -401,8 +401,6 @@
             "validation.validation",
             function (event, params) {
 
-              event = event; // not used
-
               var value = getValue($this);
 
               // Get a list of the errors to apply
@@ -424,9 +422,7 @@
 
           $this.bind(
             "getValidators.validation",
-            function (event) {
-              event = event; // not used
-
+            function () {
               return validators;
             }
           );
@@ -485,7 +481,7 @@
                 $helpBlock.html($helpBlock.data("original-contents"));
               }
 
-              if (e.type == "blur") {
+              if (e.type === "blur") {
                 $controlGroup.removeClass("success");
               }
             }
@@ -535,10 +531,10 @@
         });
 
         $.each(errorMessages, function (i, el) {
-          if (el.length == 0) {
+          if (el.length === 0) {
             delete errorMessages[i];
           }
-        })
+        });
 
         return errorMessages;
 
@@ -572,11 +568,11 @@
           };
         },
         validate: function ($this, value, validator) {
-          if (validator.lastValue == value && validator.lastFinished) {
+          if (validator.lastValue === value && validator.lastFinished) {
             return !validator.lastValid;
           }
 
-          if (validator.lastFinished == true)
+          if (validator.lastFinished === true)
           {
             validator.lastValue = value;
             validator.lastValid = true;
@@ -590,7 +586,7 @@
               $this,
               value,
               function (data) {
-                if (rrjqbvValidator.lastValue == data.value) {
+                if (rrjqbvValidator.lastValue === data.value) {
                   rrjqbvValidator.lastValid = data.valid;
                   if (data.message) {
                     rrjqbvValidator.message = data.message;
@@ -623,11 +619,11 @@
         },
         validate: function ($this, value, validator) {
           console.log($this);
-          if (validator.lastValue == value && validator.lastFinished == true) {
-            return validator.lastValid == false;
+          if (validator.lastValue === value && validator.lastFinished === true) {
+            return validator.lastValid === false;
           }
 
-          if (validator.lastFinished == true)
+          if (validator.lastFinished === true)
           {
             validator.lastValue = value;
             validator.lastValid = true;
@@ -637,7 +633,7 @@
               data: "value=" + value + "&field=" + $this.attr("name"),
               dataType: "json",
               success: function (data) {
-                if (validator.lastValue == data.value) {
+                if (validator.lastValue === data.value) {
                   validator.lastValid = (data.valid);
                   if (data.message) {
                     validator.message = data.message;
@@ -683,7 +679,7 @@
 					return {};
 				},
 				validate: function ($this, value, validator) {
-					return !!(value.length == 0  && ! validator.negative)
+					return !!(value.length === 0  && ! validator.negative)
 						|| !!(value.length > 0 && validator.negative);
 				},
         blockSubmit: true
@@ -698,8 +694,8 @@
 					return {"element": element};
 				},
 				validate: function ($this, value, validator) {
-					return (value != validator.element.val() && ! validator.negative)
-						|| (value == validator.element.val() && validator.negative);
+					return (value !== validator.element.val() && ! validator.negative)
+						|| (value === validator.element.val() && validator.negative);
 				},
         blockSubmit: true
 			},
@@ -850,20 +846,20 @@
 				}
 			)
 		;
-	}
+	};
 
 	var getValue = function ($this) {
 		// Extract the value we're talking about
 		var value = $this.val();
 		var type = $this.attr("type");
-		if (type == "checkbox") {
+		if (type === "checkbox") {
 			value = ($this.is(":checked") ? value : "");
 		}
-		if (type == "radio") {
+		if (type === "radio") {
 			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? value : "");
 		}
 		return value;
-	}
+	};
 
   function regexFromString(inputstring) {
 		return new RegExp("^" + inputstring + "$");
@@ -900,6 +896,6 @@
 
   $.jqBootstrapValidation = function (options) {
     $(":input").not("[type=image],[type=submit]").jqBootstrapValidation.apply(this,arguments);
-  }
+  };
 
 })( jQuery );
