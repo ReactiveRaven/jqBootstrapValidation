@@ -86,10 +86,16 @@
             $helpBlock = $controlGroup.find(".help-block").first(),
             $form = $this.parents("form").first(),
             validatorNames = [];
+		
+		  if($helpBlock.length == 0)$helpBlock = $controlGroup.find(".help-inline").first();
 
           // create message container if not exists
-          if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
-              $helpBlock = $('<div class="help-block" />');
+          if (!$helpBlock.length && settings.options.autoAdd && (settings.options.autoAdd.helpBlocks || settings.options.autoAdd.helpInline)) {
+              if(settings.options.autoAdd.helpInline){
+				$helpBlock = $('<span class="help-inline" />');
+			  }else{
+				$helpBlock = $('<div class="help-block" />');
+			  }
               $controlGroup.find('.controls').append($helpBlock);
 							createdElements.push($helpBlock[0]);
           }
