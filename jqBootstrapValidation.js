@@ -23,6 +23,7 @@
 			preventSubmit: true, // stop the form submit event from firing if validation fails
 			submitError: false,
 			submitSuccess: false,
+            semanticallyStrict: false, // set to true to tidy up generated HTML output
 			autoAdd: {
 				helpBlocks: true
 			}
@@ -469,11 +470,18 @@
 
               errorsFound = $.unique(errorsFound.sort());
 
+              // Were there any errors?
               if (errorsFound.length) {
-                if (errorsFound.length == 1) {
+                // Better flag it up as a warning.
+                $controlGroup.removeClass("success error").addClass("warning");
+
+                // How many errors did we find?
+                if (settings.options.semanticallyStrict && errorsFound.length === 1) {
+                  // Only one? Being strict? Just output it.
                   $helpBlock.html(errorsFound[0] + 
                     ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                 } else {
+                  // Multiple? Being sloppy? Glue them together into an UL.
                   $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
                     ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                 }
