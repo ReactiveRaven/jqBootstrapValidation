@@ -21,3 +21,11 @@ body .hero-unit
 {
     margin-bottom: 0px !important;
 }
+
+a[target=_blank]
+{
+    padding-right: 13px;
+    background-image: url(/img/newtab.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+}
