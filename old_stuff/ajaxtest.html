@@ -14,7 +14,7 @@
         var response = {
           value: value, 
           valid: /^[A-Z][a-zA-Z0-9-_]+$/.test(value),
-          message: (/^[A-Z]/.test(value) ? "Must only contain letters, numbers, minus or underscode" : "Must start with a capital")
+          message: (/^[A-Z]/.test(value) ? "Must only contain letters, numbers, minus or underscore" : "Must start with a capital")
         };
         callback(response);
       }
