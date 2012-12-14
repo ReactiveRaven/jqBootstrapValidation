@@ -1,0 +1,23 @@
+body {
+    padding-top: 41px;
+    padding-bottom: 200px;
+}
+
+body .hero-unit
+{
+    padding: 20px 50px 30px 50px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color: white;
+    background: url(/img/wild_oliva/wild_oliva.png);
+}
+
+#getstarted-prompt
+{
+    margin-top: 8em;
+}
+
+.navbar-fixed-top
+{
+    margin-bottom: 0px !important;
+}

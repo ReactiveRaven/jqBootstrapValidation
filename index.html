@@ -1,20 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>
-            jqBootstrapValidation by ReactiveRaven
-        </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jqBootstrapValidation, by ReactiveRaven</title>
+        <meta name="description" content="jqBootstrapValidation is a jQuery plugin for validating forms that use Bootstrap markup.">
+        <!-- Basics lovingly stolen from Bootstrap -->
+        <meta name="author" content="David Godfrey, reactiveraven@gmail.com">
+
+        <!-- styles -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+        <link href="css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="css/prettify_bootstrap.css" rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body id="homepage">
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">jq<span></span>Bootstrap<span></span>Validation</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <li><a href="/get-started.html">Get started</a></li>
+                            <li><a href="/validators.html">Validators</a></li>
+                            <li><a href="/options.html">Options</a></li>
+                            <li><a href="/extending.html">Extend</a></li>
+                            <li><a href="/help.html">Help</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="hero-unit">
+                <h1 class="hidden-phone">jq<span></span>Bootstrap<span></span>Validation</h1>
+                <p><span class="hidden-phone">A </span>JQuery validation plugin<span class="hidden-phone"> for bootstrap forms</span>.</p>
+                <p>
+                    <a href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/1.3.3" class="btn btn-primary btn-large hidden-phone">Download v1.3.3</a>
+                    <a href="https://github.com/ReactiveRaven/jqBootstrapValidation/zipball/1.3.3" class="btn btn-primary visible-phone">Download v1.3.3</a>
+                    <a href="http://www.github.com/ReactiveRaven/jqBootstrapValidation" class="btn btn-inverse hidden-phone">View on Github</a>
+                    <a href="http://www.github.com/ReactiveRaven/jqBootstrapValidation" class="btn btn-inverse visible-phone">View on Github</a>
+                </p>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span6">
+                    <h2>It makes this</h2>
+                    <pre class="prettyprint linenums lang-html pre-scrollable">
+&lt;input type="email" id="email" required&gt;
+&lt;input 
+  name="emailAgain"
+  data-validation-matches-match="email" 
+  data-validation-matches-message=
+    "Must match email address entered above" 
+&gt;
+&lt;input 
+  type="checkbox" 
+  name="terms-and-conditions" 
+  required 
+  data-validation-required-message=
+    "You must agree to the terms and conditions"
+&gt;
+&lt;input type="checkbox"
+  name="qualityControl[]"
+  value="fast"
+  minchecked="2"
+  data-validation-minchecked-message="Choose two"
+  maxchecked="2"
+  data-validation-maxchecked-message=
+    "You can't have it all ways"
+&gt;
+                    </pre>
+                </div>
+                <div class="span6">
+                    <h2>Do this</h2>
+                    <form class="form-horizontal" novalidate>
+                        <div class="control-group">
+                            <label class="control-label" for="email">Email address</label>
+                            <div class="controls">
+                                <input type="email" name="email" id="email" required>
+                                <p class="help-block">Email address we can contact you on</p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="emailAgain">Email again</label>
+                            <div class="controls">
+                                <input type="email" data-validation-matches-match="email" data-validation-matches-message="Must match email address entered above" id="emailAgain" name="emailAgain">
+                                <p class="help-block">And again, to check for speeling miskates</p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="terms-and-conditions">Legal</label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="terms-and-conditions" name="terms-and-conditions" required data-validation-required-message="You must agree to the terms and conditions">
+                                    I agree to the <a href="#">terms and conditions</a>
+                                </label>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">Quality Control</label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="fast" data-validation-minchecked-minchecked="2" data-validation-minchecked-message="Choose two" data-validation-maxchecked-maxchecked="2" data-validation-maxchecked-message="You can't have it all ways" >
+                                    Fast
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="cheap">
+                                    Cheap
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="good">
+                                    Good
+                                </label>
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Test Validation <i class="icon-ok icon-white"></i></button><br />
+                            (go ahead, nothing is sent anywhere)
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- /row -->
+            <div id="getstarted-prompt" class="row">
+                <div class="pull-right">
+                    <h3>Ready?</h3>
+                    <a class="btn btn-primary btn-large" href="/get-started.html">Get Started <i class="icon-chevron-right icon-white"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- /container -->
+
+        <!-- javascript -->
+        <!-- Placed at the end of the document so the pages load faster -->
         <script src="js/jQuery-1.7.2-min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/jqBootstrapValidation.js"></script>
         <script src="js/prettify.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-    </head>
-    <body>
-        <div class="hero-unit">
-            <h1>jq<span></span>Bootstrap<span></span>Validation</h1>
-            <p>A JQuery validation plugin for bootstrap forms.</p>
-        </div>
+        <script src="js/home.js"></script>
+
     </body>
 </html>
