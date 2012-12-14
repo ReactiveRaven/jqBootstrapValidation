@@ -1,7 +1,7 @@
 /* jqBootstrapValidation
  * A plugin for automating validation on Twitter Bootstrap formatted forms.
  *
- * v1.3.3
+ * v1.3.4
  *
  * License: MIT <http://opensource.org/licenses/mit-license.php> - see LICENSE file
  *
@@ -22,7 +22,11 @@
             semanticallyStrict: false, // set to true to tidy up generated HTML output
 			autoAdd: {
 				helpBlocks: true
-			}
+			},
+            filter: function () {
+                // return $(this).is(":visible"); // only validate elements you can see
+                return true; // validate everything
+            }
 		},
     methods: {
       init : function( options ) {
@@ -42,7 +46,7 @@
         $(uniqueForms).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]");
+          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
           $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
 
           $inputs.each(function (i, el) {
