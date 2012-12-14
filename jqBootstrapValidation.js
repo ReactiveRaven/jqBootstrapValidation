@@ -626,7 +626,6 @@
           };
         },
         validate: function ($this, value, validator) {
-          console.log($this);
           if (validator.lastValue === value && validator.lastFinished === true) {
             return validator.lastValid === false;
           }
