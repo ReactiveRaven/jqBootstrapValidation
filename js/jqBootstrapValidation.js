@@ -8,6 +8,8 @@
  * http://ReactiveRaven.github.com/jqBootstrapValidation/
  */
 
+// TODO: remove 'negative's from validators
+
 (function($) {
 
     var createdElements = [];
@@ -619,7 +621,7 @@
             ajax: {
                 name: "ajax",
                 messages: {
-                  default: "Couldn't validate this <!--"  
+                  default: "Couldn't validate this with the server <!-- Add attribute 'data-validation-???-message' to input to change this message -->"  
                 },
                 init: function($this, name) {
                     return {
@@ -627,11 +629,16 @@
                         url: $this.data("validation" + name + "Ajax"),
                         lastValue: $this.val(),
                         lastValid: true,
-                        lastFinished: true
+                        lastFinished: true,
+                        message: (
+                            $this.data("validation" + name + "Message")
+                                ? $this.data("validation" + name + "Message")
+                                : "Couldn't validate this with the server <!-- Add attribute 'data-validation-" + name + "-message' to input to change this message -->"
+                        )
                     };
                 },
                 validate: function($this, value, validator) {
-                    if (validator.lastValue === value && validator.lastFinished === true) {
+                    if (""+validator.lastValue === ""+value && validator.lastFinished === true) {
                         return validator.lastValid === false;
                     }
 
@@ -645,8 +652,8 @@
                             data: "value=" + value + "&field=" + $this.attr("name"),
                             dataType: "json",
                             success: function(data) {
-                                if (validator.lastValue === data.value) {
-                                    validator.lastValid = (data.valid);
+                                if (data.value && validator.lastValue === data.value) {
+                                    validator.lastValid = !!(data.valid);
                                     if (data.message) {
                                         validator.message = data.message;
                                     }
@@ -696,7 +703,7 @@
                 },
                 blockSubmit: true
             },
-            match: {
+            match: { // TODO: give this a meaningful default 'message'
                 name: "match",
                 init: function($this, name) {
                     var element = $this.parents("form").first().find("[name=\"" + $this.data("validation" + name + "Match") + "\"]").first();
