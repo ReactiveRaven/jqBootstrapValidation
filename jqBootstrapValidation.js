@@ -630,7 +630,7 @@
           };
         },
         validate: function ($this, value, validator) {
-          if (validator.lastValue === value && validator.lastFinished === true) {
+          if (""+validator.lastValue === ""+value && validator.lastFinished === true) {
             return validator.lastValid === false;
           }
 
@@ -644,8 +644,8 @@
               data: "value=" + value + "&field=" + $this.attr("name"),
               dataType: "json",
               success: function (data) {
-                if (validator.lastValue === data.value) {
-                  validator.lastValid = (data.valid);
+                if (""+validator.lastValue === ""+data.value) {
+                  validator.lastValid = !!(data.valid);
                   if (data.message) {
                     validator.message = data.message;
                   }
