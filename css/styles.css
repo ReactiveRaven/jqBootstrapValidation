@@ -29,3 +29,58 @@ a[target=_blank]
     background-position: right center;
     background-repeat: no-repeat;
 }
+
+
+h2
+{
+    padding-top: 40px;
+    margin-top: -40px;
+}
+
+section
+{
+    padding-bottom: 3em;
+}
+
+/* Large desktop */
+@media (min-width: 1201px) {
+    #leftnavbar.affix
+    {
+        top: 68px;
+        width:238px;
+    }  
+}
+
+/* Normal desktop */
+@media (max-width: 1200px) and (min-width: 980px) {
+    #leftnavbar.affix
+    {
+        width: 188px;
+        top: 68px;
+    }
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+    #leftnavbar.affix
+    {
+        width: 134px;
+        top: 10px;
+    }
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    #leftnavbar.affix
+    {
+        position: inherit !important;
+    }
+}
+ 
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    #leftnavbar.affix
+    {
+        position: inherit !important;
+    }
+}

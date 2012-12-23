@@ -1,7 +1,5 @@
 $(function() {
 
-    prettyPrint();
-
     $("input,textarea,select").jqBootstrapValidation(
         {
             preventSubmit: true,
@@ -10,15 +8,10 @@ $(function() {
                 // the error messages to the user, log, etc.
             },
             submitSuccess: function($form, event) {
-                alert("OK");
+                alert("OK\n\n" + decodeURIComponent($form.serialize().replace(/&/g, "\n")));
                 event.preventDefault();
             }
         }
     );
-
-    $("a[data-toggle=\"tab\"]").click(function(e) {
-        e.preventDefault();
-        $(this).tab("show");
-    });
 
 });

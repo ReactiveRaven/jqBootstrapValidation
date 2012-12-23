@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jqBootstrapValidation, by ReactiveRaven</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Getting started with jqBootstrapValidation, the jQuery plugin for validating forms that use Bootstrap markup.">
+        <meta name="author" content="David Godfrey, reactiveraven@gmail.com">
+        <!-- Basics lovingly stolen from Bootstrap -->
+
+        <!-- styles -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="css/prettify_bootstrap.css" rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body id="getstarted">
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">jq<span></span>Bootstrap<span></span>Validation</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/get-started.html">Get started</a></li>
+                            <li class="active"><a href="/validators.html">Validators</a></li>
+                            <li><a href="/options.html">Options</a></li>
+                            <li><a href="/extending.html">Extend</a></li>
+                            <li><a href="/help.html">Help</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="hero-unit">
+                <h1 class="hidden-phone">Validators</h1>
+                <p>HTML5 and Extra validators</p>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span3">
+                    <ul class="nav-list nav well well-small affix-top" data-offset-top="161" data-spy="affix" id="leftnavbar">
+                        <li class="nav-header">HTML5 based</li>
+                        <li class="active"><a href="#email">Email</a></li>
+                        <li><a href="#number">Number</a></li>
+                        <li><a href="#required">Required</a></li>
+                        <li><a href="#max">Max</a></li>
+                        <li><a href="#min">Min</a></li>
+                        <li><a href="#maxlength">Max length</a></li>
+                        <li><a href="#minlength">Min length</a></li>
+                        <li><a href="#pattern">Pattern</a></li>
+                        <li class="nav-header">Extras</li>
+                        <li><a href="#match">Match</a></li>
+                        <li><a href="#maxchecked">Max checked</a></li>
+                        <li><a href="#minchecked">Min checked</a></li>
+                        <li><a href="#regex">Regex</a></li>
+                        <li><a href="#callback">Callback</a></li>
+                        <li><a href="#ajax">AJAX</a></li>
+                        <li class="nav-header">Build your own</li>
+                        <li><a href="#create_mix">Mix and multiply</a></li>
+                    </ul>
+                </div>
+                <div class="span9">
+                    
+                    
+                    
+                    <section id="email">
+                        <h2>Email address</h2>
+                        <p>Ensures a field contains a valid email address</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#email-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#email-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="email-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Email address</label>
+        <div class="controls">
+            
+            <input
+                type="email" 
+                name="email"
+            />
+            
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="email-example-live">
+
+                                </div>
+                                <div class="tab-pane " id="email-example-code">
+
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>email</td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-email-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Not a valid email address</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="number">
+                        <h2>Number</h2>
+                        <p>Ensures a field contains a valid number</p>
+                        <p><span class="label label-info">Note</span> if you don't specify the 'step' parameter, the browser may assume you want integers (whole numbers).</p>
+                        <p><span class="label label-info">Note</span> some browsers will silently throw away non-numeric values without triggering validation</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#number-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#number-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="number-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Number</label>
+        <div class="controls">
+            
+            <input
+                type="number" 
+                name="number"
+            />
+            
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Payment amount</label>
+        <div class="controls">
+            <div class="input-prepend">
+                <span class="add-on">$</span>
+                <input
+                    type="number"
+                    name="payment"
+                    step="0.01"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="number-example-live">
+                                </div>
+                                <div class="tab-pane " id="number-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>type</td>
+                                    <td>number</td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>step</td>
+                                    <td>(smallest increment)</td>
+                                    <td></td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-number-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Must be a number</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="required">
+                        <h2>Required</h2>
+                        <p>Ensures a field has been filled in, or selected</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#required-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#required-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="required-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Username</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="username"
+                required
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input
+                    type="checkbox" 
+                    name="terms"
+                    value="yes"
+                    required
+                    data-validation-required-message="You must agree to continue"
+                />
+                I agree to the Terms &amp; Conditions
+            </label>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="required-example-live">
+                                </div>
+                                <div class="tab-pane " id="required-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>required</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-required-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>This is required</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="max">
+                        <h2>Max</h2>
+                        <p>Ensures a number is below the given maximum</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#max-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#max-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="max-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Number</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="number"
+                max="42"
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Percent complete</label>
+        <div class="controls">
+            <div class="input-append">
+                <input
+                    type="text"
+                    name="completion"
+                    max="100"
+                    data-validation-max-message="No need to show off. 100% will do."
+                />
+                <span class="add-on">%</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="max-example-live">
+                                </div>
+                                <div class="tab-pane " id="max-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>max</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-max-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Too high: Maximum of '{max}'</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="min">
+                        <h2>Min</h2>
+                        <p>Ensures a number is above the given minimum</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#min-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#min-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="min-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Number</label>
+        <div class="controls">
+            <input
+                type="number" 
+                name="number"
+                min="42"
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Percent complete</label>
+        <div class="controls">
+            <div class="input-append">
+                <input
+                    type="number"
+                    name="completion"
+                    min="0"
+                    data-validation-min-message="That would be going backwards. Min 0%"
+                />
+                <span class="add-on">%</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="min-example-live">
+                                </div>
+                                <div class="tab-pane " id="min-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>min</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-min-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Too low: Minimum of '{min}'</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="maxlength">
+                        <h2>Max Length</h2>
+                        <p>Ensures a field is shorter than the max length</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#maxlength-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#maxlength-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="maxlength-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Text</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="text"
+                maxlength="10"
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Password</label>
+        <div class="controls">
+            <input
+                type="password"
+                name="password"
+                maxlength="16"
+                data-validation-maxlength-message="Too long! Max length 16"
+            />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="maxlength-example-live">
+                                </div>
+                                <div class="tab-pane " id="maxlength-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>maxlength</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-maxlength-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Too long: Max length of '{maxlength}'</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="minlength">
+                        <h2>Min Length</h2>
+                        <p>Ensures a field is longer than the min length</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#minlength-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#minlength-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="minlength-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Text</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="text"
+                minlength="10"
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Password</label>
+        <div class="controls">
+            <input
+                type="password"
+                name="password"
+                minlength="16"
+                data-validation-minlength-message="Too long! Min length 16"
+            />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="minlength-example-live">
+                                </div>
+                                <div class="tab-pane " id="minlength-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>minlength</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-minlength-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Too short: Min length of '{minlength}'</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="pattern">
+                        <h2>Pattern</h2>
+                        <p>Ensures a field matches a <abbr title="REGular EXpression">regex</abbr> pattern</p>
+                        <p><span class="label label-warning">Warning</span> if your pattern is too restrictive, users with unusual (but valid) data could be rejected. <a href="http://en.wikipedia.org/wiki/Robustness_principle" target="_blank">Be liberal</a>.<p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#pattern-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#pattern-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="pattern-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Capital Letters</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="text"
+                pattern="[A-Z]*"
+                data-validation-pattern-message="Uppercase letters only please"
+            />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="pattern-example-live">
+                                </div>
+                                <div class="tab-pane " id="pattern-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pattern</td>
+                                    <td></td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-pattern-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>Not in the expected format</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="match">
+                        <h2>Match</h2>
+                        <p>Ensures a field has the same value as another</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#match-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#match-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="match-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Type something</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="first"
+            />
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">Type it again</label>
+        <div class="controls">
+            <input
+                type="text"
+                name="second"
+                data-validation-match-match="first"
+            />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="match-example-live">
+                                </div>
+                                <div class="tab-pane " id="match-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data-validation-match-match</td>
+                                    <td>(field name to match)</td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-match-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>'Match' validation failed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
+                    <section id="ajax">
+                        <h2>AJAX</h2>
+                        <p>Checks the value of a field with a server-side script</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#ajax-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#ajax-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="ajax-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Type something</label>
+        <div class="controls">
+            <input
+                type="text" 
+                name="ajax"
+                data-validation-ajax-ajax="test.php"
+            />
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="ajax-example-live">
+                                </div>
+                                <div class="tab-pane " id="ajax-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data-validation-ajax-ajax</td>
+                                    <td>(field name to ajax)</td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-ajax-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>'AJAX' validation failed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+               </div>
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+        <!-- javascript -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+        <script src="js/jqBootstrapValidation.js"></script>
+        <script src="js/site.js"></script>
+        <script src="js/validators.js"></script>
+        <script>
+            $("[type=submit]").jqBootstrapValidation({
+                submitSuccess: function ($seblod_form, event) {
+                    CCK_Submit = function() { 
+                        if ($j("#seblod_form").validationEngine("validate") === true) { 
+                            if ($j("#seblod_form").isStillReady() === true) { 
+                                $j("#seblod_form input[name='config[unique]']").val("seblod_form"); 
+                                Joomla.submitform("save", document.getElementById("seblod_form")); 
+                            } 
+                        } 
+                    };
+                }
+            });
+        </script>
+    </body>
+</html>
