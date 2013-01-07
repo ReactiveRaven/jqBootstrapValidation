@@ -71,25 +71,12 @@
         var $controlGroup = $($input.parents(".control-group")[0]);
         var $form = $input.parents("form").first();
         var isMulti = ($input.length > 1);
-        var values =
-            isMulti ?
-                (
-                    value.length > 0 ?
-                        (
-                            typeof value === "string" ?
-                                value.split(",") :
-                                value
-                        ) :
-                        []
-                ) :
-                [value];
-        var valueJson = JSON.stringify(values);
         
         var values;
         if (isMulti) {
             if (value.length) {
                 if (typeof value === "string") {
-                    values = value.split(",")
+                    values = value.split(",");
                 } else {
                     // is an array already, so just use it
                     values = value;
@@ -100,12 +87,13 @@
         } else {
             values = [value];
         }
+      
+        var valueJson = JSON.stringify(values);
         
 
         var valueAccepted = true;
 
         if (isMulti) {
-            console.log("Multi");
             // dealing with checkboxes, radioboxes, etc
             var $inputs = $input;
             $inputs.removeAttr("checked");
@@ -280,10 +268,11 @@
         runJQBVTest("1", ["success"], [], [], []);
         runJQBVTest("10", ["success"], [], [], []);
         runJQBVTest("-10", ["success"], [], [], []);
-        runJQBVTest("123.78364583645867935478", ["success"], [], [], []);
+        runJQBVTest("123", ["success"], [], [], []);
     });
     test('rejects invalid', 15, function() {
         runJQBVTest("123.", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
+        runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("not a number", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("--.-", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });

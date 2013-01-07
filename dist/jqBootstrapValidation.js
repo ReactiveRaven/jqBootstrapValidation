@@ -1,4 +1,4 @@
-/*! jqBootstrapValidation - v1.3.3 - 2013-01-05
+/*! jqBootstrapValidation - v1.3.3 - 2013-01-07
 * http://reactiveraven.github.com/jqBootstrapValidation
 * Copyright (c) 2013 David Godfrey; Licensed MIT */
 

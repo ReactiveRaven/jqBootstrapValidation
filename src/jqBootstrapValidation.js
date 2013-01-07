@@ -657,7 +657,7 @@
             validator.lastFinished = false;
             $.ajax({
               url: validator.url,
-              data: "value=" + value + "&field=" + $this.attr("name"),
+              data: "value=" + encodeURIComponent(value) + "&field=" + $this.attr("name"),
               dataType: "json",
               success: function (data) {
                 if (""+validator.lastValue === ""+data.value) {
@@ -795,7 +795,47 @@
 						(validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
 				},
                         blockSubmit: true
-			}
+			},
+      number: {
+        name: "number",
+        init: function ($this, name) {
+          var result = {};
+          result.step = 1;
+          if ($this.attr("step")) {
+            result.step = $this.attr("step");
+          }
+          if ($this.data("validation" + name + "Step")) {
+            result.step = $this.data("validation" + name + "Step");
+          }
+        
+          result.decimal = ".";
+          if ($this.data("validation" + name + "Decimal")) {
+            result.decimal = $this.data("validation" + name + "Decimal");
+          }
+        
+          result.thousands = "";
+          if ($this.data("validation" + name + "Thousands")) {
+            result.thousands = $this.data("validation" + name + "Thousands");
+          }
+        
+          result.regex = regexFromString("([+-]?\\d+(\\" + result.decimal + "\\d+)?)?");
+                  
+          return result;
+        },
+        validate: function ($this, value, validator) {
+          var multipliedValue = parseFloat(value);
+          var multipliedStep = parseFloat(validator.step);
+          while (multipliedStep % 1 !== 0) {
+            multipliedStep *= 10;
+            multipliedValue *= 10;
+          }
+          var regexResult = validator.regex.test(value);
+          var stepResult = parseFloat(multipliedValue) % parseFloat(multipliedStep) === 0;
+          var typeResult = !isNaN(parseFloat(value)) && isFinite(value);
+          var result = !(regexResult && stepResult && typeResult);
+          return result;
+        }
+      }
 		},
 		builtInValidators: {
 			email: {
@@ -824,14 +864,6 @@
 				name: "Negative",
 				type: "shortcut",
 				shortcut: "number,negativenumber"
-			},
-			number: {
-				name: "Number",
-				type: "regex",
-				regex: "([+-]?\\d+(\\.\\d+)?([eE][+-]?[0-9]+)?)?",
-				message: "Must be a number<!-- data-validator-number-message to override -->",
-                step: 1,
-                decimal: "."
 			},
 			integer: {
 				name: "Integer",
