@@ -101,11 +101,12 @@
           // *snort sniff snuffle*
 
           if (settings.options.sniffHtml) {
+            var message;
             // ---------------------------------------------------------
             //                                                   PATTERN
             // ---------------------------------------------------------
             if ($this.attr("pattern") !== undefined) {
-              var message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
+              message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
               if ($this.data("validationPatternMessage")) {
                 message = $this.data("validationPatternMessage");
               }
@@ -117,7 +118,7 @@
             // ---------------------------------------------------------
             if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
               var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-              var message = "Too high: Maximum of '" + max + "'<!-- data-validation-max-message to override -->";
+              message = "Too high: Maximum of '" + max + "'<!-- data-validation-max-message to override -->";
               if ($this.data("validationMaxMessage")) {
                 message = $this.data("validationMaxMessage");
               }
@@ -129,7 +130,7 @@
             // ---------------------------------------------------------
             if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
               var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-              var message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
+              message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
               if ($this.data("validationMinMessage")) {
                 message = $this.data("validationMinMessage");
               }
@@ -140,7 +141,7 @@
             //                                                 MAXLENGTH
             // ---------------------------------------------------------
             if ($this.attr("maxlength") !== undefined) {
-              var message = "Too long: Maximum of '" + $this.attr("maxlength") + "' characters<!-- data-validation-maxlength-message to override -->";
+              message = "Too long: Maximum of '" + $this.attr("maxlength") + "' characters<!-- data-validation-maxlength-message to override -->";
               if ($this.data("validationMaxlengthMessage")) {
                 message = $this.data("validationMaxlengthMessage");
               }
@@ -151,7 +152,7 @@
             //                                                 MINLENGTH
             // ---------------------------------------------------------
             if ($this.attr("minlength") !== undefined) {
-              var message = "Too short: Minimum of '" + $this.attr("minlength") + "' characters<!-- data-validation-minlength-message to override -->";
+              message = "Too short: Minimum of '" + $this.attr("minlength") + "' characters<!-- data-validation-minlength-message to override -->";
               if ($this.data("validationMinlengthMessage")) {
                 message = $this.data("validationMinlengthMessage");
               }
@@ -162,7 +163,7 @@
             //                                                  REQUIRED
             // ---------------------------------------------------------
             if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
-              var message = settings.builtInValidators.required.message;
+              message = settings.builtInValidators.required.message;
               if ($this.data("validationRequiredMessage")) {
                 message = $this.data("validationRequiredMessage");
               }
@@ -172,17 +173,29 @@
             //                                                    NUMBER
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
-              var message = settings.builtInValidators.number.message;
+              message = settings.builtInValidators.number.message;
               if ($this.data("validationNumberMessage")) {
                 message = $this.data("validationNumberMessage");
               }
               $this.data("validationNumberMessage", message);
+              
+              var step = settings.builtInValidators.number.step;
+              if ($this.data("validationNumberStep")) {
+                  step = $this.data("validationNumberStep");
+              }
+              $this.data("validationNumberStep", step);
+              
+              var decimal = settings.builtInValidators.number.decimal;
+              if ($this.data("validationNumberDecimal")) {
+                  decimal = $this.data("validationNumberDecimal");
+              }
+              $this.data("validationNumberDecimal", decimal);
             }
             // ---------------------------------------------------------
             //                                                     EMAIL
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-              var message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
+              message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
               if ($this.data("validationValidemailMessage")) {
                 message = $this.data("validationValidemailMessage");
               } else if ($this.data("validationEmailMessage")) {
@@ -194,7 +207,7 @@
             //                                                MINCHECKED
             // ---------------------------------------------------------
             if ($this.attr("minchecked") !== undefined) {
-              var message = "Not enough options checked; Minimum of '" + $this.attr("minchecked") + "' required<!-- data-validation-minchecked-message to override -->";
+              message = "Not enough options checked; Minimum of '" + $this.attr("minchecked") + "' required<!-- data-validation-minchecked-message to override -->";
               if ($this.data("validationMincheckedMessage")) {
                 message = $this.data("validationMincheckedMessage");
               }
@@ -205,7 +218,7 @@
             //                                                MAXCHECKED
             // ---------------------------------------------------------
             if ($this.attr("maxchecked") !== undefined) {
-              var message = "Too many options checked; Maximum of '" + $this.attr("maxchecked") + "' required<!-- data-validation-maxchecked-message to override -->";
+              message = "Too many options checked; Maximum of '" + $this.attr("maxchecked") + "' required<!-- data-validation-maxchecked-message to override -->";
               if ($this.data("validationMaxcheckedMessage")) {
                 message = $this.data("validationMaxcheckedMessage");
               }
@@ -237,43 +250,47 @@
 
           var validatorNamesToInspect = validatorNames;
           var newValidatorNamesToInspect = [];
+          
+          var uppercaseEachValidatorName = function (i, el) {
+            validatorNames[i] = formatValidatorName(el);
+          };
+      
+          var inspectValidators = function(i, el) {
+            if ($this.data("validation" + el + "Shortcut") !== undefined) {
+              // Are these custom validators?
+              // Pull them out!
+              $.each($this.data("validation" + el + "Shortcut").split(","), function(i2, el2) {
+                newValidatorNamesToInspect.push(el2);
+              });
+            } else if (settings.builtInValidators[el.toLowerCase()]) {
+              // Is this a recognised built-in?
+              // Pull it out!
+              var validator = settings.builtInValidators[el.toLowerCase()];
+              if (validator.type.toLowerCase() === "shortcut") {
+                $.each(validator.shortcut.split(","), function (i, el) {
+                  el = formatValidatorName(el);
+                  newValidatorNamesToInspect.push(el);
+                  validatorNames.push(el);
+                });
+              }
+            }
+          };
 
           do // repeatedly expand 'shortcut' validators into their real validators
           {
             // Uppercase only the first letter of each name
-            $.each(validatorNames, function (i, el) {
-              validatorNames[i] = formatValidatorName(el);
-            });
+            $.each(validatorNames, uppercaseEachValidatorName);
 
             // Remove duplicate validator names
             validatorNames = $.unique(validatorNames);
 
             // Pull out the new validator names from each shortcut
             newValidatorNamesToInspect = [];
-            $.each(validatorNamesToInspect, function(i, el) {
-              if ($this.data("validation" + el + "Shortcut") !== undefined) {
-                // Are these custom validators?
-                // Pull them out!
-                $.each($this.data("validation" + el + "Shortcut").split(","), function(i2, el2) {
-                  newValidatorNamesToInspect.push(el2);
-                });
-              } else if (settings.builtInValidators[el.toLowerCase()]) {
-                // Is this a recognised built-in?
-                // Pull it out!
-                var validator = settings.builtInValidators[el.toLowerCase()];
-                if (validator.type.toLowerCase() === "shortcut") {
-                  $.each(validator.shortcut.split(","), function (i, el) {
-                    el = formatValidatorName(el);
-                    newValidatorNamesToInspect.push(el);
-                    validatorNames.push(el);
-                  });
-                }
-              }
-            });
+            $.each(validatorNamesToInspect, inspectValidators);
 
             validatorNamesToInspect = newValidatorNamesToInspect;
 
-          } while (validatorNamesToInspect.length > 0)
+          } while (validatorNamesToInspect.length > 0);
 
           // =============================================================
           //                                       SET UP VALIDATOR ARRAYS
@@ -288,9 +305,9 @@
             var foundValidator = false;
             message =
               (
-                message
-                  ? message
-                  : "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
+                message ? 
+                  message :
+                  "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
               )
             ;
 
@@ -360,36 +377,36 @@
           $helpBlock.data(
             "original-contents",
             (
-              $helpBlock.data("original-contents")
-                ? $helpBlock.data("original-contents")
-                : $helpBlock.html()
+              $helpBlock.data("original-contents") ?
+                $helpBlock.data("original-contents") : 
+                $helpBlock.html()
             )
           );
 
           $helpBlock.data(
             "original-role",
             (
-              $helpBlock.data("original-role")
-                ? $helpBlock.data("original-role")
-                : $helpBlock.attr("role")
+              $helpBlock.data("original-role") ?
+                $helpBlock.data("original-role") :
+                $helpBlock.attr("role")
             )
           );
 
           $controlGroup.data(
             "original-classes",
             (
-              $controlGroup.data("original-clases")
-                ? $controlGroup.data("original-classes")
-                : $controlGroup.attr("class")
+              $controlGroup.data("original-clases") ?
+                $controlGroup.data("original-classes") :
+                $controlGroup.attr("class")
             )
           );
 
           $this.data(
             "original-aria-invalid",
             (
-              $this.data("original-aria-invalid")
-                ? $this.data("original-aria-invalid")
-                : $this.attr("aria-invalid")
+              $this.data("original-aria-invalid") ?
+                $this.data("original-aria-invalid") :
+                $this.attr("aria-invalid")
             )
           );
 
@@ -679,8 +696,8 @@
 					return {regex: regexFromString($this.data("validation" + name + "Regex"))};
 				},
 				validate: function ($this, value, validator) {
-					return (!validator.regex.test(value) && ! validator.negative)
-						|| (validator.regex.test(value) && validator.negative);
+					return (!validator.regex.test(value) && ! validator.negative) || 
+						(validator.regex.test(value) && validator.negative);
 				}
 			},
 			required: {
@@ -689,10 +706,10 @@
 					return {};
 				},
 				validate: function ($this, value, validator) {
-					return !!(value.length === 0  && ! validator.negative)
-						|| !!(value.length > 0 && validator.negative);
+					return !!(value.length === 0  && ! validator.negative) ||
+						!!(value.length > 0 && validator.negative);
 				},
-        blockSubmit: true
+                        blockSubmit: true
 			},
 			match: {
 				name: "match",
@@ -704,10 +721,10 @@
 					return {"element": element};
 				},
 				validate: function ($this, value, validator) {
-					return (value !== validator.element.val() && ! validator.negative)
-						|| (value === validator.element.val() && validator.negative);
+					return (value !== validator.element.val() && ! validator.negative) || 
+						(value === validator.element.val() && validator.negative);
 				},
-        blockSubmit: true
+                        blockSubmit: true
 			},
 			max: {
 				name: "max",
@@ -715,8 +732,8 @@
 					return {max: $this.data("validation" + name + "Max")};
 				},
 				validate: function ($this, value, validator) {
-					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative)
-						|| (parseFloat(value, 10) <= parseFloat(validator.max, 10) && validator.negative);
+					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative) ||
+						(parseFloat(value, 10) <= parseFloat(validator.max, 10) && validator.negative);
 				}
 			},
 			min: {
@@ -725,8 +742,8 @@
 					return {min: $this.data("validation" + name + "Min")};
 				},
 				validate: function ($this, value, validator) {
-					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative)
-						|| (parseFloat(value) >= parseFloat(validator.min) && validator.negative);
+					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative) ||
+						(parseFloat(value) >= parseFloat(validator.min) && validator.negative);
 				}
 			},
 			maxlength: {
@@ -735,8 +752,8 @@
 					return {maxlength: $this.data("validation" + name + "Maxlength")};
 				},
 				validate: function ($this, value, validator) {
-					return ((value.length > validator.maxlength) && ! validator.negative)
-						|| ((value.length <= validator.maxlength) && validator.negative);
+					return ((value.length > validator.maxlength) && ! validator.negative) ||
+						((value.length <= validator.maxlength) && validator.negative);
 				}
 			},
 			minlength: {
@@ -745,8 +762,8 @@
 					return {minlength: $this.data("validation" + name + "Minlength")};
 				},
 				validate: function ($this, value, validator) {
-					return ((value.length < validator.minlength) && ! validator.negative)
-						|| ((value.length >= validator.minlength) && validator.negative);
+					return ((value.length < validator.minlength) && ! validator.negative) ||
+						((value.length >= validator.minlength) && validator.negative);
 				}
 			},
 			maxchecked: {
@@ -759,10 +776,10 @@
 					return {maxchecked: $this.data("validation" + name + "Maxchecked"), elements: elements};
 				},
 				validate: function ($this, value, validator) {
-					return (validator.elements.filter(":checked").length > validator.maxchecked && ! validator.negative)
-						|| (validator.elements.filter(":checked").length <= validator.maxchecked && validator.negative);
+					return (validator.elements.filter(":checked").length > validator.maxchecked && ! validator.negative) ||
+						(validator.elements.filter(":checked").length <= validator.maxchecked && validator.negative);
 				},
-        blockSubmit: true
+                        blockSubmit: true
 			},
 			minchecked: {
 				name: "minchecked",
@@ -774,10 +791,10 @@
 					return {minchecked: $this.data("validation" + name + "Minchecked"), elements: elements};
 				},
 				validate: function ($this, value, validator) {
-					return (validator.elements.filter(":checked").length < validator.minchecked && ! validator.negative)
-						|| (validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
+					return (validator.elements.filter(":checked").length < validator.minchecked && ! validator.negative) ||
+						(validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
 				},
-        blockSubmit: true
+                        blockSubmit: true
 			}
 		},
 		builtInValidators: {
@@ -789,7 +806,7 @@
 			validemail: {
 				name: "Validemail",
 				type: "regex",
-				regex: "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\.[A-Za-z]{2,4}",
+				regex: "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}",
 				message: "Not a valid email address<!-- data-validator-validemail-message to override -->"
 			},
 			passwordagain: {
@@ -811,13 +828,15 @@
 			number: {
 				name: "Number",
 				type: "regex",
-				regex: "([+-]?\\\d+(\\\.\\\d*)?([eE][+-]?[0-9]+)?)?",
-				message: "Must be a number<!-- data-validator-number-message to override -->"
+				regex: "([+-]?\\d+(\\.\\d+)?([eE][+-]?[0-9]+)?)?",
+				message: "Must be a number<!-- data-validator-number-message to override -->",
+                step: 1,
+                decimal: "."
 			},
 			integer: {
 				name: "Integer",
 				type: "regex",
-				regex: "[+-]?\\\d+",
+				regex: "[+-]?\\d+",
 				message: "No decimal places allowed<!-- data-validator-integer-message to override -->"
 			},
 			positivenumber: {
