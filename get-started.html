@@ -93,9 +93,8 @@
                     <h2 id="usage">Usage</h2>
                     <p>
                         jqBootstrapValidation uses the HTML5 validators like 
-                        'required' 
-                        automatically, but the default error messages are pretty 
-                        uninspiring, so you'll likely want to change them.
+                        'required' automatically, but the default error 
+                        messages are quite basic.
                     </p>
                     <p>
                         Heres how to set the error message for a required field:
@@ -108,34 +107,22 @@
     data-validation-required-message="Please enter your username"
 &gt;</pre>
                     <p>
-                        Thats a pretty long attribute there, so lets break it 
-                        down:
+                        Thats a pretty long attribute, so lets break it down:
                     </p>
                     <ul>
                         <li>
-                            <span class="badge badge-important">data</span> is the prefix for 
-                            <a href="http://ejohn.org/blog/html-5-data-attributes/" target="_blank">data attributes</a> 
-                            to stop them interfering with other HTML attributes 
-                            like 'class' or 'type'
+                            <span class="badge badge-info">data-validation</span> is jqBootstrapValidation's prefix, to show we're talking
+                            about validation. We're using 
+                            <a href="http://ejohn.org/blog/html-5-data-attributes/" target="_blank">data attributes</a> here.
                         </li>
                         <li>
-                            <span class="badge badge-warning">validation</span> is jqBootstrapValidation's prefix, to show we're talking
-                            about validation
-                        </li>
-                        <li>
-                            <span class="badge badge-success">required</span> is the name of the validator
+                            <span class="badge badge-info">required</span> is the name of the validator (same as the attribute, for html5 based validators)
                         </li>
                         <li>
                             <span class="badge badge-info">message</span> is the name of a variable to pass to the 
                             validator, in this case the error message
                         </li>
                     </ul>
-                    <p>
-                        For HTML5 built-ins, the 'name' of the validator is the same as the HTML5 attribute.
-                    </p>
-                    <p>
-                        For the extra validators, you choose the name yourself.
-                    </p>
                     <!-- TODO: highlight using multiple of same validator with different names -->
                </div>
             </div> <!-- /row -->

@@ -9,6 +9,10 @@
  */
 
 // TODO: remove 'negative's from validators
+// TODO: I18N messages
+// TODO: Simplify initiator to just validate entire forms
+// TODO: remove 'blocksubmit'
+// TODO: make 'destroy' work properly on the forms
 
 (function($) {
 
@@ -53,9 +57,7 @@
                     $inputs.each(function(i, el) {
                         var $this = $(el),
                             $controlGroup = $this.parents(".control-group").first();
-                        if (
-                            $controlGroup.hasClass("warning")
-                            ) {
+                        if ($controlGroup.hasClass("warning")) {
                             $controlGroup.removeClass("warning").addClass("error");
                             warningsFound++;
                         }
@@ -292,9 +294,12 @@
                             (
                                 message
                                 ? message
-                                : "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
+                                : (
+                                    settings.builtInValidators[el.toLowerCase()] && settings.builtInValidators[el.toLowerCase()].message
+                                    ? settings.builtInValidators[el.toLowerCase()].message
+                                    : "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
                                 )
-                            ;
+                            );
 
                         $.each(
                             settings.validatorTypes,
@@ -409,7 +414,19 @@
                             var errorsFound = [];
 
                             $.each(validators, function(validatorType, validatorTypeArray) {
-                                if (value || value.length || (params && params.includeEmpty) || (!!settings.validatorTypes[validatorType].blockSubmit && params && !!params.submitting)) {
+                                if (
+                                    value 
+                                    || value.length 
+                                    || (
+                                        params 
+                                        && params.includeEmpty
+                                    )
+                                    || (
+                                        !!settings.validatorTypes[validatorType].blockSubmit 
+                                        && params 
+                                        && !!params.submitting
+                                    )
+                                ) {
                                     $.each(validatorTypeArray, function(i, validator) {
                                         if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                                             errorsFound.push(validator.message);
@@ -488,7 +505,7 @@
                                 }
                             } else {
                                 $controlGroup.removeClass("warning error success");
-                                if (value.length > 0) {
+                                if (value.length > 0 || (params && params.includeEmpty)) {
                                     $controlGroup.addClass("success");
                                 }
                                 $helpBlock.html($helpBlock.data("original-contents"));
@@ -761,10 +778,21 @@
             maxchecked: {
                 name: "maxchecked",
                 init: function($this, name) {
-                    var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
-                    elements.bind("click.validation", function() {
-                        $this.trigger("change.validation", {includeEmpty: true});
-                    });
+                    var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]").not($this);
+                    elements.bind(
+                        [
+                            "keyup",
+                            "focus",
+                            "blur",
+                            "click",
+                            "keydown",
+                            "keypress",
+                            "change"
+                        ].join(".validation ") + ".validation", 
+                        function() {
+                            $this.trigger("change.validation", {includeEmpty: true});
+                        }
+                    );
                     return {maxchecked: $this.data("validation" + name + "Maxchecked"), elements: elements};
                 },
                 validate: function($this, value, validator) {
@@ -820,7 +848,7 @@
             number: {
                 name: "Number",
                 type: "regex",
-                regex: "([+-]?\\\d+(\\\.\\\d*)?([eE][+-]?[0-9]+)?)?",
+                regex: "([+-]?\\\d+(\\\.\\\d+)?([eE][+-]?[0-9]+)?)?",
                 message: "Must be a number<!-- data-validator-number-message to override -->"
             },
             integer: {
@@ -872,10 +900,15 @@
         var value = $this.val();
         var type = $this.attr("type");
         if (type === "checkbox") {
-            value = ($this.is(":checked") ? value : "");
+            var $form = $this.parents("form").first();
+            var $checked = $form.find("input[name=\"" + $this.attr("name") + "\"]:checked");
+            value = $checked.map(function () { return $(this).val(); }).toArray();
+            //value = ($this.is(":checked") ? value : "");
         }
         if (type === "radio") {
-            value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? value : "");
+            var $form = $this.parents("form").first();
+            var $checked = $form.find("input[name=\"" + $this.attr("name") + "\"]:checked");
+            value = ($checked.length > 0 ? value : "");
         }
         return value;
     };

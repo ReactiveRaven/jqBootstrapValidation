@@ -774,6 +774,95 @@
                     
                     
                     
+                    <section id="maxchecked">
+                        <h2>Max Checked</h2>
+                        <p>Limits the number of options that can be checked</p>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#maxchecked-example-live" data-toggle="tab">Live</a></li>
+                                <li><a href="#maxchecked-example-code" data-toggle="tab">Code</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="maxchecked-example-text">
+                                    <textarea>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">Select two colours</label>
+        <div class="controls">
+            <label class="checkbox">
+                <input 
+                  type="checkbox" 
+                  name="some_field[]" 
+                  data-validation-maxchecked-maxchecked="2" 
+                  data-validation-maxchecked-messagee="Don't be greedy!" 
+                  value="red"
+                /> Red
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="orange" /> Orange
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="yellow" /> Yellow
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="green" /> Green
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="blue" /> Blue
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="indigo" /> Indigo
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="some_field[]" value="violet" /> Violet
+            </label>
+            <p class="help-block"></p>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            Test Validation <i class="icon-ok icon-white"></i>
+        </button>
+    </div>
+</form>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane active" id="maxchecked-example-live">
+                                </div>
+                                <div class="tab-pane " id="maxchecked-example-code">
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                    <th>Req?</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>data-validation-maxchecked-maxchecked</td>
+                                    <td>(max number you want checked)</td>
+                                    <td><i class="icon-ok"></i></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>data-validation-maxchecked-message</td>
+                                    <td>
+                                        (your failure message)
+                                    </td>
+                                    <td></td>
+                                    <td>'Maxchecked' validation failed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    
+                    
                     <section id="ajax">
                         <h2>AJAX</h2>
                         <p>Checks the value of a field with a server-side script</p>
@@ -852,19 +941,6 @@
         <script src="js/jqBootstrapValidation.js"></script>
         <script src="js/site.js"></script>
         <script src="js/validators.js"></script>
-        <script>
-            $("[type=submit]").jqBootstrapValidation({
-                submitSuccess: function ($seblod_form, event) {
-                    CCK_Submit = function() { 
-                        if ($j("#seblod_form").validationEngine("validate") === true) { 
-                            if ($j("#seblod_form").isStillReady() === true) { 
-                                $j("#seblod_form input[name='config[unique]']").val("seblod_form"); 
-                                Joomla.submitform("save", document.getElementById("seblod_form")); 
-                            } 
-                        } 
-                    };
-                }
-            });
-        </script>
+        <script src="js/fixLeftnavbar.js"></script>
     </body>
 </html>

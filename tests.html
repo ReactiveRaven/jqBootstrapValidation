@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jqBootstrapValidation, by ReactiveRaven</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Getting started with jqBootstrapValidation, the jQuery plugin for validating forms that use Bootstrap markup.">
+        <meta name="author" content="David Godfrey, reactiveraven@gmail.com">
+        <!-- Basics lovingly stolen from Bootstrap -->
+
+        <!-- styles -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="css/prettify_bootstrap.css" rel="stylesheet">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body id="getstarted">
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">jq<span></span>Bootstrap<span></span>Validation</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/get-started.html">Get started</a></li>
+                            <li><a href="/validators.html">Validators</a></li>
+                            <li><a href="/options.html">Options</a></li>
+                            <li><a href="/extending.html">Extend</a></li>
+                            <li><a href="/help.html">Help</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="hero-unit">
+                <h1 class="hidden-phone">Tests</h1>
+                <p>Tests to make sure it works!</p>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span3">
+                    <ul class="nav-list nav well well-small affix-top" data-offset-top="161" data-spy="affix" id="leftnavbar">
+                        <li class="nav-header">HTML5 based</li>
+                        <li class="active"><a href="#email">Email</a></li>
+                        <li><a href="#number">Number</a></li>
+                        <li><a href="#url">Url</a></li>
+                        <li><a href="#required">Required</a></li>
+                        <li><a href="#max">Max</a></li>
+                        <li><a href="#min">Min</a></li>
+                        <li><a href="#maxlength">Max length</a></li>
+                        <li><a href="#minlength">Min length</a></li>
+                        <li><a href="#pattern">Pattern</a></li>
+                        <li class="nav-header">Extras</li>
+                        <li><a href="#match">Match</a></li>
+                        <li><a href="#maxchecked">Max checked</a></li>
+                        <li><a href="#minchecked">Min checked</a></li>
+                        <li><a href="#regex">Regex</a></li>
+                        <li><a href="#callback">Callback</a></li>
+                        <li><a href="#ajax">AJAX</a></li>
+                        <li class="nav-header">Build your own</li>
+                        <li><a href="#mix">Mix and multiply</a></li>
+                    </ul>
+                </div>
+                <div class="span9">
+                    
+                    <section id="email">
+                        <h2>Email</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Email address</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-email-email="email"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>not an email</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not a valid email address</td>
+                                        <td>Not a valid email address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test@example.com</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Email address</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="email"
+                                            name="input"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>not an email</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not a valid email address</td>
+                                        <td>Not a valid email address</td>
+                                    </tr>
+                                    <tr>
+                                        <td>test@example.com</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="number">
+                        <h2>Number</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Number</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-number-number="number"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>not a number</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be a number</td>
+                                        <td>Must be a number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be a number</td>
+                                        <td>Must be a number</td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.502848287582587</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123e10</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Number</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="number"
+                                            name="input"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.45e10</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Step</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Two Decimal Places</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="number"
+                                            name="input"
+                                            step="0.01"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.45</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.456</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be in steps of '0.01'</td>
+                                        <td>Must be in steps of '0.01'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Comma Decimal Format</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">German currency format</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-number-number="true"
+                                            data-validation-number-step="0.01"
+                                            data-validation-number-decimal=","
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123,45</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123,456</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be in steps of '0,01'</td>
+                                        <td>Must be in steps of '0,01'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    <!--
+                    <section id="url">
+                        <h2>Url</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Url</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-url-url="url"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>not a url</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be a url</td>
+                                        <td>Must be a url</td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be a url</td>
+                                        <td>Must be a url</td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.502848287582587</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123e10</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Url</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="url"
+                                            name="input"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.45e10</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Step</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Two Decimal Places</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="url"
+                                            name="input"
+                                            step="0.01"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.45</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123.456</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must be in steps of '0.01'</td>
+                                        <td>Must be in steps of '0.01'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    -->
+                    
+                    <section id="required">
+                        <h2>Required</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Required</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-required-required="required"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>error</td>
+                                        <td></td>
+                                        <td>This is required</td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Number</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            required
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>error</td>
+                                        <td></td>
+                                        <td>This is required</td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="max">
+                        <h2>Max</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Percent</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-max-max="100"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>100</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>101</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too high: Maximum of '100'</td>
+                                        <td>Too high: Maximum of '100'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Number</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            max="100"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>100</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>101</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too high: Maximum of '100'</td>
+                                        <td>Too high: Maximum of '100'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="min">
+                        <h2>Min</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Percent</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-min-min="0"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>100</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>-100</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too low: Minimum of '0'</td>
+                                        <td>Too low: Minimum of '0'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Number</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            min="0"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>any text</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>0</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>100</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>-100</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too low: Minimum of '0'</td>
+                                        <td>Too low: Minimum of '0'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="maxlength">
+                        <h2>Max Length</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-maxlength-maxlength="3"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1234</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>abcd</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            maxlength="3"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>1234</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>abcd</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                        <td>Too long: Maximum of '3' characters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="minlength">
+                        <h2>Min Length</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-minlength-minlength="3"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ab</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            minlength="3"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>123</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ab</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                        <td>Too short: Minimum of '3' characters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="pattern">
+                        <h2>Pattern</h2>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            pattern="[A-Z]*"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ABC</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format</td>
+                                        <td>Not in the expected format</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format</td>
+                                        <td>Not in the expected format</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="pattern">
+                        <h2>Pattern</h2>
+                        <article>
+                            <h3>Sniffed</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            pattern="[A-Z]*"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ABC</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>abc</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format</td>
+                                        <td>Not in the expected format</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format</td>
+                                        <td>Not in the expected format</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="match">
+                        <h2>Match</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="other" class="control-label">Other</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="other"
+                                            value="specific value"
+                                            disabled
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-match-match="other"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>error</td>
+                                        <td></td>
+                                        <td>Must match 'Other'</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Specific vALuE</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must match 'Other'</td>
+                                        <td>Must match 'Other'</td>
+                                    </tr>
+                                    <tr>
+                                        <td>specific value</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Fors missing</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label class="control-label">Other</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="other"
+                                            value="specific value"
+                                            disabled
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-match-match="other"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>error</td>
+                                        <td></td>
+                                        <td>Must match 'Other'</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Specific vALuE</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must match 'Other'</td>
+                                        <td>Must match 'Other'</td>
+                                    </tr>
+                                    <tr>
+                                        <td>specific value</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                        <article>
+                            <h3>Missing Label</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="other"
+                                            value="specific value"
+                                            disabled
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">Input</label>
+                                    <div class="controls">
+
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-match-match="other"
+                                        />
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>error</td>
+                                        <td></td>
+                                        <td>Must match</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Specific vALuE</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Must match</td>
+                                        <td>Must match</td>
+                                    </tr>
+                                    <tr>
+                                        <td>specific value</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="maxchecked">
+                        <h2>Max Checked</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Choose Three</label>
+                                    <div class="controls">
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="red"
+                                                data-validation-maxchecked-maxchecked="3"
+                                            />
+                                            Red
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="orange"
+                                            />
+                                            Orange
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="yellow"
+                                            />
+                                            Yellow
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="green"
+                                            />
+                                            Green
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="blue"
+                                            />
+                                            Blue
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="indigo"
+                                            />
+                                            Indigo
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="violet"
+                                            />
+                                            Violet
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,yellow,blue</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,orange,yellow</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,yellow,blue,violet</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too many: Max '3' checked</td>
+                                        <td>Too many: Max '3' checked</td>
+                                    </tr>
+                                    <tr>
+                                        <td>orange,yellow,green,blue</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too many: Max '3' checked</td>
+                                        <td>Too many: Max '3' checked</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="minchecked">
+                        <h2>Min Checked</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Choose Three</label>
+                                    <div class="controls">
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="red"
+                                                data-validation-minchecked-minchecked="3"
+                                            />
+                                            Red
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="orange"
+                                            />
+                                            Orange
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="yellow"
+                                            />
+                                            Yellow
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="green"
+                                            />
+                                            Green
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="blue"
+                                            />
+                                            Blue
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="indigo"
+                                            />
+                                            Indigo
+                                        </label>
+                                        <label class="checkbox">
+                                            <input
+                                                type="checkbox"
+                                                name="input"
+                                                value="violet"
+                                            />
+                                            Violet
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too few: Min '3' checked</td>
+                                        <td>Too few: Min '3' checked</td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,yellow,blue</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,orange,yellow</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>red,yellow</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too few: Min '3' checked</td>
+                                        <td>Too few: Min '3' checked</td>
+                                    </tr>
+                                    <tr>
+                                        <td>orange,yellow</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Too few: Min '3' checked</td>
+                                        <td>Too few: Min '3' checked</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="regex">
+                        <h2>Regex</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Capital letters</label>
+                                    <div class="controls">
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-regex-regex="[A-Z]*"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>letters</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format.</td>
+                                        <td>Not in the expected format.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Not in the expected format.</td>
+                                        <td>Not in the expected format.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LETTERS</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="callback">
+                        <h2>Callback</h2>
+                        <article>
+                            <script>
+                                function test_callback_function($el, value, callback) {
+                                    callback({
+                                        value: value,
+                                        valid: /^[A-Z]*$/.test(value),
+                                        message: "Capital letters only"
+                                    });
+                                }
+                            </script>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Capital letters</label>
+                                    <div class="controls">
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-callback-callback="test_callback_function"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>letters</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Capital letters only</td>
+                                        <td>Capital letters only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Capital letters only</td>
+                                        <td>Capital letters only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LETTERS</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="ajax">
+                        <h2>AJAX</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Capital letters</label>
+                                    <div class="controls">
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            data-validation-ajax-ajax="test.php"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>letters</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Capital letters only</td>
+                                        <td>Capital letters only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12345</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>Capital letters only</td>
+                                        <td>Capital letters only</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LETTERS</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+                    <section id="mix">
+                        <h2>Mix and Multiply</h2>
+                        <article>
+                            <h3>Basic</h3>
+                            <form class="form-horizontal" novalidate>
+                                <div class="control-group">
+                                    <label for="input" class="control-label">Password</label>
+                                    <div class="controls">
+                                        <input
+                                            type="text"
+                                            name="input"
+                                            maxlength="16"
+                                            minlength="8"
+                                            data-validation-number-regex=".*[0-9].*"
+                                            data-validation-number-message="Must contain a number"
+                                            data-validation-capital-regex=".*[A-Z].*"
+                                            data-validation-capital-message="Must contain a capital letter"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        Test Validation <i class="icon-ok icon-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Value</th>
+                                        <th>Class On Change</th>
+                                        <th>Class On Submit</th>
+                                        <th>Message On Change</th>
+                                        <th>Message On Submit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>internationalisation</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a number</li>
+                                                <li>Must contain a capital letter</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a number</li>
+                                                <li>Must contain a capital letter</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Internationalisation</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a number</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a number</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>1nternationalisation</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a capital letter</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                                <li>Must contain a capital letter</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>In73rn4710n4l154710n</td>
+                                        <td>warning</td>
+                                        <td>error</td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li>Too long: Maximum of '16' characters</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>In73rn4710n4l</td>
+                                        <td>success</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </section>
+                    
+                    
+               </div>
+            </div> <!-- /row -->
+
+        </div> <!-- /container -->
+
+        <!-- javascript -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.2/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+        <script src="js/jqBootstrapValidation_live.js"></script>
+        <script src="js/fixLeftnavbar.js"></script>
+        <script>
+$(function () {
+    
+    $("#leftnavbar a").each(function (i, el) {
+        $(el).append(' <span class="badge badge-success" title="ok">0</span><span class="badge badge-important" title="error">0</span><span class="badge badge-warning" title="skipped">0</span><span class="badge badge-info">Test not run</span>').find(".badge-important, .badge-success, .badge-warning").hide();
+    });
+    
+    $("input,textarea,select").not("[type=image],[type=submit]").jqBootstrapValidation(
+        {
+            preventSubmit: true,
+            submitError: function($form, event, errors) {
+                // Here I do nothing, but you could do something like display 
+                // the error messages to the user, log, etc.
+            },
+            submitSuccess: function($form, event) {
+                event.preventDefault();
+            }
+        }
+    );
+    
+    function importFromTd($td) {
+        
+        // Handle single items simply
+        var result = $td.text();
+        if (result.length > 0) {
+            result = [ result ];
+        } else {
+            // literally nothing there? Guess it should be empty.
+            result = [];
+        }
+    
+        // if multiple items, expect them in a list
+        if ($td.find("ul,ol").length) {
+            result = $td.find("ol,ul").first().find("li").map(function (i, el) { return $(el).text(); }).toArray();
+        }
+    
+        return result;
+    }
+    
+    function arraysMatch(first, second) {
+        return (
+            $(first).not(second).length === 0 
+            && $(second).not(first).length === 0
+        );
+    }
+
+    function generateResult(expectedArray, actualArray) {
+        
+        var expectedList = "<ol><li>" + expectedArray.join("</li><li>") + "</li></ol>";
+        if (expectedArray.length === 0) {
+            expectedList = "";
+        }
+        var actualList = "<ol><li>" + actualArray.join("</li><li>") + "</li></ol>";
+        if (actualArray.length === 0) {
+            actualList = "";
+        }
+    
+        if (expectedArray.length > 1 || actualArray.length > 1) {
+    
+            var missingArray = $(expectedArray).not(actualArray).toArray();
+            var missingList = "<ol><li>" + missingArray.join("</li><li>") + "</li></ol>";
+            if (missingArray.length === 0) {
+                missingList = "";
+            }
+
+            var addedArray = $(actualArray).not(expectedArray).toArray();
+            var addedList = "<ol><li>" + addedArray.join("</li><li>") + "</li></ol>";
+            if (addedArray.length === 0) {
+                addedList = "";
+            }
+
+            return $("<dl><dt>Expected</dt><dd>" + expectedList + "</dd><dt>Actual</dt><dd>" + actualList + "</dd><dt>Missing</dt><dd>" + missingList + "</dd><dt>Added</dt><dd>" + addedList + "</dd></dl>");
+
+        } else {
+            return $("<dl><dt>Expected</dt><dd>" + expectedList + "</dd><dt>Actual</dt><dd>" + actualList + "</dd></dl>");
+        }
+    }
+    
+    $("section").each(function () {
+        var $section = $(this);
+        setTimeout(function () {
+            $section.find("article").each(function () {
+                var $article = $(this);
+                var $form = $article.find("form");
+                var $table = $article.find("table");
+                var $tbody = $table.find("tbody");
+                var $input = $form.find("[name=input],[name=\"input[]\"]");
+                var $controlGroup = $input.parents(".control-group").first();
+                var $trs = $tbody.find("tr");
+                $trs.each(function () {
+                    var $tr = $(this);
+                    var $value = $($tr.find("td")[0]);
+                    var $classChange = $($tr.find("td")[1]);
+                    var $classSubmit = $($tr.find("td")[2]);
+                    var $messageChange = $($tr.find("td")[3]);
+                    var $messageSubmit = $($tr.find("td")[4]);
+                    var isMulti = ($input.length > 1);
+                    var values = (
+                        isMulti
+                            ? (
+                                $value.text().length > 0 
+                                    ? $value.text().split(",") 
+                                    : []
+                            )
+                            : [$value.text()]
+                    );
+
+                    var valueAccepted = true;
+
+                    if (isMulti) {
+                        // dealing with checkboxes, radioboxes, etc
+                        var $inputs = $input;
+                        $inputs.removeAttr("checked");
+                        $(values).each(function (i, el) {
+                            var $curInput = $inputs.filter("[value=\"" + el + "\"]");
+
+                            if ($curInput.length === 0) {
+                                valueAccepted = false;
+                            } else {
+                                $curInput.attr("checked", "checked");
+                            }
+                        });
+
+                    } else {
+                        // dealing with text, selects, etc
+                        $input.val(values[0]);
+                        valueAccepted = $input.val() === values[0];
+                    }
+
+                    if (valueAccepted) {
+                        $input.trigger("change.validation");
+                        var changeClassExpected = ["control-group"].concat(importFromTd($classChange));
+                        var changeClassActual = $controlGroup.attr("class").split(" ");
+                        if (!arraysMatch(changeClassExpected, changeClassActual)) {
+                            $classChange.html(generateResult(changeClassExpected, changeClassActual));
+                            $tr.addClass("error");
+                        }
+
+                        var changeMessageExpected = importFromTd($messageChange);
+                        var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
+                        if (!arraysMatch(changeMessageExpected, changeMessageActual)) {
+                            $messageChange.html(generateResult(changeMessageExpected, changeMessageActual));
+                            $tr.addClass("error");
+                        }
+
+                        $form.trigger("submit");
+                        var submitClassExpected = ["control-group"].concat(importFromTd($classSubmit));
+                        var submitClassActual = $controlGroup.attr("class").split(" ");
+
+                        if (!arraysMatch(submitClassExpected, submitClassActual)) {
+                            $classSubmit.html(generateResult(submitClassExpected, submitClassActual));
+                            $tr.addClass("error");
+                        }
+
+                        var submitMessageExpected = importFromTd($messageSubmit);
+                        var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
+                        if (!arraysMatch(submitMessageExpected, submitMessageActual)) {
+                            $messageSubmit.html(generateResult(submitMessageExpected, submitMessageActual));
+                            $tr.addClass("error");
+                        }
+                    } else { // if value not accepted
+                        $value.html(
+                            generateResult(
+                                values,
+                                $input.filter(":not([type=checkbox]):not([type=radio]),:checked").map(function () {
+                                    return $(this).val();
+                                }).toArray()
+                            )
+                        );
+                        $tr.addClass("warning");
+                    }
+                });
+            });
+            var $leftnavLink = $("#leftnavbar a[href=#" + $section.attr("id") + "]")
+            var $okBadge = $leftnavLink.find(".badge-success");
+            var $errBadge = $leftnavLink.find(".badge-important");
+            var $wrnBadge = $leftnavLink.find(".badge-warning");
+            var $ifoBadge = $leftnavLink.find(".badge-info");
+            var errVal = $section.find("tbody tr.error").length;
+            var okVal = $section.find("tbody tr").not(".error, .warning").length;
+            var wrnVal = $section.find("tbody tr.warning").length;
+            $errBadge.text(errVal);
+            $okBadge.text(okVal);
+            $wrnBadge.text(wrnVal);
+            if (errVal > 0) {
+                $okBadge.hide();
+                $errBadge.show();
+            } else {
+                $errBadge.hide();
+                $okBadge.show();
+            }
+            if (wrnVal > 0) {
+                $wrnBadge.show();
+            } else {
+                $wrnBadge.hide();
+            }
+            $ifoBadge.hide();
+
+            }, 
+            1
+        );
+    });
+});
+        </script>
+    </body>
+</html>
