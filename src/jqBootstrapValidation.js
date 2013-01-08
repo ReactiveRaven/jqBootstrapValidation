@@ -173,13 +173,13 @@
             //                                                    NUMBER
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
-              message = settings.builtInValidators.number.message;
+              message = ""; // TODO: fix this
               if ($this.data("validationNumberMessage")) {
                 message = $this.data("validationNumberMessage");
               }
               $this.data("validationNumberMessage", message);
               
-              var step = settings.builtInValidators.number.step;
+              var step = 1; // TODO: and this
               if ($this.data("validationNumberStep")) {
                   step = $this.data("validationNumberStep");
               }
@@ -819,6 +819,12 @@
           }
         
           result.regex = regexFromString("([+-]?\\d+(\\" + result.decimal + "\\d+)?)?");
+          
+          result.message = "Must be a number";
+          var dataMessage = $this.data("validation" + name + "Message");
+          if (dataMessage) {
+            result.message = dataMessage;
+          }
                   
           return result;
         },
@@ -834,7 +840,8 @@
           var typeResult = !isNaN(parseFloat(value)) && isFinite(value);
           var result = !(regexResult && stepResult && typeResult);
           return result;
-        }
+        },
+        message: "Must be a number"
       }
 		},
 		builtInValidators: {

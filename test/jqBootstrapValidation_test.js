@@ -270,7 +270,7 @@
         runJQBVTest("-10", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 15, function() {
+    test('rejects invalid', 20, function() {
         runJQBVTest("123.", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("not a number", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
@@ -307,10 +307,10 @@
         runJQBVTest("", [], [], [], []);
     });
     test("accepts valid", 5, function () {
-        runJQBVTest("-123.45e10", ["success"], [], [], []);
+        runJQBVTest("-123.45", ["success"], [], [], []);
     });
     test('rejects invalid', 5, function() {
-        runJQBVTest("123.", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
+        runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
     module('number field (step)', {
