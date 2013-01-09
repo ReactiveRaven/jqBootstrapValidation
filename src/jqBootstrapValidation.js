@@ -13,7 +13,18 @@
 	var createdElements = [];
 
 	var defaults = {
+    i18n: {
+      validators: {
+        
+      },
+      errors: {
+        missingMethod: {
+          "en": "Method '%s' does not exist on jQuery.jqBootstrapValidation"
+        }
+      }
+    },
 		options: {
+      culture: "en",
 			prependExistingHelpBlock: false,
 			sniffHtml: true, // sniff for 'required', 'maxlength', etc
 			preventSubmit: true, // stop the form submit event from firing if validation fails
@@ -35,520 +46,13 @@
 
         settings.options = $.extend(true, settings.options, options);
 
-        var $siblingElements = this;
-
-        var uniqueForms = $.unique(
-          $siblingElements.map( function () {
-            return $(this).parents("form")[0];
-          }).toArray()
-        );
-
-        $(uniqueForms).bind("submit", function (e) {
-          var $form = $(this);
-          var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
-          $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
-
-          $inputs.each(function (i, el) {
-            var $this = $(el),
-              $controlGroup = $this.parents(".control-group").first();
-            if (
-              $controlGroup.hasClass("warning")
-            ) {
-              $controlGroup.removeClass("warning").addClass("error");
-              warningsFound++;
-            }
-          });
-
-          $inputs.trigger("validationLostFocus.validation");
-
-          if (warningsFound) {
-            if (settings.options.preventSubmit) {
-              e.preventDefault();
-            }
-            $form.addClass("error");
-            if ($.isFunction(settings.options.submitError)) {
-              settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
-            }
-          } else {
-            $form.removeClass("error");
-            if ($.isFunction(settings.options.submitSuccess)) {
-              settings.options.submitSuccess($form, e);
-            }
-          }
-        });
-
-        return this.each(function(){
-
-          // Get references to everything we're interested in
-          var $this = $(this),
-            $controlGroup = $this.parents(".control-group").first(),
-            $helpBlock = $controlGroup.find(".help-block").first(),
-            $form = $this.parents("form").first(),
-            validatorNames = [];
-
-          // create message container if not exists
-          if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
-              $helpBlock = $('<div class="help-block" />');
-              $controlGroup.find('.controls').append($helpBlock);
-							createdElements.push($helpBlock[0]);
-          }
-
-          // =============================================================
-          //                                     SNIFF HTML FOR VALIDATORS
-          // =============================================================
-
-          // *snort sniff snuffle*
-
-          if (settings.options.sniffHtml) {
-            var message;
-            // ---------------------------------------------------------
-            //                                                   PATTERN
-            // ---------------------------------------------------------
-            if ($this.attr("pattern") !== undefined) {
-              message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
-              if ($this.data("validationPatternMessage")) {
-                message = $this.data("validationPatternMessage");
-              }
-              $this.data("validationPatternMessage", message);
-              $this.data("validationPatternRegex", $this.attr("pattern"));
-            }
-            // ---------------------------------------------------------
-            //                                                       MAX
-            // ---------------------------------------------------------
-            if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
-              var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-              message = "Too high: Maximum of '" + max + "'<!-- data-validation-max-message to override -->";
-              if ($this.data("validationMaxMessage")) {
-                message = $this.data("validationMaxMessage");
-              }
-              $this.data("validationMaxMessage", message);
-              $this.data("validationMaxMax", max);
-            }
-            // ---------------------------------------------------------
-            //                                                       MIN
-            // ---------------------------------------------------------
-            if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
-              var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-              message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
-              if ($this.data("validationMinMessage")) {
-                message = $this.data("validationMinMessage");
-              }
-              $this.data("validationMinMessage", message);
-              $this.data("validationMinMin", min);
-            }
-            // ---------------------------------------------------------
-            //                                                 MAXLENGTH
-            // ---------------------------------------------------------
-            if ($this.attr("maxlength") !== undefined) {
-              message = "Too long: Maximum of '" + $this.attr("maxlength") + "' characters<!-- data-validation-maxlength-message to override -->";
-              if ($this.data("validationMaxlengthMessage")) {
-                message = $this.data("validationMaxlengthMessage");
-              }
-              $this.data("validationMaxlengthMessage", message);
-              $this.data("validationMaxlengthMaxlength", $this.attr("maxlength"));
-            }
-            // ---------------------------------------------------------
-            //                                                 MINLENGTH
-            // ---------------------------------------------------------
-            if ($this.attr("minlength") !== undefined) {
-              message = "Too short: Minimum of '" + $this.attr("minlength") + "' characters<!-- data-validation-minlength-message to override -->";
-              if ($this.data("validationMinlengthMessage")) {
-                message = $this.data("validationMinlengthMessage");
-              }
-              $this.data("validationMinlengthMessage", message);
-              $this.data("validationMinlengthMinlength", $this.attr("minlength"));
-            }
-            // ---------------------------------------------------------
-            //                                                  REQUIRED
-            // ---------------------------------------------------------
-            if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
-              message = settings.builtInValidators.required.message;
-              if ($this.data("validationRequiredMessage")) {
-                message = $this.data("validationRequiredMessage");
-              }
-              $this.data("validationRequiredMessage", message);
-            }
-            // ---------------------------------------------------------
-            //                                                    NUMBER
-            // ---------------------------------------------------------
-            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
-              message = settings.validatorTypes.number.message; // TODO: fix this
-              if ($this.data("validationNumberMessage")) {
-                message = $this.data("validationNumberMessage");
-              }
-              $this.data("validationNumberMessage", message);
-              
-              var step = settings.validatorTypes.number.step; // TODO: and this
-              if ($this.data("validationNumberStep")) {
-                  step = $this.data("validationNumberStep");
-              }
-              $this.data("validationNumberStep", step);
-              
-              var decimal = settings.validatorTypes.number.decimal;
-              if ($this.data("validationNumberDecimal")) {
-                  decimal = $this.data("validationNumberDecimal");
-              }
-              $this.data("validationNumberDecimal", decimal);
-            }
-            // ---------------------------------------------------------
-            //                                                     EMAIL
-            // ---------------------------------------------------------
-            if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-              message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
-              if ($this.data("validationValidemailMessage")) {
-                message = $this.data("validationValidemailMessage");
-              } else if ($this.data("validationEmailMessage")) {
-                message = $this.data("validationEmailMessage");
-              }
-              $this.data("validationValidemailMessage", message);
-            }
-            // ---------------------------------------------------------
-            //                                                MINCHECKED
-            // ---------------------------------------------------------
-            if ($this.attr("minchecked") !== undefined) {
-              message = "Not enough options checked; Minimum of '" + $this.attr("minchecked") + "' required<!-- data-validation-minchecked-message to override -->";
-              if ($this.data("validationMincheckedMessage")) {
-                message = $this.data("validationMincheckedMessage");
-              }
-              $this.data("validationMincheckedMessage", message);
-              $this.data("validationMincheckedMinchecked", $this.attr("minchecked"));
-            }
-            // ---------------------------------------------------------
-            //                                                MAXCHECKED
-            // ---------------------------------------------------------
-            if ($this.attr("maxchecked") !== undefined) {
-              message = "Too many options checked; Maximum of '" + $this.attr("maxchecked") + "' required<!-- data-validation-maxchecked-message to override -->";
-              if ($this.data("validationMaxcheckedMessage")) {
-                message = $this.data("validationMaxcheckedMessage");
-              }
-              $this.data("validationMaxcheckedMessage", message);
-              $this.data("validationMaxcheckedMaxchecked", $this.attr("maxchecked"));
-            }
-          }
-
-          // =============================================================
-          //                                       COLLECT VALIDATOR NAMES
-          // =============================================================
-
-          // Get named validators
-          if ($this.data("validation") !== undefined) {
-            validatorNames = $this.data("validation").split(",");
-          }
-
-          // Get extra ones defined on the element's data attributes
-          $.each($this.data(), function (i, el) {
-            var parts = i.replace(/([A-Z])/g, ",$1").split(",");
-            if (parts[0] === "validation" && parts[1]) {
-              validatorNames.push(parts[1]);
-            }
-          });
-
-          // =============================================================
-          //                                     NORMALISE VALIDATOR NAMES
-          // =============================================================
-
-          var validatorNamesToInspect = validatorNames;
-          var newValidatorNamesToInspect = [];
-          
-          var uppercaseEachValidatorName = function (i, el) {
-            validatorNames[i] = formatValidatorName(el);
-          };
-      
-          var inspectValidators = function(i, el) {
-            if ($this.data("validation" + el + "Shortcut") !== undefined) {
-              // Are these custom validators?
-              // Pull them out!
-              $.each($this.data("validation" + el + "Shortcut").split(","), function(i2, el2) {
-                newValidatorNamesToInspect.push(el2);
-              });
-            } else if (settings.builtInValidators[el.toLowerCase()]) {
-              // Is this a recognised built-in?
-              // Pull it out!
-              var validator = settings.builtInValidators[el.toLowerCase()];
-              if (validator.type.toLowerCase() === "shortcut") {
-                $.each(validator.shortcut.split(","), function (i, el) {
-                  el = formatValidatorName(el);
-                  newValidatorNamesToInspect.push(el);
-                  validatorNames.push(el);
-                });
-              }
-            }
-          };
-
-          do // repeatedly expand 'shortcut' validators into their real validators
-          {
-            // Uppercase only the first letter of each name
-            $.each(validatorNames, uppercaseEachValidatorName);
-
-            // Remove duplicate validator names
-            validatorNames = $.unique(validatorNames);
-
-            // Pull out the new validator names from each shortcut
-            newValidatorNamesToInspect = [];
-            $.each(validatorNamesToInspect, inspectValidators);
-
-            validatorNamesToInspect = newValidatorNamesToInspect;
-
-          } while (validatorNamesToInspect.length > 0);
-
-          // =============================================================
-          //                                       SET UP VALIDATOR ARRAYS
-          // =============================================================
-
-          var validators = {};
-
-          $.each(validatorNames, function (i, el) {
-            // Set up the 'override' message
-            var message = $this.data("validation" + el + "Message");
-            var hasOverrideMessage = (message !== undefined);
-            var foundValidator = false;
-            message =
-              (
-                message ? 
-                  message :
-                  "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
-              )
-            ;
-
-            $.each(
-              settings.validatorTypes,
-              function (validatorType, validatorTemplate) {
-                if (validators[validatorType] === undefined) {
-                  validators[validatorType] = [];
-                }
-                if (!foundValidator && $this.data("validation" + el + formatValidatorName(validatorTemplate.name)) !== undefined) {
-                  validators[validatorType].push(
-                    $.extend(
-                      true,
-                      {
-                        name: formatValidatorName(validatorTemplate.name),
-                        message: message
-                      },
-                      validatorTemplate.init($this, el)
-                    )
-                  );
-                  foundValidator = true;
-                }
-              }
-            );
-
-            if (!foundValidator && settings.builtInValidators[el.toLowerCase()]) {
-
-              var validator = $.extend(true, {}, settings.builtInValidators[el.toLowerCase()]);
-              if (hasOverrideMessage) {
-                validator.message = message;
-              }
-              var validatorType = validator.type.toLowerCase();
-
-              if (validatorType === "shortcut") {
-                foundValidator = true;
-              } else {
-                $.each(
-                  settings.validatorTypes,
-                  function (validatorTemplateType, validatorTemplate) {
-                    if (validators[validatorTemplateType] === undefined) {
-                      validators[validatorTemplateType] = [];
-                    }
-                    if (!foundValidator && validatorType === validatorTemplateType.toLowerCase()) {
-                      $this.data(
-                        "validation" + el + formatValidatorName(validatorTemplate.name),
-                        validator[validatorTemplate.name.toLowerCase()]
-                      );
-                      validators[validatorType].push(
-                        $.extend(
-                          validator,
-                          validatorTemplate.init($this, el)
-                        )
-                      );
-                      foundValidator = true;
-                    }
-                  }
-                );
-              }
-            }
-
-            if (! foundValidator) {
-              $.error("Cannot find validation info for '" + el + "'");
-            }
-          });
-
-          // =============================================================
-          //                                         STORE FALLBACK VALUES
-          // =============================================================
-
-          $helpBlock.data(
-            "original-contents",
-            (
-              $helpBlock.data("original-contents") ?
-                $helpBlock.data("original-contents") : 
-                $helpBlock.html()
-            )
-          );
-
-          $helpBlock.data(
-            "original-role",
-            (
-              $helpBlock.data("original-role") ?
-                $helpBlock.data("original-role") :
-                $helpBlock.attr("role")
-            )
-          );
-
-          $controlGroup.data(
-            "original-classes",
-            (
-              $controlGroup.data("original-clases") ?
-                $controlGroup.data("original-classes") :
-                $controlGroup.attr("class")
-            )
-          );
-
-          $this.data(
-            "original-aria-invalid",
-            (
-              $this.data("original-aria-invalid") ?
-                $this.data("original-aria-invalid") :
-                $this.attr("aria-invalid")
-            )
-          );
-
-          // =============================================================
-          //                                                    VALIDATION
-          // =============================================================
-
-          $this.bind(
-            "validation.validation",
-            function (event, params) {
-
-              var value = getValue($this);
-
-              // Get a list of the errors to apply
-              var errorsFound = [];
-
-              $.each(validators, function (validatorType, validatorTypeArray) {
-                if (value || value.length || (params && params.includeEmpty) || (!!settings.validatorTypes[validatorType].blockSubmit && params && !!params.submitting)) {
-                  $.each(validatorTypeArray, function (i, validator) {
-                    if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
-                      errorsFound.push(validator.message);
-                    }
-                  });
-                }
-              });
-
-              return errorsFound;
-            }
-          );
-
-          $this.bind(
-            "getValidators.validation",
-            function () {
-              return validators;
-            }
-          );
-
-          // =============================================================
-          //                                             WATCH FOR CHANGES
-          // =============================================================
-          $this.bind(
-            "submit.validation",
-            function () {
-              return $this.triggerHandler("change.validation", {submitting: true});
-            }
-          );
-          $this.bind(
-            [
-              "keyup",
-              "focus",
-              "blur",
-              "click",
-              "keydown",
-              "keypress",
-              "change"
-            ].join(".validation ") + ".validation",
-            function (e, params) {
-
-              var value = getValue($this);
-
-              var errorsFound = [];
-
-              $controlGroup.find("input,textarea,select").each(function (i, el) {
-                var oldCount = errorsFound.length;
-                $.each($(el).triggerHandler("validation.validation", params), function (j, message) {
-                  errorsFound.push(message);
-                });
-                if (errorsFound.length > oldCount) {
-                  $(el).attr("aria-invalid", "true");
-                } else {
-                  var original = $this.data("original-aria-invalid");
-                  $(el).attr("aria-invalid", (original !== undefined ? original : false));
-                }
-              });
-
-              $form.find("input,select,textarea").not($this).not("[name=\"" + $this.attr("name") + "\"]").trigger("validationLostFocus.validation");
-
-              errorsFound = $.unique(errorsFound.sort());
-
-              // Were there any errors?
-              if (errorsFound.length) {
-                // Better flag it up as a warning.
-                $controlGroup.removeClass("success error").addClass("warning");
-
-                // How many errors did we find?
-                if (settings.options.semanticallyStrict && errorsFound.length === 1) {
-                  // Only one? Being strict? Just output it.
-                  $helpBlock.html(errorsFound[0] + 
-                    ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
-                } else {
-                  // Multiple? Being sloppy? Glue them together into an UL.
-                  $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
-                    ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
-                }
-              } else {
-                $controlGroup.removeClass("warning error success");
-                if (value.length > 0) {
-                  $controlGroup.addClass("success");
-                }
-                $helpBlock.html($helpBlock.data("original-contents"));
-              }
-
-              if (e.type === "blur") {
-                $controlGroup.removeClass("success");
-              }
-            }
-          );
-          $this.bind("validationLostFocus.validation", function () {
-            $controlGroup.removeClass("success");
-          });
-        });
+        var $this = this;
+        
+        
       },
       destroy : function( ) {
 
-        return this.each(
-          function() {
-
-            var
-              $this = $(this),
-              $controlGroup = $this.parents(".control-group").first(),
-              $helpBlock = $controlGroup.find(".help-block").first();
-
-            // remove our events
-            $this.unbind('.validation'); // events are namespaced.
-            // reset help text
-            $helpBlock.html($helpBlock.data("original-contents"));
-            // reset classes
-            $controlGroup.attr("class", $controlGroup.data("original-classes"));
-            // reset aria
-            $this.attr("aria-invalid", $this.data("original-aria-invalid"));
-            // reset role
-            $helpBlock.attr("role", $this.data("original-role"));
-						// remove all elements we created
-						if (createdElements.indexOf($helpBlock[0]) > -1) {
-							$helpBlock.remove();
-						}
-
-          }
-        );
+        return false;
 
       },
       collectErrors : function(includeEmpty) {
@@ -581,9 +85,6 @@
         });
 
         return (errorMessages.length > 0);
-      },
-      override : function (newDefaults) {
-        defaults = $.extend(true, defaults, newDefaults);
       }
     },
 		validatorTypes: {
@@ -847,70 +348,6 @@
         message: "Must be a number"
       }
 		},
-		builtInValidators: {
-			email: {
-				name: "Email",
-				type: "shortcut",
-				shortcut: "validemail"
-			},
-			validemail: {
-				name: "Validemail",
-				type: "regex",
-				regex: "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}",
-				message: "Not a valid email address<!-- data-validator-validemail-message to override -->"
-			},
-			passwordagain: {
-				name: "Passwordagain",
-				type: "match",
-				match: "password",
-				message: "Does not match the given password<!-- data-validator-paswordagain-message to override -->"
-			},
-			positive: {
-				name: "Positive",
-				type: "shortcut",
-				shortcut: "number,positivenumber"
-			},
-			negative: {
-				name: "Negative",
-				type: "shortcut",
-				shortcut: "number,negativenumber"
-			},
-			integer: {
-				name: "Integer",
-				type: "regex",
-				regex: "[+-]?\\d+",
-				message: "No decimal places allowed<!-- data-validator-integer-message to override -->"
-			},
-			positivenumber: {
-				name: "Positivenumber",
-				type: "min",
-				min: 0,
-				message: "Must be a positive number<!-- data-validator-positivenumber-message to override -->"
-			},
-			negativenumber: {
-				name: "Negativenumber",
-				type: "max",
-				max: 0,
-				message: "Must be a negative number<!-- data-validator-negativenumber-message to override -->"
-			},
-			required: {
-				name: "Required",
-				type: "required",
-				message: "This is required<!-- data-validator-required-message to override -->"
-			},
-			checkone: {
-				name: "Checkone",
-				type: "minchecked",
-				minchecked: 1,
-				message: "Check at least one option<!-- data-validation-checkone-message to override -->"
-			},
-      number: {
-        name: "Number",
-        type: "number",
-        decimal: ".",
-        step: "1"
-      }
-		}
 	};
 
 	var formatValidatorName = function (name) {
@@ -958,6 +395,51 @@
     return context[func].apply(this, args);
   }
 
+  /**
+   * 
+   * @param cultureSet
+   * @param replacements
+   * @returns string
+   */
+  function getCultureString(cultureSet, replacements) {
+    var result = cultureSet["en"];
+    var culture = settings.options.culture;
+    
+    if (cultureSet[culture] !== undefined) {
+      result = cultureSet[culture];
+    } else if (culture.indexOf("-")) {
+      var neutralLanguage = culture.split("-")[0];
+      if (cultureSet[neutralLanguage] !== undefined) {
+        result = cultureSet[neutralLanguage];
+      }
+    }
+  
+    if (result === undefined) {
+      $.error("Cannot find culture '" + culture + "' or 'en'");
+    }
+  
+    return doReplacements(result, replacements);
+    
+  }
+
+  /**
+   * Thanks to Fillipiz via Stackoverflow.com
+   * 
+   * http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format#answer-4256130
+   * Short link: http://tinyurl.com/js-stringReplacements
+   * 
+   * @param string
+   * @param replacements
+   */
+  function doReplacements(string, replacements) {
+    var formatted = string;
+    for (var i = 0; i < replacements.length; i++) {
+      var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+      formatted = formatted.replace(regexp, replacements[i]);
+    }
+    return formatted;
+  }
+
 	$.fn.jqBootstrapValidation = function( method ) {
 
 		if ( defaults.methods[method] ) {
@@ -965,14 +447,18 @@
 		} else if ( typeof method === 'object' || ! method ) {
 			return defaults.methods.init.apply( this, arguments );
 		} else {
-		$.error( 'Method ' +  method + ' does not exist on jQuery.jqBootstrapValidation' );
+      $.error( getCultureString(defaults.i18n.errors.missingMethod, [method]) );
 			return null;
 		}
 
 	};
 
+  $.fn.jqbv = $.fn.jqBootstrapValidation;
+
   $.jqBootstrapValidation = function (options) {
     $(":input").not("[type=image],[type=submit]").jqBootstrapValidation.apply(this,arguments);
   };
+
+  $.jqbv = $.jqBootstrapValidation;
 
 })( jQuery );
