@@ -19,14 +19,14 @@
 			preventSubmit: true, // stop the form submit event from firing if validation fails
 			submitError: false, // function called if there is an error when trying to submit
 			submitSuccess: false, // function called just before a successful submit event is sent to the server
-            semanticallyStrict: false, // set to true to tidy up generated HTML output
+      semanticallyStrict: false, // set to true to tidy up generated HTML output
 			autoAdd: {
 				helpBlocks: true
 			},
-            filter: function () {
-                // return $(this).is(":visible"); // only validate elements you can see
-                return true; // validate everything
-            }
+      filter: function () {
+        // return $(this).is(":visible"); // only validate elements you can see
+        return true; // validate everything
+      }
 		},
     methods: {
       init : function( options ) {
@@ -173,19 +173,19 @@
             //                                                    NUMBER
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
-              message = ""; // TODO: fix this
+              message = settings.validatorTypes.number.message; // TODO: fix this
               if ($this.data("validationNumberMessage")) {
                 message = $this.data("validationNumberMessage");
               }
               $this.data("validationNumberMessage", message);
               
-              var step = 1; // TODO: and this
+              var step = settings.validatorTypes.number.step; // TODO: and this
               if ($this.data("validationNumberStep")) {
                   step = $this.data("validationNumberStep");
               }
               $this.data("validationNumberStep", step);
               
-              var decimal = settings.builtInValidators.number.decimal;
+              var decimal = settings.validatorTypes.number.decimal;
               if ($this.data("validationNumberDecimal")) {
                   decimal = $this.data("validationNumberDecimal");
               }
