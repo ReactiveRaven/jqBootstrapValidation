@@ -307,7 +307,7 @@
         runJQBVTest("", [], [], [], []);
     });
     test("accepts valid", 5, function () {
-        runJQBVTest("-123.45", ["success"], [], [], []);
+        runJQBVTest("-123", ["success"], [], [], []);
     });
     test('rejects invalid', 5, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
@@ -390,7 +390,7 @@
         runJQBVTest("123,45", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 5, function() {
+    test('rejects invalid', 10, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123,,45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });

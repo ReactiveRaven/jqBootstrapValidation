@@ -351,7 +351,10 @@
                       validators[validatorTemplateType] = [];
                     }
                     if (!foundValidator && validatorType === validatorTemplateType.toLowerCase()) {
-                      $this.data("validation" + el + formatValidatorName(validatorTemplate.name), validator[validatorTemplate.name.toLowerCase()]);
+                      $this.data(
+                        "validation" + el + formatValidatorName(validatorTemplate.name),
+                        validator[validatorTemplate.name.toLowerCase()]
+                      );
                       validators[validatorType].push(
                         $.extend(
                           validator,
@@ -900,7 +903,13 @@
 				type: "minchecked",
 				minchecked: 1,
 				message: "Check at least one option<!-- data-validation-checkone-message to override -->"
-			}
+			},
+      number: {
+        name: "Number",
+        type: "number",
+        decimal: ".",
+        step: "1"
+      }
 		}
 	};
 

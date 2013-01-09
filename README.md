@@ -7,7 +7,6 @@ Displays validation errors in `help-block` elements as users type.
 
 More information is available at http://ReactiveRaven.github.com/jqBootstrapValidation
 
-Changes
-=======
+[![Build Status](https://travis-ci.org/ReactiveRaven/jqBootstrapValidation.png?branch=master)](https://travis-ci.org/ReactiveRaven/jqBootstrapValidation)
 
-1.3.2 - Patch for infinite-loop/slow-script-warning in IE8 - thanks to @dangerbell
+[![endorse](http://api.coderwall.com/reactiveraven/endorsecount.png)](http://coderwall.com/reactiveraven)
