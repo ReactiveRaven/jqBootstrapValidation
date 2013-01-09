@@ -832,7 +832,8 @@
           return result;
         },
         validate: function ($this, value, validator) {
-          var multipliedValue = parseFloat(value);
+          var globalValue = value.replace(validator.decimal, ".").replace(validator.thousands, "");
+          var multipliedValue = parseFloat(globalValue);
           var multipliedStep = parseFloat(validator.step);
           while (multipliedStep % 1 !== 0) {
             multipliedStep *= 10;
@@ -840,7 +841,7 @@
           }
           var regexResult = validator.regex.test(value);
           var stepResult = parseFloat(multipliedValue) % parseFloat(multipliedStep) === 0;
-          var typeResult = !isNaN(parseFloat(value)) && isFinite(value);
+          var typeResult = !isNaN(parseFloat(globalValue)) && isFinite(globalValue);
           var result = !(regexResult && stepResult && typeResult);
           return result;
         },
