@@ -737,7 +737,16 @@
 			max: {
 				name: "max",
 				init: function ($this, name) {
-					return {max: $this.data("validation" + name + "Max")};
+          var result = {};
+          
+          result.max = $this.data("validation" + name + "Max");
+          
+          result.message = "Too high: Maximum of '" + result.max + "'";
+          if ($this.data("validation" + name + "Message")) {
+            result.message = $this.data("validation" + name + "Message");
+          }
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return (parseFloat(value, 10) > parseFloat(validator.max, 10) && ! validator.negative) ||
@@ -747,7 +756,16 @@
 			min: {
 				name: "min",
 				init: function ($this, name) {
-					return {min: $this.data("validation" + name + "Min")};
+					var result = {};
+          
+          result.min = $this.data("validation" + name + "Min");
+          
+          result.message = "Too low: Minimum of '" + result.min + "'";
+          if ($this.data("validation" + name + "Message")) {
+            result.message = $this.data("validation" + name + "Message");
+          }
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return (parseFloat(value) < parseFloat(validator.min) && ! validator.negative) ||
