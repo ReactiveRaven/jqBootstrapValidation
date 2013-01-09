@@ -746,7 +746,7 @@
     test("accepts valid", 20, function () {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
-        runJQBVTest("a", ["success"], [], [], []);
+        runJQBVTest("aaaaaaaaaaa", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
     test("rejects invalid", 15, function () {

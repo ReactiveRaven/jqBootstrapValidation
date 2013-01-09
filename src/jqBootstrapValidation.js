@@ -775,7 +775,16 @@
 			maxlength: {
 				name: "maxlength",
 				init: function ($this, name) {
-					return {maxlength: $this.data("validation" + name + "Maxlength")};
+          var result = {};
+          
+          result.maxlength = $this.data("validation" + name + "Maxlength");
+          
+          result.message = "Too long: Maximum of '" + result.maxlength + "' characters";
+          if ($this.data("validation" + name + "Message")) {
+            result.message = $this.data("validation" + name + "Message");
+          }
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return ((value.length > validator.maxlength) && ! validator.negative) ||
@@ -785,7 +794,16 @@
 			minlength: {
 				name: "minlength",
 				init: function ($this, name) {
-					return {minlength: $this.data("validation" + name + "Minlength")};
+					var result = {};
+          
+          result.minlength = $this.data("validation" + name + "Minlength");
+          
+          result.message = "Too short: Minimum of '" + result.minlength + "' characters";
+          if ($this.data("validation" + name + "Message")) {
+            result.message = $this.data("validation" + name + "Message");
+          }
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return ((value.length < validator.minlength) && ! validator.negative) ||
