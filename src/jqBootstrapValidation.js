@@ -706,13 +706,18 @@
 			required: {
 				name: "required",
 				init: function ($this, name) {
-					return {};
+          var message = "This is required";
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+          
+					return {message: message};
 				},
 				validate: function ($this, value, validator) {
 					return !!(value.length === 0  && ! validator.negative) ||
 						!!(value.length > 0 && validator.negative);
 				},
-                        blockSubmit: true
+        blockSubmit: true
 			},
 			match: {
 				name: "match",
