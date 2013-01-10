@@ -828,6 +828,7 @@
         runJQBVTest("", [], [], [], []);
     });
     test("accepts valid", 10, function () {
+      console.log("HERE");
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });

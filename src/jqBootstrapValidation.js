@@ -105,6 +105,9 @@
             // ---------------------------------------------------------
             //                                                   PATTERN
             // ---------------------------------------------------------
+            if ($this.data("validationPatternPattern")) {
+              $this.attr("pattern", $this.data("validationPatternPattern"));
+            }
             if ($this.attr("pattern") !== undefined) {
               message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
               if ($this.data("validationPatternMessage")) {
@@ -696,9 +699,17 @@
 			regex: {
 				name: "regex",
 				init: function ($this, name) {
-					return {regex: regexFromString($this.data("validation" + name + "Regex"))};
+          var result = {};
+          var regexString = $this.data("validation" + name + "Regex");
+          result.regex = regexFromString(regexString);
+          if (regexString === undefined) {
+            $.error("Can't find regex for '" + name + "' validator on '" + $this.attr("name") + "'");
+          }
+          result.originalName = name;
+					return result;
 				},
 				validate: function ($this, value, validator) {
+          console.log(validator.regex, validator.originalName, $this.data("validation" + validator.originalName + "Regex"));
 					return (!validator.regex.test(value) && ! validator.negative) || 
 						(validator.regex.test(value) && validator.negative);
 				}
@@ -951,6 +962,11 @@
         type: "number",
         decimal: ".",
         step: "1"
+			},
+      pattern: {
+        name: "Pattern",
+        type: "regex",
+        message: "Not in expected format"
       }
 		}
 	};
