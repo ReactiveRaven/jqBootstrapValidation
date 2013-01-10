@@ -709,7 +709,6 @@
 					return result;
 				},
 				validate: function ($this, value, validator) {
-          console.log(validator.regex, validator.originalName, $this.data("validation" + validator.originalName + "Regex"));
 					return (!validator.regex.test(value) && ! validator.negative) || 
 						(validator.regex.test(value) && validator.negative);
 				}
