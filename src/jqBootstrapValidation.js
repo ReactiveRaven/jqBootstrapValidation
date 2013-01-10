@@ -746,7 +746,7 @@
           }
         
           var message = "Must match";
-          var $label = undefined;
+          var $label = null;
           if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
             message += " '" + $label.text() + "'";
           }
