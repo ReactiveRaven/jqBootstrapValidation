@@ -828,7 +828,6 @@
         runJQBVTest("", [], [], [], []);
     });
     test("accepts valid", 10, function () {
-      console.log("HERE");
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });
@@ -878,7 +877,49 @@
         runJQBVTest("  ", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
     });
 
-    module('match', {
+    module('match (blank other)', {
+        setup: function () {
+            $("#qunit-fixture").append($("\
+                <form class='form-horizontal' novalidate>\
+                    <div class='control-group'>\
+                        <label for='other' class='control-label'>Other</label>\
+                        <div class='controls'>\
+                            <input\
+                                type='text'\
+                                name='other'\
+                                value=''\
+                                disabled\
+                            />\
+                        </div>\
+                    </div>\
+                    <div class='control-group'>\
+                        <label for='input' class='control-label'>Input</label>\
+                        <div class='controls'>\
+                            <input\
+                                type='text'\
+                                name='input'\
+                                data-validation-match-match='other'\
+                            />\
+                        </div>\
+                    </div>\
+                    <div class='form-actions'>\
+                        <button type='submit' class='btn btn-primary'>\
+                            Test Validation <i class='icon-ok icon-white'></i>\
+                        </button>\
+                    </div>\
+                </form>\
+            "));
+            attachJqbv();
+        },
+        teardown: function () {
+            $("#qunit-fixture").empty();
+        }
+    });
+    test('is optional', 5, function() {
+        runJQBVTest("", [], [], [], []);
+    });
+  
+    module('match (filled other)', {
         setup: function () {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
@@ -916,8 +957,8 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
-        runJQBVTest("", [], [], [], []);
+    test('is required if other is filled in', 5, function() {
+        runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
     test("accepts valid", 5, function () {
         runJQBVTest("specific value", ["success"], [], [], []);

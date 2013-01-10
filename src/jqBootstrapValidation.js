@@ -430,7 +430,7 @@
               var errorsFound = [];
 
               $.each(validators, function (validatorType, validatorTypeArray) {
-                if (value || value.length || (params && params.includeEmpty) || (!!settings.validatorTypes[validatorType].blockSubmit && params && !!params.submitting)) {
+                if (value || value.length || ((params && params.includeEmpty) || !!settings.validatorTypes[validatorType].includeEmpty) || (!!settings.validatorTypes[validatorType].blockSubmit && params && !!params.submitting)) {
                   $.each(validatorTypeArray, function (i, validator) {
                     if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
                       errorsFound.push(validator.message);
@@ -732,17 +732,38 @@
 			match: {
 				name: "match",
 				init: function ($this, name) {
-					var element = $this.parents("form").first().find("[name=\"" + $this.data("validation" + name + "Match") + "\"]").first();
+          var elementName = $this.data("validation" + name + "Match");
+          var $form = $this.parents("form").first();
+					var element = $form.find("[name=\"" + elementName + "\"]").first();
 					element.bind("validation.validation", function () {
 						$this.trigger("change.validation", {submitting: true});
 					});
-					return {"element": element};
+          var result = {};
+          result.element = element;
+          
+          if (element.length === 0) {
+            $.error("Can't find field '" + elementName + "' to match '" + $this.attr("name") + "' against in '" + name + "' validator");
+          }
+        
+          var message = "Must match";
+          var $label = undefined;
+          if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
+            message += " '" + $label.text() + "'";
+          }
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+        
+          result.message = message;
+        
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return (value !== validator.element.val() && ! validator.negative) || 
 						(value === validator.element.val() && validator.negative);
 				},
-                        blockSubmit: true
+        blockSubmit: true,
+        includeEmpty: true
 			},
 			max: {
 				name: "max",
