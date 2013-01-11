@@ -1,13 +1,3 @@
-/* jqBootstrapValidation
- * A plugin for automating validation on Twitter Bootstrap formatted forms.
- *
- * v1.3.6
- *
- * License: MIT <http://opensource.org/licenses/mit-license.php> - see LICENSE file
- *
- * http://ReactiveRaven.github.com/jqBootstrapValidation/
- */
-
 (function( $ ){
 
 	var createdElements = [];
@@ -430,12 +420,31 @@
               var errorsFound = [];
 
               $.each(validators, function (validatorType, validatorTypeArray) {
-                if (value || value.length || ((params && params.includeEmpty) || !!settings.validatorTypes[validatorType].includeEmpty) || (!!settings.validatorTypes[validatorType].blockSubmit && params && !!params.submitting)) {
-                  $.each(validatorTypeArray, function (i, validator) {
-                    if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
-                      errorsFound.push(validator.message);
+                if (
+                    value || // has a truthy value
+                    value.length || // not an empty string
+                    ( // am including empty values
+                      (
+                        params && 
+                        params.includeEmpty 
+                      ) ||
+                      !!settings.validatorTypes[validatorType].includeEmpty
+                    ) ||
+                    ( // validator is blocking submit
+                      !!settings.validatorTypes[validatorType].blockSubmit &&
+                      params &&
+                      !!params.submitting
+                    )
+                  ) 
+                {
+                  $.each(
+                    validatorTypeArray,
+                    function (i, validator) {
+                      if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
+                        errorsFound.push(validator.message);
+                      }
                     }
-                  });
+                  );
                 }
               });
 
@@ -467,13 +476,22 @@
               "click",
               "keydown",
               "keypress",
-              "change"
+              "change",
+              "revalidate"
             ].join(".validation ") + ".validation",
             function (e, params) {
 
               var value = getValue($this);
 
               var errorsFound = [];
+              
+              if (params && !!params.submitting) {
+                $controlGroup.data("jqbvIsSubmitting", true);
+              } else if (e.type !== "revalidate") {
+                $controlGroup.data("jqbvIsSubmitting", false);
+              }
+              
+              var formIsSubmitting = !!$controlGroup.data("jqbvIsSubmitting");
 
               $controlGroup.find("input,textarea,select").each(function (i, el) {
                 var oldCount = errorsFound.length;
@@ -495,7 +513,7 @@
               // Were there any errors?
               if (errorsFound.length) {
                 // Better flag it up as a warning.
-                $controlGroup.removeClass("success error").addClass("warning");
+                $controlGroup.removeClass("success error warning").addClass(formIsSubmitting ? "error" : "warning");
 
                 // How many errors did we find?
                 if (settings.options.semanticallyStrict && errorsFound.length === 1) {
@@ -629,7 +647,7 @@
                   rrjqbvThis.data("validation" + rrjqbvValidator.validatorName + "Message", rrjqbvValidator.message);
                   // Timeout is set to avoid problems with the events being considered 'already fired'
                   setTimeout(function () {
-                    rrjqbvThis.trigger("change.validation");
+                    rrjqbvThis.trigger("revalidate.validation");
                   }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
                 }
               }
@@ -675,7 +693,7 @@
                   $this.data("validation" + validator.validatorName + "Message", validator.message);
                   // Timeout is set to avoid problems with the events being considered 'already fired'
                   setTimeout(function () {
-                    $this.trigger("change.validation");
+                    $this.trigger("revalidate.validation");
                   }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
                 }
               },
@@ -734,14 +752,14 @@
 				init: function ($this, name) {
           var elementName = $this.data("validation" + name + "Match");
           var $form = $this.parents("form").first();
-					var element = $form.find("[name=\"" + elementName + "\"]").first();
-					element.bind("validation.validation", function () {
-						$this.trigger("change.validation", {submitting: true});
+					var $element = $form.find("[name=\"" + elementName + "\"]").first();
+					$element.bind("validation.validation", function () {
+						$this.trigger("revalidate.validation", {submitting: true});
 					});
           var result = {};
-          result.element = element;
+          result.element = $element;
           
-          if (element.length === 0) {
+          if ($element.length === 0) {
             $.error("Can't find field '" + elementName + "' to match '" + $this.attr("name") + "' against in '" + name + "' validator");
           }
         
@@ -749,7 +767,10 @@
           var $label = null;
           if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
             message += " '" + $label.text() + "'";
+          } else if (($label = $element.parents(".control-group").first().find("label")).length) {
+            message += " '" + $label.first().text() + "'";
           }
+        
           if ($this.data("validation" + name + "Message")) {
             message = $this.data("validation" + name + "Message");
           }

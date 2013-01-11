@@ -1008,8 +1008,8 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
-        runJQBVTest("", [], [], [], []);
+    test('is required if other is filled in', 5, function() {
+        runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
     test("accepts valid", 5, function () {
         runJQBVTest("specific value", ["success"], [], [], []);
@@ -1058,8 +1058,8 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
-        runJQBVTest("", [], [], [], []);
+    test('is required if other is filled in', 5, function() {
+        runJQBVTest("", ["warning"], ["error"], ["Must match"], ["Must match"]);
     });
     test("accepts valid", 5, function () {
         runJQBVTest("specific value", ["success"], [], [], []);
