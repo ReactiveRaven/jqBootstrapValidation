@@ -865,11 +865,23 @@
 			maxchecked: {
 				name: "maxchecked",
 				init: function ($this, name) {
+          var result = {};
+          
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
 					elements.bind("click.validation", function () {
 						$this.trigger("change.validation", {includeEmpty: true});
 					});
-					return {maxchecked: $this.data("validation" + name + "Maxchecked"), elements: elements};
+          
+          result.elements = elements;
+          result.maxchecked = $this.data("validation" + name + "Maxchecked");
+          
+          var message = "Too many: Max '" + result.maxchecked + "' checked";
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+          result.message = message;
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return (validator.elements.filter(":checked").length > validator.maxchecked && ! validator.negative) ||
