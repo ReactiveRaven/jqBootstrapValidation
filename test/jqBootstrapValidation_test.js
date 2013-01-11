@@ -138,11 +138,10 @@
         deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
         
         $input.trigger("change.validation");
-        var changeClassExpected = ["control-group"].concat(classChange);
-        var changeClassActual = $controlGroup.attr("class").split(" ");
+        changeClassActual = $controlGroup.attr("class").split(" ");
         deepEqual(changeClassActual, changeClassExpected, "classes revert again on change - " + valueJson);
 
-        var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
+        changeMessageActual = importFromTd($controlGroup.find(".help-block"));
         deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
     };
 
