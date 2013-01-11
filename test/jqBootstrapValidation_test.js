@@ -64,6 +64,8 @@
             $(second).not(first).length === 0
         );
     }
+  
+    var numInJQBVTest = 7;
 
     var runJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
         
@@ -134,6 +136,14 @@
         var submitMessageExpected = messageSubmit;
         var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
         deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
+        
+        $input.trigger("change.validation");
+        var changeClassExpected = ["control-group"].concat(classChange);
+        var changeClassActual = $controlGroup.attr("class").split(" ");
+        deepEqual(changeClassActual, changeClassExpected, "classes revert again on change - " + valueJson);
+
+        var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
+        deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
     };
 
     module('jqBootstrapValidation', {
@@ -182,13 +192,13 @@
         }
     });
 
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 5, function() {
+    test('accepts valid', 1*numInJQBVTest, function() {
         runJQBVTest("test@example.com", ["success"], [], [], []);
     });
-    test('rejects invalid', 15, function() {
+    test('rejects invalid', 3*numInJQBVTest, function() {
         runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
@@ -221,13 +231,13 @@
         }
     });
 
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 5, function() {
+    test('accepts valid', 1*numInJQBVTest, function() {
         runJQBVTest("test@example.com", ["success"], [], [], []);
     });
-    test('rejects invalid', 15, function() {
+    test('rejects invalid', 3*numInJQBVTest, function() {
         runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
@@ -261,16 +271,16 @@
         }
     });
 
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 20, function() {
+    test('accepts valid', 4*numInJQBVTest, function() {
         runJQBVTest("1", ["success"], [], [], []);
         runJQBVTest("10", ["success"], [], [], []);
         runJQBVTest("-10", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 20, function() {
+    test('rejects invalid', 4*numInJQBVTest, function() {
         runJQBVTest("123.", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("not a number", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
@@ -303,13 +313,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("-123", ["success"], [], [], []);
     });
-    test('rejects invalid', 5, function() {
+    test('rejects invalid', 1*numInJQBVTest, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
@@ -341,15 +351,15 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 15, function () {
+    test("accepts valid", 3*numInJQBVTest, function () {
         runJQBVTest("-123.45", ["success"], [], [], []);
         runJQBVTest("123.45", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 5, function() {
+    test('rejects invalid', 1*numInJQBVTest, function() {
         runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
@@ -382,15 +392,15 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 15, function () {
+    test("accepts valid", 3*numInJQBVTest, function () {
         runJQBVTest("-123,45", ["success"], [], [], []);
         runJQBVTest("123,45", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 10, function() {
+    test('rejects invalid', 2*numInJQBVTest, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123,,45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
@@ -422,10 +432,10 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 5, function() {
+    test('is required', 1*numInJQBVTest, function() {
         runJQBVTest("", [], ["error"], [], ["This is required"]);
     });
-    test("accepts anything", 15, function () {
+    test("accepts anything", 3*numInJQBVTest, function () {
         runJQBVTest(" ", ["success"], [], [], []);
         runJQBVTest("hello", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
@@ -458,10 +468,10 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 5, function() {
+    test('is required', 1*numInJQBVTest, function() {
         runJQBVTest("", [], ["error"], [], ["This is required"]);
     });
-    test("accepts anything", 15, function () {
+    test("accepts anything", 3*numInJQBVTest, function () {
         runJQBVTest(" ", ["success"], [], [], []);
         runJQBVTest("hello", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
@@ -494,16 +504,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("-1000", ["success"], [], [], []);
         runJQBVTest("0", ["success"], [], [], []);
         runJQBVTest("100.00", ["success"], [], [], []);
         runJQBVTest("99.999999", ["success"], [], [], []);
     });
-    test("rejects invalid", 10, function () {
+    test("rejects invalid", 2*numInJQBVTest, function () {
         runJQBVTest("101", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
         runJQBVTest("100.0001", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
     });
@@ -535,16 +545,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("-1000", ["success"], [], [], []);
         runJQBVTest("0", ["success"], [], [], []);
         runJQBVTest("100.00", ["success"], [], [], []);
         runJQBVTest("99.999999", ["success"], [], [], []);
     });
-    test("rejects invalid", 10, function () {
+    test("rejects invalid", 2*numInJQBVTest, function () {
         runJQBVTest("101", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
         runJQBVTest("100.0001", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
     });
@@ -576,14 +586,14 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 10, function () {
+    test("accepts valid", 2*numInJQBVTest, function () {
         runJQBVTest("1000", ["success"], [], [], []);
         runJQBVTest("100", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("0", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("99.999999", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("-1000", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
@@ -616,14 +626,14 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 10, function () {
+    test("accepts valid", 2*numInJQBVTest, function () {
         runJQBVTest("1000", ["success"], [], [], []);
         runJQBVTest("100", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("0", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("99.999999", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("-1000", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
@@ -656,16 +666,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("a", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("too long", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("abcd", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("    ", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
@@ -698,16 +708,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("a", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("too long", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("abcd", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("    ", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
@@ -740,16 +750,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("aaaaaaaaaaa", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("ab", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("12", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
@@ -782,16 +792,16 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 20, function () {
+    test("accepts valid", 4*numInJQBVTest, function () {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("abcd", ["success"], [], [], []);
         runJQBVTest("1234", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("ab", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("12", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
@@ -824,14 +834,14 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 10, function () {
+    test("accepts valid", 2*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("lower case", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
@@ -864,14 +874,14 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 10, function () {
+    test("accepts valid", 2*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest("lower case", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
@@ -915,7 +925,7 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
   
@@ -957,13 +967,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 5, function() {
+    test('is required if other is filled in', 1*numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
@@ -1008,13 +1018,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 5, function() {
+    test('is required if other is filled in', 1*numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
@@ -1058,13 +1068,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 5, function() {
+    test('is required if other is filled in', 1*numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match"], ["Must match"]);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match"], ["Must match"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match"], ["Must match"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match"], ["Must match"]);
@@ -1150,15 +1160,15 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 15, function () {
+    test("accepts valid", 3*numInJQBVTest, function () {
         runJQBVTest(["red", "yellow", "blue"], ["success"], [], [], []);
         runJQBVTest(["red", "orange", "yellow"], ["success"], [], [], []);
         runJQBVTest(["violet", "indigo", "blue"], ["success"], [], [], []);
     });
-    test("rejects invalid", 10, function () {
+    test("rejects invalid", 2*numInJQBVTest, function () {
         runJQBVTest(["red", "yellow", "blue", "violet"], ["warning"], ["error"], ["Too many: Max '3' checked"], ["Too many: Max '3' checked"]);
         runJQBVTest(["orange", "yellow", "green", "blue"], ["warning"], ["error"], ["Too many: Max '3' checked"], ["Too many: Max '3' checked"]);
     });
@@ -1242,15 +1252,15 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 5, function() {
+    test('is required', 1*numInJQBVTest, function() {
         runJQBVTest([], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
     });
-    test("accepts valid", 15, function () {
+    test("accepts valid", 3*numInJQBVTest, function () {
         runJQBVTest(["red", "yellow", "blue"], ["success"], [], [], []);
         runJQBVTest(["red", "orange", "yellow"], ["success"], [], [], []);
         runJQBVTest(["violet", "indigo", "blue"], ["success"], [], [], []);
     });
-    test("rejects invalid", 15, function () {
+    test("rejects invalid", 3*numInJQBVTest, function () {
         runJQBVTest(["red", "yellow"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
         runJQBVTest(["orange", "violet"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
         runJQBVTest(["orange", "yellow"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
@@ -1283,13 +1293,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
@@ -1323,13 +1333,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
@@ -1363,13 +1373,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
@@ -1403,13 +1413,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
@@ -1443,13 +1453,13 @@
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 5, function() {
+    test('is optional', 1*numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 5, function () {
+    test("accepts valid", 1*numInJQBVTest, function () {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 20, function () {
+    test("rejects invalid", 4*numInJQBVTest, function () {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
