@@ -704,7 +704,7 @@
                 $this.data("validation" + validator.validatorName + "Message", validator.message);
                 // Timeout is set to avoid problems with the events being considered 'already fired'
                 setTimeout(function () {
-                  $this.trigger("change.validation");
+                  $this.trigger("revalidate.validation");
                 }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
               }
             });
@@ -868,8 +868,8 @@
           var result = {};
           
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
-					elements.bind("click.validation", function () {
-						$this.trigger("change.validation", {includeEmpty: true});
+					elements.bind("change.validation click.validation", function () {
+						$this.trigger("revalidate.validation", {includeEmpty: true});
 					});
           
           result.elements = elements;
@@ -894,7 +894,7 @@
 				init: function ($this, name) {
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
 					elements.bind("click.validation", function () {
-						$this.trigger("change.validation", {includeEmpty: true});
+						$this.trigger("revalidate.validation", {includeEmpty: true});
 					});
 					return {minchecked: $this.data("validation" + name + "Minchecked"), elements: elements};
 				},
