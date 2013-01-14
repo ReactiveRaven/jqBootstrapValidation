@@ -887,22 +887,35 @@
 					return (validator.elements.filter(":checked").length > validator.maxchecked && ! validator.negative) ||
 						(validator.elements.filter(":checked").length <= validator.maxchecked && validator.negative);
 				},
-                        blockSubmit: true
+        blockSubmit: true
 			},
 			minchecked: {
 				name: "minchecked",
 				init: function ($this, name) {
+          var result = {};
+          
 					var elements = $this.parents("form").first().find("[name=\"" + $this.attr("name") + "\"]");
-					elements.bind("click.validation", function () {
+					elements.bind("change.validation click.validation", function () {
 						$this.trigger("revalidate.validation", {includeEmpty: true});
 					});
-					return {minchecked: $this.data("validation" + name + "Minchecked"), elements: elements};
+          
+          result.elements = elements;
+          result.minchecked = $this.data("validation" + name + "Minchecked");
+          
+          var message = "Too few: Min '" + result.minchecked + "' checked";
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+          result.message = message;
+          
+					return result;
 				},
 				validate: function ($this, value, validator) {
 					return (validator.elements.filter(":checked").length < validator.minchecked && ! validator.negative) ||
 						(validator.elements.filter(":checked").length >= validator.minchecked && validator.negative);
 				},
-                        blockSubmit: true
+        blockSubmit: true,
+        includeEmpty: true
 			},
       number: {
         name: "number",
