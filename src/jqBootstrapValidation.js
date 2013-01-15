@@ -723,6 +723,14 @@
           if (regexString === undefined) {
             $.error("Can't find regex for '" + name + "' validator on '" + $this.attr("name") + "'");
           }
+          
+          var message = "Not in the expected format";
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+        
+          result.message = message;
+        
           result.originalName = name;
 					return result;
 				},
