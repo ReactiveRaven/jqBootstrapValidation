@@ -188,13 +188,11 @@
             //                                                     EMAIL
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-              message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
-              if ($this.data("validationValidemailMessage")) {
-                message = $this.data("validationValidemailMessage");
-              } else if ($this.data("validationEmailMessage")) {
+              message = "Not a valid email address<!-- data-validation-email-message to override -->";
+              if ($this.data("validationEmailMessage")) {
                 message = $this.data("validationEmailMessage");
               }
-              $this.data("validationValidemailMessage", message);
+              $this.data("validationEmailMessage", message);
             }
             // ---------------------------------------------------------
             //                                                MINCHECKED
@@ -294,15 +292,11 @@
           $.each(validatorNames, function (i, el) {
             // Set up the 'override' message
             var message = $this.data("validation" + el + "Message");
-            var hasOverrideMessage = (message !== undefined);
+            var hasOverrideMessage = !!message;
             var foundValidator = false;
-            message =
-              (
-                message ? 
-                  message :
-                  "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->"
-              )
-            ;
+            if (!message) {
+              message = "'" + el + "' validation failed <!-- Add attribute 'data-validation-" + el.toLowerCase() + "-message' to input to change this message -->";
+            }
 
             $.each(
               settings.validatorTypes,
@@ -311,6 +305,11 @@
                   validators[validatorType] = [];
                 }
                 if (!foundValidator && $this.data("validation" + el + formatValidatorName(validatorTemplate.name)) !== undefined) {
+                  var initted = validatorTemplate.init($this, el);
+                  if (hasOverrideMessage) {
+                    initted.message = message;
+                  }
+                  
                   validators[validatorType].push(
                     $.extend(
                       true,
@@ -318,7 +317,7 @@
                         name: formatValidatorName(validatorTemplate.name),
                         message: message
                       },
-                      validatorTemplate.init($this, el)
+                      initted
                     )
                   );
                   foundValidator = true;
@@ -739,6 +738,27 @@
 						(validator.regex.test(value) && validator.negative);
 				}
 			},
+			email: {
+				name: "email",
+				init: function ($this, name) {
+          var result = {};
+          result.regex = regexFromString("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+          
+          var message = "Not a valid email address";
+          if ($this.data("validation" + name + "Message")) {
+            message = $this.data("validation" + name + "Message");
+          }
+        
+          result.message = message;
+        
+          result.originalName = name;
+					return result;
+				},
+				validate: function ($this, value, validator) {
+					return (!validator.regex.test(value) && ! validator.negative) || 
+						(validator.regex.test(value) && validator.negative);
+				}
+			},
 			required: {
 				name: "required",
 				init: function ($this, name) {
@@ -977,14 +997,7 @@
 		builtInValidators: {
 			email: {
 				name: "Email",
-				type: "shortcut",
-				shortcut: "validemail"
-			},
-			validemail: {
-				name: "Validemail",
-				type: "regex",
-				regex: "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}",
-				message: "Not a valid email address<!-- data-validator-validemail-message to override -->"
+				type: "email"
 			},
 			passwordagain: {
 				name: "Passwordagain",
