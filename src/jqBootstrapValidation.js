@@ -608,54 +608,62 @@
     },
 		validatorTypes: {
       callback: {
-        name: "callback",
-        init: function ($this, name) {
-          return {
-            validatorName: name,
-            callback: $this.data("validation" + name + "Callback"),
-            lastValue: $this.val(),
-            lastValid: true,
-            lastFinished: true
-          };
-        },
-        validate: function ($this, value, validator) {
-          if (validator.lastValue === value && validator.lastFinished) {
-            return !validator.lastValid;
-          }
+                name: "callback",
+                init: function($this, name) {
+                    var result = {
+                        validatorName: name,
+                        callback: $this.data("validation" + name + "Callback"),
+                        lastValue: $this.val(),
+                        lastValid: true,
+                        lastFinished: true
+                    };
 
-          if (validator.lastFinished === true)
-          {
-            validator.lastValue = value;
-            validator.lastValid = true;
-            validator.lastFinished = false;
+                    var message = "Not valid";
+                    if ($this.data("validation" + name + "Message")) {
+                        message = $this.data("validation" + name + "Message");
+                    }
+                    result.message = message;
 
-            var rrjqbvValidator = validator;
-            var rrjqbvThis = $this;
-            executeFunctionByName(
-              validator.callback,
-              window,
-              $this,
-              value,
-              function (data) {
-                if (rrjqbvValidator.lastValue === data.value) {
-                  rrjqbvValidator.lastValid = data.valid;
-                  if (data.message) {
-                    rrjqbvValidator.message = data.message;
-                  }
-                  rrjqbvValidator.lastFinished = true;
-                  rrjqbvThis.data("validation" + rrjqbvValidator.validatorName + "Message", rrjqbvValidator.message);
-                  // Timeout is set to avoid problems with the events being considered 'already fired'
-                  setTimeout(function () {
-                    rrjqbvThis.trigger("revalidate.validation");
-                  }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
+                    return result;
+                },
+                validate: function($this, value, validator) {
+                    if (validator.lastValue === value && validator.lastFinished) {
+                        return !validator.lastValid;
+                    }
+
+                    if (validator.lastFinished === true)
+                    {
+                        validator.lastValue = value;
+                        validator.lastValid = true;
+                        validator.lastFinished = false;
+
+                        var rrjqbvValidator = validator;
+                        var rrjqbvThis = $this;
+                        executeFunctionByName(
+                            validator.callback,
+                            window,
+                            $this,
+                            value,
+                            function(data) {
+                                if (rrjqbvValidator.lastValue === data.value) {
+                                    rrjqbvValidator.lastValid = data.valid;
+                                    if (data.message) {
+                                        rrjqbvValidator.message = data.message;
+                                    }
+                                    rrjqbvValidator.lastFinished = true;
+                                    rrjqbvThis.data("validation" + rrjqbvValidator.validatorName + "Message", rrjqbvValidator.message);
+                                    // Timeout is set to avoid problems with the events being considered 'already fired'
+                                    setTimeout(function() {
+                                        rrjqbvThis.trigger("revalidate.validation");
+                                    }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
+                                }
+                            }
+                        );
+                    }
+
+                    return false;
+
                 }
-              }
-            );
-          }
-
-          return false;
-
-        }
       },
       ajax: {
         name: "ajax",

@@ -145,6 +145,104 @@
         deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
     };
 
+    var runJQBVTestAsync = function (value, classChange, classSubmit, messageChange, messageSubmit, callback) {
+        
+        var $input = $("#qunit-fixture").find("[name=input]");
+        var $controlGroup = $($input.parents(".control-group")[0]);
+        var $form = $input.parents("form").first();
+        var isMulti = ($input.length > 1);
+        
+        var values;
+        if (isMulti) {
+            if (value.length) {
+                if (typeof value === "string") {
+                    values = value.split(",");
+                } else {
+                    // is an array already, so just use it
+                    values = value;
+                }
+            } else {
+                values = [];
+            }
+        } else {
+            values = [value];
+        }
+      
+        var valueJson = JSON.stringify(values);
+        
+
+        var valueAccepted = true;
+
+        if (isMulti) {
+            // dealing with checkboxes, radioboxes, etc
+            var $inputs = $input;
+            $inputs.removeAttr("checked");
+            $(values).each(function (i, el) {
+                var $curInput = $inputs.filter("[value=\"" + el + "\"]");
+
+                if ($curInput.length === 0) {
+                    valueAccepted = false;
+                } else {
+                    $curInput.attr("checked", "checked");
+                }
+            });
+        
+            deepEqual(valueAccepted, true, "value is accepted by browser - " + valueJson);
+
+        } else {
+            
+            // dealing with text, selects, etc
+            $input.val(values[0]);
+            
+            deepEqual($input.val(), values[0], "value is accepted by browser - " + valueJson);
+        }
+      
+        stop();
+
+        $input.trigger("change.validation");
+        setTimeout(
+            function() {
+                var changeClassExpected = ["control-group"].concat(classChange);
+                var changeClassActual = $controlGroup.attr("class").split(" ");
+                deepEqual(changeClassActual, changeClassExpected, "classes as expected on change - " + valueJson);
+
+                var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
+                deepEqual(changeMessageActual, messageChange, "message as expected on change - " + valueJson);
+
+                $form.trigger("submit");
+                setTimeout(
+                    function () {
+                        var submitClassExpected = ["control-group"].concat(classSubmit);
+                        var submitClassActual = $controlGroup.attr("class").split(" ");
+
+                        deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
+
+                        var submitMessageExpected = messageSubmit;
+                        var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
+                        deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
+
+                        $input.trigger("change.validation");
+                        setTimeout(
+                            function () {
+                                changeClassActual = $controlGroup.attr("class").split(" ");
+                                deepEqual(changeClassActual, changeClassExpected, "classes revert again on change - " + valueJson);
+
+                                changeMessageActual = importFromTd($controlGroup.find(".help-block"));
+                                deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
+
+                                start();
+                                callback();
+                            },
+                            10
+                        )
+                    },
+                    10
+                );
+            },
+            10
+        );
+    };
+
     module('jqBootstrapValidation', {
         setup: function() {
             this.elems = $("#qunit-fixture").children();
@@ -1339,10 +1437,16 @@
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        stop();
+        runJQBVTestAsync("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
+            runJQBVTestAsync("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
+                runJQBVTestAsync("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
+                    runJQBVTestAsync("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
+                        start();
+                    });
+                 });
+            });
+        });
     });
 
     module('callback (with message)', {
