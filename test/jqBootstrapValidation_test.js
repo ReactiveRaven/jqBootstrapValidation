@@ -66,6 +66,32 @@
     }
   
     var numInJQBVTest = 7;
+    
+    var jqbvTestQueue = [];
+    
+    var pushJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
+      jqbvTestQueue.push([value, classChange, classSubmit, messageChange, messageSubmit]);
+    }
+  
+    var startJQBVTestQueue = function () {
+      stop(); // rest of tests
+      tickJQBVTestQueue();
+    }
+  
+    var stopJQBVTestQueue = function () {
+      start(); // rest of tests
+    }
+  
+    var tickJQBVTestQueue = function () {
+      if (jqbvTestQueue.length > 0) {
+        var v= jqbvTestQueue.pop();
+        runJQBVTestAsync(v[0], v[1], v[2], v[3], v[4], function () { tickJQBVTestQueue(); });
+      } else {
+        stopJQBVTestQueue();
+      }
+    };
+  
+  
 
     var runJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
         
@@ -234,7 +260,7 @@
                                 callback();
                             },
                             10
-                        )
+                        );
                     },
                     10
                 );
@@ -1431,22 +1457,19 @@
         }
     });
     test('is optional', 1*numInJQBVTest, function() {
-        runJQBVTest("", [], [], [], []);
+        pushJQBVTest("", [], [], [], []);
+        startJQBVTestQueue();
     });
     test("accepts valid", 1*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS", ["success"], [], [], []);
+        pushJQBVTest("CAPITALS", ["success"], [], [], []);
+        startJQBVTestQueue()
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
-        stop();
-        runJQBVTestAsync("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
-            runJQBVTestAsync("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
-                runJQBVTestAsync("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
-                    runJQBVTestAsync("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"], function () {
-                        start();
-                    });
-                 });
-            });
-        });
+        pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        startJQBVTestQueue();
     });
 
     module('callback (with message)', {
@@ -1477,16 +1500,19 @@
         }
     });
     test('is optional', 1*numInJQBVTest, function() {
-        runJQBVTest("", [], [], [], []);
+        pushJQBVTest("", [], [], [], []);
+        startJQBVTestQueue();
     });
     test("accepts valid", 1*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS", ["success"], [], [], []);
+        pushJQBVTest("CAPITALS", ["success"], [], [], []);
+        startJQBVTestQueue();
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        startJQBVTestQueue();
     });
 
     module('callback (async)', {
@@ -1517,16 +1543,19 @@
         }
     });
     test('is optional', 1*numInJQBVTest, function() {
-        runJQBVTest("", [], [], [], []);
+        pushJQBVTest("", [], [], [], []);
+        startJQBVTestQueue();
     });
     test("accepts valid", 1*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS", ["success"], [], [], []);
+        pushJQBVTest("CAPITALS", ["success"], [], [], []);
+        startJQBVTestQueue();
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
-        runJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        pushJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
+        startJQBVTestQueue();
     });
 
     module('callback (async with message)', {
@@ -1557,16 +1586,19 @@
         }
     });
     test('is optional', 1*numInJQBVTest, function() {
-        runJQBVTest("", [], [], [], []);
+        pushJQBVTest("", [], [], [], []);
+        startJQBVTestQueue();
     });
     test("accepts valid", 1*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS", ["success"], [], [], []);
+        pushJQBVTest("CAPITALS", ["success"], [], [], []);
+        startJQBVTestQueue();
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
-        runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
-        runJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        pushJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
+        startJQBVTestQueue();
     });
 
 }(jQuery));
