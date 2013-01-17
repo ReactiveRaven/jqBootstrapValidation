@@ -71,16 +71,16 @@
     
     var pushJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
       jqbvTestQueue.push([value, classChange, classSubmit, messageChange, messageSubmit]);
-    }
+    };
   
     var startJQBVTestQueue = function () {
       stop(); // rest of tests
       tickJQBVTestQueue();
-    }
+    };
   
     var stopJQBVTestQueue = function () {
       start(); // rest of tests
-    }
+    };
   
     var tickJQBVTestQueue = function () {
       if (jqbvTestQueue.length > 0) {
@@ -1462,7 +1462,7 @@
     });
     test("accepts valid", 1*numInJQBVTest, function () {
         pushJQBVTest("CAPITALS", ["success"], [], [], []);
-        startJQBVTestQueue()
+        startJQBVTestQueue();
     });
     test("rejects invalid", 4*numInJQBVTest, function () {
         pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
