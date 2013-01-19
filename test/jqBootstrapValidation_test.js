@@ -76,12 +76,10 @@
     };
 
     var startJQBVTestQueue = function() {
-        stop(); // rest of tests
         tickJQBVTestQueue();
     };
 
     var stopJQBVTestQueue = function() {
-        start(); // rest of tests
         start();
     };
 
@@ -228,8 +226,6 @@
             deepEqual($input.val(), values[0], "value is accepted by browser - " + valueJson);
         }
 
-        stop();
-
         $input.trigger("change.validation");
         setTimeout(
             function() {
@@ -261,17 +257,16 @@
                                 changeMessageActual = importFromTd($controlGroup.find(".help-block"));
                                 deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
 
-                                start();
                                 callback();
                             },
-                            0
-                            );
+                            50
+                        );
                     },
-                    0
-                    );
+                    50
+                );
             },
-            0
-            );
+            50
+        );
     };
 
     module('jqBootstrapValidation', {

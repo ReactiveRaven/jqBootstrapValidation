@@ -9,7 +9,7 @@
 			preventSubmit: true, // stop the form submit event from firing if validation fails
 			submitError: false, // function called if there is an error when trying to submit
 			submitSuccess: false, // function called just before a successful submit event is sent to the server
-      semanticallyStrict: false, // set to true to tidy up generated HTML output
+            semanticallyStrict: false, // set to true to tidy up generated HTML output
 			autoAdd: {
 				helpBlocks: true
 			},
@@ -49,8 +49,6 @@
               warningsFound++;
             }
           });
-
-          $inputs.trigger("validationLostFocus.validation");
 
           if (warningsFound) {
             if (settings.options.preventSubmit) {
@@ -651,10 +649,18 @@
                                         rrjqbvValidator.message = data.message;
                                     }
                                     rrjqbvValidator.lastFinished = true;
-                                    rrjqbvThis.data("validation" + rrjqbvValidator.validatorName + "Message", rrjqbvValidator.message);
+                                    rrjqbvThis.data(
+                                        "validation" + rrjqbvValidator.validatorName + "Message", 
+                                        rrjqbvValidator.message
+                                    );
+                                    
                                     // Timeout is set to avoid problems with the events being considered 'already fired'
                                     setTimeout(function() {
-                                        rrjqbvThis.trigger("revalidate.validation");
+                                        if (!$this.is(":focus") && $this.parents("form").first().data("jqbvIsSubmitting")) {
+                                            rrjqbvThis.trigger("blur.validation");
+                                        } else {
+                                            rrjqbvThis.trigger("revalidate.validation");
+                                        }
                                     }, 1); // doesn't need a long timeout, just long enough for the event bubble to burst
                                 }
                             }
