@@ -1,6 +1,30 @@
 {
-  "name": "jquery-plugin",
-  "version": "0.0.0-ignored",
+  "name": "jqBootstrapValidation",
+  "title": "jqBootstrapValidation",
+  "description": "A JQuery validation plugin for bootstrap forms.",
+  "version": "1.3.6",
+  "homepage": "http://reactiveraven.github.com/jqBootstrapValidation",
+  "author": {
+    "name": "David Godfrey",
+    "email": "reactiveraven@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ReactiveRaven/jqBootstrapValidation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ReactiveRaven/jqBootstrapValidation/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://reactiveraven.github.com/jqBootstrapValidation/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "*"
+  },
+  "keywords": [],
   "engines": {
     "node": ">= 0.6.0"
   },
@@ -11,6 +35,8 @@
     "jQuery": "~1.7.3"
   },
   "devDependencies": {
-    "grunt": "~0.3.17"
+    "grunt": "~0.3.17",
+    "grunt-zip": "~0.2.0",
+    "grunt-bump": "~0.0.1"
   }
 }

@@ -1,9 +1,12 @@
 /*global module:false*/
 module.exports = function(grunt) {
+    
+  grunt.loadNpmTasks('grunt-bump');
+  grunt.loadNpmTasks('grunt-zip');
 
   // Project configuration.
   grunt.initConfig({
-    pkg: '<json:jqBootstrapValidation.jquery.json>',
+    pkg: '<json:package.json>',
     meta: {
       banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -51,11 +54,16 @@ module.exports = function(grunt) {
         jQuery: true
       }
     },
-    uglify: {}
+    uglify: {},
+    zip: {
+      // We accept short syntax
+      // 'destinationZip': ['firstFileToZip', 'secondFileToZip', ...]
+      'dist/jqBootstrapValidation.zip': 'dist/*.js'
+    }
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
+  grunt.registerTask('default', 'lint qunit concat min zip');
   
   // Travis CI task.
   grunt.registerTask('travis', 'lint qunit');
