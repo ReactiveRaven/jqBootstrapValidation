@@ -23,8 +23,8 @@
      - notStrictEqual(actual, expected, [message])
      - raises(block, [expected], [message])
      */
-    
-    var attachJqbv = function () {
+
+    var attachJqbv = function() {
         $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation(
             {
                 preventSubmit: true,
@@ -40,67 +40,71 @@
     };
 
     function importFromTd($td) {
-        
+
         // Handle single items simply
         var result = $td.text();
         if (result.length > 0) {
-            result = [ result ];
+            result = [result];
         } else {
             // literally nothing there? Guess it should be empty.
             result = [];
         }
-    
+
         // if multiple items, expect them in a list
         if ($td.find("ul,ol").length) {
-            result = $td.find("ol,ul").first().find("li").map(function (i, el) { return $(el).text(); }).toArray();
+            result = $td.find("ol,ul").first().find("li").map(function(i, el) {
+                return $(el).text();
+            }).toArray();
         }
-    
+
         return result;
     }
-    
+
     function arraysMatch(first, second) {
         return (
             $(first).not(second).length === 0 &&
             $(second).not(first).length === 0
         );
     }
-  
-    var numInJQBVTest = 7;
-    
-    var jqbvTestQueue = [];
-    
-    var pushJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
-      jqbvTestQueue.push([value, classChange, classSubmit, messageChange, messageSubmit]);
-    };
-  
-    var startJQBVTestQueue = function () {
-      stop(); // rest of tests
-      tickJQBVTestQueue();
-    };
-  
-    var stopJQBVTestQueue = function () {
-      start(); // rest of tests
-      start();
-    };
-  
-    var tickJQBVTestQueue = function () {
-      if (jqbvTestQueue.length > 0) {
-        var v= jqbvTestQueue.pop();
-        runJQBVTestAsync(v[0], v[1], v[2], v[3], v[4], function () { tickJQBVTestQueue(); });
-      } else {
-        stopJQBVTestQueue();
-      }
-    };
-  
-  
 
-    var runJQBVTest = function (value, classChange, classSubmit, messageChange, messageSubmit) {
-        
+    var numInJQBVTest = 7;
+
+    var jqbvTestQueue = [];
+
+    var pushJQBVTest = function(value, classChange, classSubmit, messageChange, messageSubmit) {
+        jqbvTestQueue.push([value, classChange, classSubmit, messageChange, messageSubmit]);
+    };
+
+    var startJQBVTestQueue = function() {
+        stop(); // rest of tests
+        tickJQBVTestQueue();
+    };
+
+    var stopJQBVTestQueue = function() {
+        start(); // rest of tests
+        start();
+    };
+
+    var tickJQBVTestQueue = function() {
+        if (jqbvTestQueue.length > 0) {
+            var v = jqbvTestQueue.pop();
+            runJQBVTestAsync(v[0], v[1], v[2], v[3], v[4], function() {
+                tickJQBVTestQueue();
+            });
+        } else {
+            stopJQBVTestQueue();
+        }
+    };
+
+
+
+    var runJQBVTest = function(value, classChange, classSubmit, messageChange, messageSubmit) {
+
         var $input = $("#qunit-fixture").find("[name=input]");
         var $controlGroup = $($input.parents(".control-group")[0]);
         var $form = $input.parents("form").first();
         var isMulti = ($input.length > 1);
-        
+
         var values;
         if (isMulti) {
             if (value.length) {
@@ -116,9 +120,9 @@
         } else {
             values = [value];
         }
-      
+
         var valueJson = JSON.stringify(values);
-        
+
 
         var valueAccepted = true;
 
@@ -126,7 +130,7 @@
             // dealing with checkboxes, radioboxes, etc
             var $inputs = $input;
             $inputs.removeAttr("checked");
-            $(values).each(function (i, el) {
+            $(values).each(function(i, el) {
                 var $curInput = $inputs.filter("[value=\"" + el + "\"]");
 
                 if ($curInput.length === 0) {
@@ -135,14 +139,14 @@
                     $curInput.attr("checked", "checked");
                 }
             });
-        
+
             deepEqual(valueAccepted, true, "value is accepted by browser - " + valueJson);
 
         } else {
-            
+
             // dealing with text, selects, etc
             $input.val(values[0]);
-            
+
             deepEqual($input.val(), values[0], "value is accepted by browser - " + valueJson);
         }
 
@@ -163,7 +167,7 @@
         var submitMessageExpected = messageSubmit;
         var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
         deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
-        
+
         $input.trigger("change.validation");
         changeClassActual = $controlGroup.attr("class").split(" ");
         deepEqual(changeClassActual, changeClassExpected, "classes revert again on change - " + valueJson);
@@ -172,13 +176,13 @@
         deepEqual(changeMessageActual, messageChange, "message reverts again on change - " + valueJson);
     };
 
-    var runJQBVTestAsync = function (value, classChange, classSubmit, messageChange, messageSubmit, callback) {
-        
+    var runJQBVTestAsync = function(value, classChange, classSubmit, messageChange, messageSubmit, callback) {
+
         var $input = $("#qunit-fixture").find("[name=input]");
         var $controlGroup = $($input.parents(".control-group")[0]);
         var $form = $input.parents("form").first();
         var isMulti = ($input.length > 1);
-        
+
         var values;
         if (isMulti) {
             if (value.length) {
@@ -194,9 +198,9 @@
         } else {
             values = [value];
         }
-      
+
         var valueJson = JSON.stringify(values);
-        
+
 
         var valueAccepted = true;
 
@@ -204,7 +208,7 @@
             // dealing with checkboxes, radioboxes, etc
             var $inputs = $input;
             $inputs.removeAttr("checked");
-            $(values).each(function (i, el) {
+            $(values).each(function(i, el) {
                 var $curInput = $inputs.filter("[value=\"" + el + "\"]");
 
                 if ($curInput.length === 0) {
@@ -213,17 +217,17 @@
                     $curInput.attr("checked", "checked");
                 }
             });
-        
+
             deepEqual(valueAccepted, true, "value is accepted by browser - " + valueJson);
 
         } else {
-            
+
             // dealing with text, selects, etc
             $input.val(values[0]);
-            
+
             deepEqual($input.val(), values[0], "value is accepted by browser - " + valueJson);
         }
-      
+
         stop();
 
         $input.trigger("change.validation");
@@ -238,7 +242,7 @@
 
                 $form.trigger("submit");
                 setTimeout(
-                    function () {
+                    function() {
                         var submitClassExpected = ["control-group"].concat(classSubmit);
                         var submitClassActual = $controlGroup.attr("class").split(" ");
 
@@ -250,7 +254,7 @@
 
                         $input.trigger("change.validation");
                         setTimeout(
-                            function () {
+                            function() {
                                 changeClassActual = $controlGroup.attr("class").split(" ");
                                 deepEqual(changeClassActual, changeClassExpected, "classes revert again on change - " + valueJson);
 
@@ -261,20 +265,20 @@
                                 callback();
                             },
                             0
-                        );
+                            );
                     },
                     0
-                );
+                    );
             },
             0
-        );
+            );
     };
 
     module('jqBootstrapValidation', {
         setup: function() {
             this.elems = $("#qunit-fixture").children();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
@@ -289,7 +293,7 @@
 //    });
 
     module('email field', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -311,25 +315,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
 
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 1*numInJQBVTest, function() {
+    test('accepts valid', 1 * numInJQBVTest, function() {
         runJQBVTest("test@example.com", ["success"], [], [], []);
     });
-    test('rejects invalid', 3*numInJQBVTest, function() {
+    test('rejects invalid', 3 * numInJQBVTest, function() {
         runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
     });
 
     module('email field (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -350,25 +354,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
 
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 1*numInJQBVTest, function() {
+    test('accepts valid', 1 * numInJQBVTest, function() {
         runJQBVTest("test@example.com", ["success"], [], [], []);
     });
-    test('rejects invalid', 3*numInJQBVTest, function() {
+    test('rejects invalid', 3 * numInJQBVTest, function() {
         runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
     });
 
     module('number field', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -390,21 +394,21 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
 
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 4*numInJQBVTest, function() {
+    test('accepts valid', 4 * numInJQBVTest, function() {
         runJQBVTest("1", ["success"], [], [], []);
         runJQBVTest("10", ["success"], [], [], []);
         runJQBVTest("-10", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 4*numInJQBVTest, function() {
+    test('rejects invalid', 4 * numInJQBVTest, function() {
         runJQBVTest("123.", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("not a number", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
@@ -412,7 +416,7 @@
     });
 
     module('number field (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -433,22 +437,22 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 1*numInJQBVTest, function () {
+    test("accepts valid", 1 * numInJQBVTest, function() {
         runJQBVTest("-123", ["success"], [], [], []);
     });
-    test('rejects invalid', 1*numInJQBVTest, function() {
+    test('rejects invalid', 1 * numInJQBVTest, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
     module('number field (step)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -471,24 +475,24 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 3*numInJQBVTest, function () {
+    test("accepts valid", 3 * numInJQBVTest, function() {
         runJQBVTest("-123.45", ["success"], [], [], []);
         runJQBVTest("123.45", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 1*numInJQBVTest, function() {
+    test('rejects invalid', 1 * numInJQBVTest, function() {
         runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
     module('number field (decimal)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -512,25 +516,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 3*numInJQBVTest, function () {
+    test("accepts valid", 3 * numInJQBVTest, function() {
         runJQBVTest("-123,45", ["success"], [], [], []);
         runJQBVTest("123,45", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
-    test('rejects invalid', 2*numInJQBVTest, function() {
+    test('rejects invalid', 2 * numInJQBVTest, function() {
         runJQBVTest("123.45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
         runJQBVTest("123,,45", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
     module('required field', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -552,21 +556,21 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 1*numInJQBVTest, function() {
+    test('is required', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], ["error"], [], ["This is required"]);
     });
-    test("accepts anything", 3*numInJQBVTest, function () {
+    test("accepts anything", 3 * numInJQBVTest, function() {
         runJQBVTest(" ", ["success"], [], [], []);
         runJQBVTest("hello", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
 
     module('required field (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -588,21 +592,21 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 1*numInJQBVTest, function() {
+    test('is required', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], ["error"], [], ["This is required"]);
     });
-    test("accepts anything", 3*numInJQBVTest, function () {
+    test("accepts anything", 3 * numInJQBVTest, function() {
         runJQBVTest(" ", ["success"], [], [], []);
         runJQBVTest("hello", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
     });
 
     module('max', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -624,26 +628,26 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("-1000", ["success"], [], [], []);
         runJQBVTest("0", ["success"], [], [], []);
         runJQBVTest("100.00", ["success"], [], [], []);
         runJQBVTest("99.999999", ["success"], [], [], []);
     });
-    test("rejects invalid", 2*numInJQBVTest, function () {
+    test("rejects invalid", 2 * numInJQBVTest, function() {
         runJQBVTest("101", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
         runJQBVTest("100.0001", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
     });
 
     module('max (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -665,26 +669,26 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("-1000", ["success"], [], [], []);
         runJQBVTest("0", ["success"], [], [], []);
         runJQBVTest("100.00", ["success"], [], [], []);
         runJQBVTest("99.999999", ["success"], [], [], []);
     });
-    test("rejects invalid", 2*numInJQBVTest, function () {
+    test("rejects invalid", 2 * numInJQBVTest, function() {
         runJQBVTest("101", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
         runJQBVTest("100.0001", ["warning"], ["error"], ["Too high: Maximum of '100'"], ["Too high: Maximum of '100'"]);
     });
 
     module('min', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -706,25 +710,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 2*numInJQBVTest, function () {
+    test("accepts valid", 2 * numInJQBVTest, function() {
         runJQBVTest("1000", ["success"], [], [], []);
         runJQBVTest("100", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("0", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("99.999999", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("-1000", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
     });
 
     module('min (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -746,25 +750,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 2*numInJQBVTest, function () {
+    test("accepts valid", 2 * numInJQBVTest, function() {
         runJQBVTest("1000", ["success"], [], [], []);
         runJQBVTest("100", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("0", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("99.999999", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
         runJQBVTest("-1000", ["warning"], ["error"], ["Too low: Minimum of '100'"], ["Too low: Minimum of '100'"]);
     });
 
     module('maxlength', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -786,27 +790,27 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("a", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("too long", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("abcd", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("    ", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
     });
 
     module('maxlength (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -828,27 +832,27 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("a", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("too long", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("abcd", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
         runJQBVTest("    ", ["warning"], ["error"], ["Too long: Maximum of '3' characters"], ["Too long: Maximum of '3' characters"]);
     });
 
     module('minlength', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -870,27 +874,27 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("aaaaaaaaaaa", ["success"], [], [], []);
         runJQBVTest(" a ", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("ab", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("12", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
     });
 
     module('minlength (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -912,27 +916,27 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 4*numInJQBVTest, function () {
+    test("accepts valid", 4 * numInJQBVTest, function() {
         runJQBVTest("123", ["success"], [], [], []);
         runJQBVTest("abc", ["success"], [], [], []);
         runJQBVTest("abcd", ["success"], [], [], []);
         runJQBVTest("1234", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("ab", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("12", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Too short: Minimum of '3' characters"], ["Too short: Minimum of '3' characters"]);
     });
 
     module('pattern', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -954,25 +958,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 2*numInJQBVTest, function () {
+    test("accepts valid", 2 * numInJQBVTest, function() {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("lower case", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
     });
 
     module('pattern (sniffed)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -994,25 +998,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 2*numInJQBVTest, function () {
+    test("accepts valid", 2 * numInJQBVTest, function() {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
         runJQBVTest("C", ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest("lower case", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("  ", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
     });
 
     module('match (blank other)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1045,16 +1049,16 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-  
+
     module('match (filled other)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1087,17 +1091,17 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 1*numInJQBVTest, function() {
+    test('is required if other is filled in', 1 * numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
-    test("accepts valid", 1*numInJQBVTest, function () {
+    test("accepts valid", 1 * numInJQBVTest, function() {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 4*numInJQBVTest, function () {
+    test("rejects invalid", 4 * numInJQBVTest, function() {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
@@ -1105,7 +1109,7 @@
     });
 
     module('match (fors missing)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1138,17 +1142,17 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 1*numInJQBVTest, function() {
+    test('is required if other is filled in', 1 * numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
     });
-    test("accepts valid", 1*numInJQBVTest, function () {
+    test("accepts valid", 1 * numInJQBVTest, function() {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 4*numInJQBVTest, function () {
+    test("rejects invalid", 4 * numInJQBVTest, function() {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match 'Other'"], ["Must match 'Other'"]);
@@ -1156,7 +1160,7 @@
     });
 
     module('match (label missing)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1188,17 +1192,17 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required if other is filled in', 1*numInJQBVTest, function() {
+    test('is required if other is filled in', 1 * numInJQBVTest, function() {
         runJQBVTest("", ["warning"], ["error"], ["Must match"], ["Must match"]);
     });
-    test("accepts valid", 1*numInJQBVTest, function () {
+    test("accepts valid", 1 * numInJQBVTest, function() {
         runJQBVTest("specific value", ["success"], [], [], []);
     });
-    test("rejects invalid", 4*numInJQBVTest, function () {
+    test("rejects invalid", 4 * numInJQBVTest, function() {
         runJQBVTest("SPECIFIC VALUE", ["warning"], ["error"], ["Must match"], ["Must match"]);
         runJQBVTest("specific value ", ["warning"], ["error"], ["Must match"], ["Must match"]);
         runJQBVTest("123456", ["warning"], ["error"], ["Must match"], ["Must match"]);
@@ -1206,7 +1210,7 @@
     });
 
     module('max checked', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1280,25 +1284,25 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 3*numInJQBVTest, function () {
+    test("accepts valid", 3 * numInJQBVTest, function() {
         runJQBVTest(["red", "yellow", "blue"], ["success"], [], [], []);
         runJQBVTest(["red", "orange", "yellow"], ["success"], [], [], []);
         runJQBVTest(["violet", "indigo", "blue"], ["success"], [], [], []);
     });
-    test("rejects invalid", 2*numInJQBVTest, function () {
+    test("rejects invalid", 2 * numInJQBVTest, function() {
         runJQBVTest(["red", "yellow", "blue", "violet"], ["warning"], ["error"], ["Too many: Max '3' checked"], ["Too many: Max '3' checked"]);
         runJQBVTest(["orange", "yellow", "green", "blue"], ["warning"], ["error"], ["Too many: Max '3' checked"], ["Too many: Max '3' checked"]);
     });
 
     module('min checked', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1372,26 +1376,26 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is required', 1*numInJQBVTest, function() {
+    test('is required', 1 * numInJQBVTest, function() {
         runJQBVTest([], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
     });
-    test("accepts valid", 3*numInJQBVTest, function () {
+    test("accepts valid", 3 * numInJQBVTest, function() {
         runJQBVTest(["red", "yellow", "blue"], ["success"], [], [], []);
         runJQBVTest(["red", "orange", "yellow"], ["success"], [], [], []);
         runJQBVTest(["violet", "indigo", "blue"], ["success"], [], [], []);
     });
-    test("rejects invalid", 3*numInJQBVTest, function () {
+    test("rejects invalid", 3 * numInJQBVTest, function() {
         runJQBVTest(["red", "yellow"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
         runJQBVTest(["orange", "violet"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
         runJQBVTest(["orange", "yellow"], ["warning"], ["error"], ["Too few: Min '3' checked"], ["Too few: Min '3' checked"]);
     });
 
     module('regex', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1413,17 +1417,17 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    test('is optional', 1*numInJQBVTest, function() {
+    test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 1*numInJQBVTest, function () {
+    test("accepts valid", 1 * numInJQBVTest, function() {
         runJQBVTest("CAPITALS", ["success"], [], [], []);
     });
-    test("rejects invalid", 4*numInJQBVTest, function () {
+    test("rejects invalid", 4 * numInJQBVTest, function() {
         runJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("lowercase", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
         runJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not in the expected format"], ["Not in the expected format"]);
@@ -1431,7 +1435,7 @@
     });
 
     module('callback', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1453,19 +1457,19 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    asyncTest('is optional', 1*numInJQBVTest, function() {
+    asyncTest('is optional', 1 * numInJQBVTest, function() {
         pushJQBVTest("", [], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("accepts valid", 1*numInJQBVTest, function () {
+    asyncTest("accepts valid", 1 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS", ["success"], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("rejects invalid", 4*numInJQBVTest, function () {
+    asyncTest("rejects invalid", 4 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         pushJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
@@ -1474,7 +1478,7 @@
     });
 
     module('callback (with message)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1496,19 +1500,19 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    asyncTest('is optional', 1*numInJQBVTest, function() {
+    asyncTest('is optional', 1 * numInJQBVTest, function() {
         pushJQBVTest("", [], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("accepts valid", 1*numInJQBVTest, function () {
+    asyncTest("accepts valid", 1 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS", ["success"], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("rejects invalid", 4*numInJQBVTest, function () {
+    asyncTest("rejects invalid", 4 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         pushJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
@@ -1517,7 +1521,7 @@
     });
 
     module('callback (async)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1539,19 +1543,19 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    asyncTest('is optional', 1*numInJQBVTest, function() {
+    asyncTest('is optional', 1 * numInJQBVTest, function() {
         pushJQBVTest("", [], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("accepts valid", 1*numInJQBVTest, function () {
+    asyncTest("accepts valid", 1 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS", ["success"], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("rejects invalid", 4*numInJQBVTest, function () {
+    asyncTest("rejects invalid", 4 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         pushJQBVTest("lowercase", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
         pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Not valid"], ["Not valid"]);
@@ -1560,7 +1564,7 @@
     });
 
     module('callback (async with message)', {
-        setup: function () {
+        setup: function() {
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1582,19 +1586,19 @@
             "));
             attachJqbv();
         },
-        teardown: function () {
+        teardown: function() {
             $("#qunit-fixture").empty();
         }
     });
-    asyncTest('is optional', 1*numInJQBVTest, function() {
+    asyncTest('is optional', 1 * numInJQBVTest, function() {
         pushJQBVTest("", [], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("accepts valid", 1*numInJQBVTest, function () {
+    asyncTest("accepts valid", 1 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS", ["success"], [], [], []);
         startJQBVTestQueue();
     });
-    asyncTest("rejects invalid", 4*numInJQBVTest, function () {
+    asyncTest("rejects invalid", 4 * numInJQBVTest, function() {
         pushJQBVTest("CAPITALS WITH SPACES", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         pushJQBVTest("lowercase", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         pushJQBVTest("lower case with spaces", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
