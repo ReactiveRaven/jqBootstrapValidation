@@ -1,7 +1,7 @@
 jqBootstapValidation
 ====================
 
-A JQuery validation framework for bootstrap forms.
+A JQuery validation framework for bootstrap forms. 
 
 Displays validation errors in `help-block` elements as users type.
 
