@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-clean');
 
   // Project configuration.
   grunt.initConfig({
@@ -17,13 +18,13 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
     min: {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'dist/<%= pkg.name %>.min.js'
+        dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
       }
     },
     qunit: {
@@ -59,11 +60,14 @@ module.exports = function(grunt) {
       // We accept short syntax
       // 'destinationZip': ['firstFileToZip', 'secondFileToZip', ...]
       'dist/jqBootstrapValidation.zip': 'dist/*.js'
+    },
+    clean: {
+      folder: "dist/"
     }
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min zip');
+  grunt.registerTask('default', 'lint qunit clean concat min zip');
   
   // Travis CI task.
   grunt.registerTask('travis', 'lint qunit');

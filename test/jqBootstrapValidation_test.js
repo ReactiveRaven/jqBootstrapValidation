@@ -1600,5 +1600,74 @@
         pushJQBVTest("192838912!@$*@&$*#&!@1239", ["warning"], ["error"], ["Capitals only please"], ["Capitals only please"]);
         startJQBVTestQueue();
     });
+  
+    module('events', {
+        setup: function() {
+            $("#qunit-fixture").append($("\
+                <form class='form-horizontal' novalidate>\
+                    <div class='control-group'>\
+                        <label class='control-label'>Input</label>\
+                        <div class='controls'>\
+                            <input\
+                                type='number'\
+                                name='input'\
+                                data-validation-max-max='42'\
+                            />\
+                        </div>\
+                    </div>\
+                    <div class='form-actions'>\
+                        <button type='submit' class='btn btn-primary'>\
+                            Test Validation <i class='icon-ok icon-white'></i>\
+                        </button>\
+                    </div>\
+                </form>\
+            "));
+            $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation(
+                {
+                    preventSubmit: true,
+                    submitError: function($form, event, errors) {
+                        // Here I do nothing, but you could do something like display 
+                        // the error messages to the user, log, etc.
+                    },
+                    submitSuccess: function($form, event) {
+                        event.preventDefault();
+                    },
+                    bindEvents: [
+                        "focus",
+                        "blur",
+                        "click"
+                    ]
+                }
+            );
+        },
+        teardown: function() {
+            $("#qunit-fixture").empty();
+        }
+    });
+  
+    test("listens to bindEvents option", 8, function () {
+        var eventsArray = [];
+        
+        var $input = $("#qunit-fixture [name='input']");
+        
+        if ($input.data("events")) {
+            eventsArray = $input.data("events");
+        } else if ($input._data("events")) {
+            eventsArray = $input._data("events");
+        } else {
+            ok(false, "cannot find the internal jQuery events array");
+        }
+      
+        ok(eventsArray["validation"] && eventsArray["validation"].length === 1, "'validation' event always added");
+        ok(eventsArray["validationLostFocus"] && eventsArray["validationLostFocus"].length === 1, "'validationLostFocus' event always added");
+        
+        ok(eventsArray["change"] && eventsArray["change"].length === 0, "'change' event not added as not requested");
+        ok(eventsArray["keydown"] && eventsArray["keydown"].length === 0, "'keydown' event not added as not requested");
+        ok(eventsArray["keyup"] && eventsArray["keyup"].length === 0, "'keyup' event not added as not requested");
+        
+        ok(eventsArray["focus"] && eventsArray["focus"].length === 1, "'focus' event added as requested");
+        ok(eventsArray["blur"] && eventsArray["blur"].length === 0, "'blur' event not added as not requested");
+        ok(eventsArray["click"] && eventsArray["click"].length === 0, "'click' event not added as not requested");
+    });
 
 }(jQuery));

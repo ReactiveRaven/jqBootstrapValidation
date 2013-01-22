@@ -22,7 +22,7 @@
     }
   ],
   "dependencies": {
-    "jquery": "*"
+    "jQuery": "~1.7.3"
   },
   "keywords": [],
   "engines": {
@@ -31,12 +31,10 @@
   "scripts": {
     "test": "grunt travis --verbose"
   },
-  "dependencies": {
-    "jQuery": "~1.7.3"
-  },
   "devDependencies": {
     "grunt": "~0.3.17",
     "grunt-zip": "~0.2.0",
-    "grunt-bump": "~0.0.1"
+    "grunt-bump": "~0.0.1",
+    "grunt-clean": "~0.3.0"
   }
 }
