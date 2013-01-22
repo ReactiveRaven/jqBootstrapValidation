@@ -1,3 +1,7 @@
+/*! jqBootstrapValidation - v1.3.6 - 2013-01-22
+* http://reactiveraven.github.com/jqBootstrapValidation
+* Copyright (c) 2013 David Godfrey; Licensed MIT */
+
 (function( $ ){
 
 	var createdElements = [];

@@ -1603,6 +1603,7 @@
   
     module('events', {
         setup: function() {
+            $("#qunit-fixture").empty();
             $("#qunit-fixture").append($("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
@@ -1641,7 +1642,6 @@
             );
         },
         teardown: function() {
-            $("#qunit-fixture").empty();
         }
     });
   
@@ -1661,13 +1661,76 @@
         ok(eventsArray["validation"] && eventsArray["validation"].length === 1, "'validation' event always added");
         ok(eventsArray["validationLostFocus"] && eventsArray["validationLostFocus"].length === 1, "'validationLostFocus' event always added");
         
-        ok(eventsArray["change"] && eventsArray["change"].length === 0, "'change' event not added as not requested");
-        ok(eventsArray["keydown"] && eventsArray["keydown"].length === 0, "'keydown' event not added as not requested");
-        ok(eventsArray["keyup"] && eventsArray["keyup"].length === 0, "'keyup' event not added as not requested");
+        ok(!eventsArray["change"] || eventsArray["change"].length === 0, "'change' event not added as not requested");
+        ok(!eventsArray["keydown"] || eventsArray["keydown"].length === 0, "'keydown' event not added as not requested");
+        ok(!eventsArray["keyup"] || eventsArray["keyup"].length === 0, "'keyup' event not added as not requested");
         
         ok(eventsArray["focus"] && eventsArray["focus"].length === 1, "'focus' event added as requested");
-        ok(eventsArray["blur"] && eventsArray["blur"].length === 0, "'blur' event not added as not requested");
-        ok(eventsArray["click"] && eventsArray["click"].length === 0, "'click' event not added as not requested");
+        ok(eventsArray["blur"] && eventsArray["blur"].length === 1, "'blur' event added as requested");
+        ok(eventsArray["click"] && eventsArray["click"].length === 1, "'click' event added as requested");
+    });
+  
+    module('events (defaults)', {
+        setup: function() {
+            $("#qunit-fixture").empty();
+            $("#qunit-fixture").append($("\
+                <form class='form-horizontal' novalidate>\
+                    <div class='control-group'>\
+                        <label class='control-label'>Input</label>\
+                        <div class='controls'>\
+                            <input\
+                                type='number'\
+                                name='input'\
+                                data-validation-max-max='42'\
+                            />\
+                        </div>\
+                    </div>\
+                    <div class='form-actions'>\
+                        <button type='submit' class='btn btn-primary'>\
+                            Test Validation <i class='icon-ok icon-white'></i>\
+                        </button>\
+                    </div>\
+                </form>\
+            "));
+            $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation(
+                {
+                    preventSubmit: true,
+                    submitError: function($form, event, errors) {
+                        // Here I do nothing, but you could do something like display 
+                        // the error messages to the user, log, etc.
+                    },
+                    submitSuccess: function($form, event) {
+                        event.preventDefault();
+                    }
+                }
+            );
+        },
+        teardown: function() {
+        }
+    });
+  
+    test("has sensible default events", 8, function () {
+        var eventsArray = [];
+        
+        var $input = $("#qunit-fixture [name='input']");
+        
+        if ($input.data("events")) {
+            eventsArray = $input.data("events");
+        } else if ($input._data("events")) {
+            eventsArray = $input._data("events");
+        } else {
+            ok(false, "cannot find the internal jQuery events array");
+        }
+      
+        ok(eventsArray["validation"] && eventsArray["validation"].length === 1, "'validation' event always added");
+        ok(eventsArray["validationLostFocus"] && eventsArray["validationLostFocus"].length === 1, "'validationLostFocus' event always added");
+        
+        ok(eventsArray["focus"] && eventsArray["focus"].length === 1, "'focus' event added by default");
+        ok(eventsArray["change"] && eventsArray["change"].length === 1, "'change' event added by default");
+        ok(eventsArray["keydown"] && eventsArray["keydown"].length === 1, "'keydown' event added by default");
+        ok(eventsArray["keyup"] && eventsArray["keyup"].length === 1, "'keyup' event added by default");
+        ok(eventsArray["blur"] && eventsArray["blur"].length === 1, "'blur' event added by default");
+        ok(eventsArray["click"] && eventsArray["click"].length === 1, "'click' event added by default");
     });
 
 }(jQuery));
