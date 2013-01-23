@@ -105,8 +105,20 @@
     test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 1 * numInJQBVTest, function() {
-        runJQBVTest("test@example.com", ["success"], [], [], []);
+    test('accepts valid', 9 * numInJQBVTest, function() {
+        $([
+            '"Abc\\@def"@example.com',
+            '"Fred Bloggs"@example.com',
+            '"Joe\\\\Blow"@example.com',
+            '"Abc@def"@example.com',
+            'customer/department=shipping@example.com',
+            '$A12345@example.com',
+            '!def!xyz%abc@example.com',
+            '_somename@example.com',
+            'test@example.com'
+        ]).each(function (i, el) {
+            runJQBVTest(el, ["success"], [], [], []);
+        });
     });
     test('rejects invalid', 3 * numInJQBVTest, function() {
         runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
