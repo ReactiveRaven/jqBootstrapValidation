@@ -13,12 +13,17 @@ module.exports = function(grunt) {
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */',
+      componentjson: '{\n  "name": "<%= pkg.name %>",\n  "version": "<%= pkg.version %>",\n  "main": ["./dist/<%= pkg.name %>-<%= pkg.version %>.min.js"],\n  "dependencies": {\n    "jquery": "*"\n  }\n}'
     },
     concat: {
       dist: {
         src: ['<banner:meta.banner>', '<file_strip_banner:src/<%= pkg.name %>.js>'],
         dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
+      },
+      componentjson: {
+        src: ['<banner:meta.componentjson>'],
+        dest: 'component.json'
       }
     },
     min: {

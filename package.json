@@ -22,7 +22,7 @@
     }
   ],
   "dependencies": {
-    "jQuery": "~1.7.3"
+    "jQuery": "*"
   },
   "keywords": [],
   "engines": {
