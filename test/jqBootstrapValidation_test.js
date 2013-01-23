@@ -2,7 +2,7 @@
 /*global start:false, stop:false ok:false, equal:false, notEqual:false, deepEqual:false*/
 /*global notDeepEqual:false, strictEqual:false, notStrictEqual:false, raises:false*/
 /*global JSON:false */
-/*global runJQBVTest:false, attachJqbv:false, numInJQBVTest:false, startJQBVTestQueue:false, pushJQBVTest:false*/
+/*global runJQBVTest:false, attachJqbv:false, numInJQBVTest:false, startJQBVTestQueue:false, pushJQBVTest:false, extractEvents:false*/
 /*jshint multistr: true */
 (function($) {
 
@@ -27,6 +27,26 @@
 
     module('jqBootstrapValidation', {
         setup: function() {
+            $("#qunit-fixture").append($("\
+                <form class='form-horizontal' novalidate>\
+                    <div class='control-group'>\
+                        <label class='control-label'>Email address</label>\
+                        <div class='controls'>\
+                            <input\
+                                type='text'\
+                                name='input'\
+                                data-validation-email-email='email'\
+                            />\
+                        </div>\
+                    </div>\
+                    <div class='form-actions'>\
+                        <button type='submit' class='btn btn-primary'>\
+                            Test Validation <i class='icon-ok icon-white'></i>\
+                        </button>\
+                    </div>\
+                </form>\
+            "));
+            attachJqbv();
             this.elems = $("#qunit-fixture").children();
         },
         teardown: function() {
@@ -39,9 +59,20 @@
         strictEqual(this.elems.jqBootstrapValidation(), this.elems, 'should be chaninable');
     });
 
+    test('tidies up events on destroy', 0, function () {
+        var $input = $("#qunit-fixture input");
+        $input.jqBootstrapValidation("destroy");
+        var inputEvents = extractEvents($input);
+        var $form = $input.parents("form").first();
+        var formEvents = extractEvents($form);
+        // do something to make sure the events are all removed properly. should they just be 'empty'?
+    });
+
 //    test("responds to jqbv", 1, function() {
 //        strictEqual(this.elems.jqbv(), this.elems, "should register jqbv function");
 //    });
+
+
 
     module('email field', {
         setup: function() {
@@ -1465,18 +1496,12 @@
         }
     });
   
-    test("has sensible default events", 8, function () {
-        var eventsArray = [];
-        
+    test("has sensible default events", 9, function () {
         var $input = $("#qunit-fixture [name='input']");
         
-        if ($input.data("events")) {
-            eventsArray = $input.data("events");
-        } else if ($input._data("events")) {
-            eventsArray = $input._data("events");
-        } else {
-            ok(false, "cannot find the internal jQuery events array");
-        }
+        var eventsArray = extractEvents($input);
+        
+        ok(!!eventsArray, "Found some events");
       
         ok(eventsArray["validation"] && eventsArray["validation"].length === 1, "'validation' event always added");
         ok(eventsArray["validationLostFocus"] && eventsArray["validationLostFocus"].length === 1, "'validationLostFocus' event always added");

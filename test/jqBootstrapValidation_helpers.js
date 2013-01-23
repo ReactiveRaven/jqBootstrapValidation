@@ -78,6 +78,16 @@
         }
     };
 
+    window.extractEvents = function($input) {
+        var eventsArray = null;
+        if ($input.data("events")) {
+            eventsArray = $input.data("events");
+        } else if ($input._data && $input._data("events")) {
+            eventsArray = $input._data("events");
+        }
+        return eventsArray;
+    };
+
 
 
     window.runJQBVTest = function(value, classChange, classSubmit, messageChange, messageSubmit) {
