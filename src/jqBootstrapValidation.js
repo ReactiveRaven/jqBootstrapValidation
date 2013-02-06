@@ -565,10 +565,10 @@
             $this.attr("aria-invalid", $this.data("original-aria-invalid"));
             // reset role
             $helpBlock.attr("role", $this.data("original-role"));
-						// remove all elements we created
-                        if ($.inArray($helpBlock[0], createdElements) > -1) {
-							$helpBlock.remove();
-						}
+            // remove all elements we created
+            if ($.inArray($helpBlock[0], createdElements) > -1) {
+                $helpBlock.remove();
+            }
 
           }
         );
