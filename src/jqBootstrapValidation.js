@@ -566,7 +566,7 @@
             // reset role
             $helpBlock.attr("role", $this.data("original-role"));
 						// remove all elements we created
-						if (createdElements.indexOf($helpBlock[0]) > -1) {
+                        if ($.inArray($helpBlock[0], createdElements) > -1) {
 							$helpBlock.remove();
 						}
 
