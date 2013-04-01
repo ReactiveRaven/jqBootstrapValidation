@@ -597,7 +597,7 @@
 
         var errorMessages = [];
 
-        this.each(function (i, el) {
+        this.find('input,select,textarea').add(this).each(function (i, el) {
           errorMessages = errorMessages.concat(
             $(el).triggerHandler("getValidators.validation") ? $(el).triggerHandler("validation.validation", {submitting: true}) : []
           );
