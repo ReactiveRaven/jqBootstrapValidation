@@ -33,7 +33,7 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      files: ['test/**/*.html']
+      files: ['test/**/*.html', 'test/issues/**/test.html']
     },
     lint: {
       files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']

@@ -51,7 +51,7 @@
         );
     };
 
-    window.numInJQBVTest = 7;
+    window.numInJQBVTest = 9;
 
     window.jqbvTestQueue = [];
 
@@ -150,15 +150,27 @@
         var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
         deepEqual(changeMessageActual, messageChange, "message as expected on change - " + valueJson);
 
+        var prevErrors = window.number_of_submit_errors;
+        var prevSuccess = window.number_of_submit_successes;
         $form.trigger("submit");
+        var nowErrors = window.number_of_submit_errors;
+        var nowSuccess = window.number_of_submit_successes;
+        
         var submitClassExpected = ["control-group"].concat(classSubmit);
         var submitClassActual = $controlGroup.attr("class").split(" ");
-
         deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
 
         var submitMessageExpected = messageSubmit;
         var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
         deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
+        
+        if (classSubmit.indexOf("error") > -1) {
+          deepEqual(prevErrors + 1, nowErrors, "expect an error to be fired - " + valueJson);
+          deepEqual(prevSuccess, nowSuccess, "DID NOT expect success to be fired - " + valueJson);
+        } else {
+          deepEqual(prevErrors, nowErrors, "DID NOT expect an error to be fired - " + valueJson);
+          deepEqual(prevSuccess + 1, nowSuccess, "expect success to be fired - " + valueJson);
+        }
 
         $input.trigger("change.validation");
         changeClassActual = $controlGroup.attr("class").split(" ");
@@ -229,7 +241,35 @@
 
                 var changeMessageActual = importFromTd($controlGroup.find(".help-block"));
                 deepEqual(changeMessageActual, messageChange, "message as expected on change - " + valueJson);
+                
+                
+                
+                /*
+        var prevErrors = window.number_of_submit_errors;
+        var prevSuccess = window.number_of_submit_successes;
+        $form.trigger("submit");
+        var nowErrors = window.number_of_submit_errors;
+        var nowSuccess = window.number_of_submit_successes;
+        
+        var submitClassExpected = ["control-group"].concat(classSubmit);
+        var submitClassActual = $controlGroup.attr("class").split(" ");
+        deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
 
+        var submitMessageExpected = messageSubmit;
+        var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
+        deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
+        
+        if (classSubmit.indexOf("error") > -1) {
+          deepEqual(prevErrors + 1, nowErrors, "expect an error to be fired - " + valueJson);
+          deepEqual(prevSuccess, nowSuccess, "DID NOT expect success to be fired - " + valueJson);
+        } else {
+          deepEqual(prevErrors, nowErrors, "DID NOT expect an error to be fired - " + valueJson);
+          deepEqual(prevSuccess + 1, nowSuccess, "expect success to be fired - " + valueJson);
+        }
+                 **/
+
+                var prevErrors = window.number_of_submit_errors;
+                var prevSuccess = window.number_of_submit_successes;
                 $form.trigger("submit");
                 setTimeout(
                     function() {
@@ -241,6 +281,17 @@
                         var submitMessageExpected = messageSubmit;
                         var submitMessageActual = importFromTd($controlGroup.find(".help-block"));
                         deepEqual(submitMessageActual, submitMessageExpected, "message as expected on submit - " + valueJson);
+                        
+                        var nowErrors = window.number_of_submit_errors;
+                        var nowSuccess = window.number_of_submit_successes;
+                        
+                        if (classSubmit.indexOf("error") > -1) {
+                          deepEqual(prevErrors + 1, nowErrors, "expect an error to be fired - " + valueJson);
+                          deepEqual(prevSuccess, nowSuccess, "DID NOT expect success to be fired - " + valueJson);
+                        } else {
+                          deepEqual(prevErrors, nowErrors, "DID NOT expect an error to be fired - " + valueJson);
+                          deepEqual(prevSuccess + 1, nowSuccess, "expect success to be fired - " + valueJson);
+                        }
 
                         $input.trigger("change.validation");
                         setTimeout(

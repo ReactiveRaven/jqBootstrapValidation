@@ -1,4 +1,4 @@
-/*! jqBootstrapValidation - v1.3.6 - 2013-01-23
+/*! jqBootstrapValidation - v1.3.7 - 2013-05-02
 * http://reactiveraven.github.com/jqBootstrapValidation
 * Copyright (c) 2013 David Godfrey; Licensed MIT */
 
@@ -48,7 +48,7 @@
             var $this = $(el),
               $controlGroup = $this.parents(".control-group").first();
             if (
-              $controlGroup.hasClass("warning")
+              $controlGroup.hasClass("warning") || $controlGroup.hasClass("error")
             ) {
               $controlGroup.removeClass("warning").addClass("error");
               warningsFound++;
@@ -58,6 +58,7 @@
           if (warningsFound) {
             if (settings.options.preventSubmit) {
               e.preventDefault();
+              e.stopImmediatePropagation();
             }
             $form.addClass("error");
             if ($.isFunction(settings.options.submitError)) {
@@ -568,10 +569,10 @@
             $this.attr("aria-invalid", $this.data("original-aria-invalid"));
             // reset role
             $helpBlock.attr("role", $this.data("original-role"));
-						// remove all elements we created
-						if (createdElements.indexOf($helpBlock[0]) > -1) {
-							$helpBlock.remove();
-						}
+            // remove all elements we created
+            if ($.inArray($helpBlock[0], createdElements) > -1) {
+                $helpBlock.remove();
+            }
 
           }
         );
@@ -600,7 +601,7 @@
 
         var errorMessages = [];
 
-        this.each(function (i, el) {
+        this.find('input,select,textarea').add(this).each(function (i, el) {
           errorMessages = errorMessages.concat(
             $(el).triggerHandler("getValidators.validation") ? $(el).triggerHandler("validation.validation", {submitting: true}) : []
           );
@@ -764,7 +765,7 @@
 				name: "email",
 				init: function ($this, name) {
           var result = {};
-          result.regex = regexFromString("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+          result.regex = regexFromString('[A-Za-z0-9._%+-\\\\\" $!]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
           
           var message = "Not a valid email address";
           if ($this.data("validation" + name + "Message")) {
@@ -1118,33 +1119,32 @@
 	}
 
   /**
-   * Thanks to Jason Bunting via StackOverflow.com
+   * Thanks to Jason Bunting / Alex Nazarov via StackOverflow.com
    *
-   * http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string#answer-359910
-   * Short link: http://tinyurl.com/executeFunctionByName
+   * http://stackoverflow.com/a/4351575
   **/
-  function executeFunctionByName(functionName, context /*, args*/) {
-    var args = Array.prototype.slice.call(arguments).splice(2);
+function executeFunctionByName(functionName, context /*, args */) {
+    var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
     var func = namespaces.pop();
-    for(var i = 0; i < namespaces.length; i++) {
-      context = context[namespaces[i]];
+    for (var i = 0; i < namespaces.length; i++) {
+        context = context[namespaces[i]];
     }
-    return context[func].apply(this, args);
-  }
+    return context[func].apply(context, args);
+}
 
-	$.fn.jqBootstrapValidation = function( method ) {
+$.fn.jqBootstrapValidation = function( method ) {
 
-		if ( defaults.methods[method] ) {
-			return defaults.methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-		} else if ( typeof method === 'object' || ! method ) {
-			return defaults.methods.init.apply( this, arguments );
-		} else {
-		$.error( 'Method ' +  method + ' does not exist on jQuery.jqBootstrapValidation' );
-			return null;
-		}
+	if ( defaults.methods[method] ) {
+		return defaults.methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+	} else if ( typeof method === 'object' || ! method ) {
+		return defaults.methods.init.apply( this, arguments );
+	} else {
+	$.error( 'Method ' +  method + ' does not exist on jQuery.jqBootstrapValidation' );
+		return null;
+	}
 
-	};
+};
 
   $.jqBootstrapValidation = function (options) {
     $(":input").not("[type=image],[type=submit]").jqBootstrapValidation.apply(this,arguments);
