@@ -1001,8 +1001,9 @@
           var multipliedValue = parseFloat(globalValue);
           var multipliedStep = parseFloat(validator.step);
           while (multipliedStep % 1 !== 0) {
-            multipliedStep *= 10;
-            multipliedValue *= 10;
+            /* thanks to @jkey #57 */
+            multipliedStep = parseFloat(multipliedStep.toPrecision(12)) * 10;
+            multipliedValue = parseFloat(multipliedValue.toPrecision(12)) * 10;
           }
           var regexResult = validator.regex.test(value);
           var stepResult = parseFloat(multipliedValue) % parseFloat(multipliedStep) === 0;

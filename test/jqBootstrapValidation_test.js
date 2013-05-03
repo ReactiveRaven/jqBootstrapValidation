@@ -252,7 +252,7 @@
                                 type='text'\
                                 name='input'\\n\
                                 data-validation-number-number='true'\
-                                data-validation-number-step='0.01'\
+                                data-validation-number-step='0.001'\
                             />\
                         </div>\
                     </div>\
@@ -272,13 +272,15 @@
     test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test("accepts valid", 3 * numInJQBVTest, function() {
-        runJQBVTest("-123.45", ["success"], [], [], []);
-        runJQBVTest("123.45", ["success"], [], [], []);
+    test("accepts valid", 4 * numInJQBVTest, function() {
+        runJQBVTest("-123.456", ["success"], [], [], []);
+        runJQBVTest("123.456", ["success"], [], [], []);
         runJQBVTest("123", ["success"], [], [], []);
+        runJQBVTest("11452.199", ["success"], [], [], []);
     });
-    test('rejects invalid', 1 * numInJQBVTest, function() {
-        runJQBVTest("123.456", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
+    test('rejects invalid', 2 * numInJQBVTest, function() {
+        runJQBVTest("123.4567", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
+        runJQBVTest("123.1999", ["warning"], ["error"], ["Must be a number"], ["Must be a number"]);
     });
 
     module('number field (decimal)', {
