@@ -105,12 +105,8 @@
     test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 9 * numInJQBVTest, function() {
+    test('accepts valid', 5 * numInJQBVTest, function() {
         $([
-            '"Abc\\@def"@example.com',
-            '"Fred Bloggs"@example.com',
-            '"Joe\\\\Blow"@example.com',
-            '"Abc@def"@example.com',
             'customer/department=shipping@example.com',
             '$A12345@example.com',
             '!def!xyz%abc@example.com',
