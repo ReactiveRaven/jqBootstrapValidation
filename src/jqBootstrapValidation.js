@@ -37,7 +37,9 @@
         $(uniqueForms).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
+          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(function () {
+            return $(this).trigger("getValidatorCount.validation") > 0;
+          }).filter(settings.options.filter);
           $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
 
           $inputs.each(function (i, el) {
@@ -434,7 +436,7 @@
                       params &&
                       !!params.submitting
                     )
-                  ) 
+                  )
                 {
                   $.each(
                     validatorTypeArray,
@@ -457,6 +459,16 @@
               return validators;
             }
           );
+            
+          var numValidators = 0;
+          
+          $.each(validators, function (i, el) {
+            numValidators += el.length;
+          });
+          
+          $this.bind("getValidatorCount.validation", function () {
+            return numValidators;
+          });
 
           // =============================================================
           //                                             WATCH FOR CHANGES
