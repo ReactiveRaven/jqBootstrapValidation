@@ -22,8 +22,9 @@
     methods: {
       init : function( options ) {
 
+        // Get a clean copy of the defaults for extending
         var settings = $.extend(true, {}, defaults);
-
+        // Set up the options based on the input
         settings.options = $.extend(true, settings.options, options);
 
         var $siblingElements = this;
@@ -37,23 +38,31 @@
         $(uniqueForms).bind("submit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(function () {
+          // Get all inputs
+          var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
+          var $allControlGroups = $form.find(".control-group");
+          
+          // Only trigger validation on the ones that actually _have_ validation
+          var $inputs = $allInputs.filter(function () {
             return $(this).trigger("getValidatorCount.validation") > 0;
-          }).filter(settings.options.filter);
-          $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
+          });
+          $inputs.trigger("submit.validation");
+          
+          // But all of them are out-of-focus now, because we're submitting.
+          $allInputs.trigger("validationLostFocus.validation");
 
-          $inputs.each(function (i, el) {
-            var $this = $(el),
-              $controlGroup = $this.parents(".control-group").first();
-            if (
-              $controlGroup.hasClass("warning") || $controlGroup.hasClass("error")
-            ) {
+          // Okay, now check each controlgroup for errors (or warnings)
+          $allControlGroups.each(function (i, el) {
+            var $controlGroup = $(el);
+            if ($controlGroup.hasClass("warning") || $controlGroup.hasClass("error")) {
               $controlGroup.removeClass("warning").addClass("error");
               warningsFound++;
             }
           });
 
           if (warningsFound) {
+            // If we found any warnings, maybe we should prevent the submit
+            // event, and trigger 'submitError' (if they're set up)
             if (settings.options.preventSubmit) {
               e.preventDefault();
               e.stopImmediatePropagation();
@@ -63,6 +72,8 @@
               settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
             }
           } else {
+            // Woo! No errors! We can pass the submit event to submitSuccess
+            // (if it has been set up)
             $form.removeClass("error");
             if ($.isFunction(settings.options.submitSuccess)) {
               settings.options.submitSuccess($form, e);
@@ -288,6 +299,26 @@
           // =============================================================
           //                                       SET UP VALIDATOR ARRAYS
           // =============================================================
+          
+          /* We're gonna generate something like 
+           * 
+           * {
+           *   "regex": [
+           *     { -- a validator object here --},
+           *     { -- a validator object here --}
+           *   ],
+           *   "required": [
+           *     { -- a validator object here --},
+           *     { -- a validator object here --}
+           *   ]
+           * }
+           * 
+           * with a few more entries.
+           * 
+           * Because we only add a few validators to each field, most of the 
+           * keys will be empty arrays with no validator objects in them, and 
+           * thats fine.
+           */
 
           var validators = {};
 
