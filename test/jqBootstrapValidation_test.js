@@ -27,7 +27,7 @@
 
     module('jqBootstrapValidation', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -45,7 +45,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
             this.elems = $("#qunit-fixture").children();
         },
@@ -79,7 +79,7 @@
 
     module('email field', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -97,7 +97,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -142,7 +142,7 @@
 
     module('email field (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -159,7 +159,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -204,7 +204,7 @@
 
     module('number field', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -222,7 +222,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -248,7 +248,7 @@
 
     module('number field (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -265,7 +265,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -284,7 +284,7 @@
 
     module('number field (step)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -303,7 +303,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -326,7 +326,7 @@
 
     module('number field (decimal)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -346,7 +346,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -368,7 +368,7 @@
 
     module('required field', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -386,7 +386,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -404,7 +404,7 @@
 
     module('required field (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -422,7 +422,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -440,7 +440,7 @@
 
     module('max', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -458,7 +458,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -481,7 +481,7 @@
 
     module('max (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -499,7 +499,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -522,7 +522,7 @@
 
     module('min', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -540,7 +540,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -562,7 +562,7 @@
 
     module('min (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -580,7 +580,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -602,7 +602,7 @@
 
     module('maxlength', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -620,7 +620,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -644,7 +644,7 @@
 
     module('maxlength (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -662,7 +662,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -686,7 +686,7 @@
 
     module('minlength', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -704,7 +704,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -728,7 +728,7 @@
 
     module('minlength (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -746,7 +746,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -770,7 +770,7 @@
 
     module('pattern', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -788,7 +788,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -810,7 +810,7 @@
 
     module('pattern (sniffed)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -828,7 +828,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -850,7 +850,7 @@
 
     module('match (blank other)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label for='other' class='control-label'>Other</label>\
@@ -879,7 +879,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -892,7 +892,7 @@
 
     module('match (filled other)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label for='other' class='control-label'>Other</label>\
@@ -921,7 +921,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -943,7 +943,7 @@
 
     module('match (fors missing)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Other</label>\
@@ -972,7 +972,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -994,7 +994,7 @@
 
     module('match (label missing)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <div class='controls'>\
@@ -1022,7 +1022,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1044,7 +1044,7 @@
 
     module('max checked', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label for='input' class='control-label'>Choose Three</label>\
@@ -1114,7 +1114,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1136,7 +1136,7 @@
 
     module('min checked', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label for='input' class='control-label'>Choose Three</label>\
@@ -1206,7 +1206,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1229,7 +1229,7 @@
 
     module('regex', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1247,7 +1247,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1269,7 +1269,7 @@
 
     module('callback', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1287,7 +1287,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1312,7 +1312,7 @@
 
     module('callback (with message)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1330,7 +1330,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1355,7 +1355,7 @@
 
     module('callback (async)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1373,7 +1373,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1398,7 +1398,7 @@
 
     module('callback (async with message)', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1416,7 +1416,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
@@ -1442,7 +1442,7 @@
     module('events', {
         setup: function() {
             $("#qunit-fixture").empty();
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1460,7 +1460,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation(
                 {
                     preventSubmit: true,
@@ -1490,7 +1490,7 @@
         
         if ($input.data("events")) {
             eventsArray = $input.data("events");
-        } else if ($input._data("events")) {
+        } else if ($input._data && $input._data("events")) {
             eventsArray = $input._data("events");
         } else {
             ok(false, "cannot find the internal jQuery events array");
@@ -1511,7 +1511,7 @@
     module('events (defaults)', {
         setup: function() {
             $("#qunit-fixture").empty();
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Input</label>\
@@ -1529,7 +1529,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation(
                 {
                     preventSubmit: true,

@@ -27,7 +27,7 @@
 
     module('jqBootstrapValidation', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -45,7 +45,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
             this.elems = $("#qunit-fixture").children();
         },
@@ -69,12 +69,13 @@
         $form.trigger("submit");
         var elapsed = new Date() - start;
         var inputCount = $("#qunit-fixture form").find("textarea,input,select").not("[type=submit]").length;
-        var timeAllowed = 20 * inputCount;
+        var timeAllowed = 25 * inputCount; // runs much slower in Grunt than a real browser, should aim for 30% of budget in browser.
         var percent = Math.floor((elapsed / timeAllowed) * 100) + "%";
         ok(
           elapsed < timeAllowed,
           "Should run submit checks in less than " + timeAllowed + "ms - took " + elapsed + "ms; " + percent + " of budget."
         );
+        console.log("Should run submit checks in less than " + timeAllowed + "ms - took " + elapsed + "ms; " + percent + " of budget.");
     });
 
 }(jQuery));

@@ -1139,22 +1139,25 @@
 
 	var getValue = function ($this) {
 		// Extract the value we're talking about
-		var value = $this.val();
+    var value = null;
 		var type = $this.attr("type");
-    var parent = null;
-    var hasParent = !!(parent = $this.parents("form").first()) || !!(parent = $this.parents(".control-group").first());
 		if (type === "checkbox") {
       value = ($this.is(":checked") ? value : "");
-      if (hasParent) {
-        value = parent.find("input[type='checkbox'][name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
+      var checkboxParent = $this.parents("form").first() || $this.parents(".control-group").first();
+      if (checkboxParent) {
+        value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
-		if (type === "radio") {
-			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? value : "");
-      if (hasParent) {
-        value = parent.find("input[type='radio'][name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
+		else if (type === "radio") {
+			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
+      var radioParent = $this.parents("form").first() || $this.parents(".control-group").first();
+      if (radioParent) {
+        value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
+    else {
+      value = $this.val();
+    }
 		return value;
 	};
 

@@ -27,7 +27,7 @@
 
     module('jqBootstrapValidation', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -45,7 +45,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
             this.elems = $("#qunit-fixture").children();
         },
@@ -56,7 +56,7 @@
 
     module('required field', {
         setup: function() {
-            $("#qunit-fixture").append($("\
+            $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
                     <div class='control-group'>\
                         <label class='control-label'>Email address</label>\
@@ -74,7 +74,7 @@
                         </button>\
                     </div>\
                 </form>\
-            "));
+            ");
             attachJqbv();
         },
         teardown: function() {
