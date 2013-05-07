@@ -1,4 +1,4 @@
-/*! jqBootstrapValidation - v1.3.7 - 2013-05-03
+/*! jqBootstrapValidation - v1.3.7 - 2013-05-07
 * http://reactiveraven.github.com/jqBootstrapValidation
 * Copyright (c) 2013 David Godfrey; Licensed MIT */
 
@@ -26,8 +26,9 @@
     methods: {
       init : function( options ) {
 
+        // Get a clean copy of the defaults for extending
         var settings = $.extend(true, {}, defaults);
-
+        // Set up the options based on the input
         settings.options = $.extend(true, settings.options, options);
 
         var $siblingElements = this;
@@ -38,33 +39,45 @@
           }).toArray()
         );
 
-        $(uniqueForms).bind("submit", function (e) {
+        $(uniqueForms).bind("submit.validationSubmit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
-          var $inputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
-          $inputs.trigger("submit.validation").trigger("validationLostFocus.validation");
+          // Get all inputs
+          var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
+          var $allControlGroups = $form.find(".control-group");
+          
+          // Only trigger validation on the ones that actually _have_ validation
+          var $inputsWithValidators = $allInputs.filter(function () {
+            return $(this).triggerHandler("getValidatorCount.validation") > 0;
+          });
+          $inputsWithValidators.trigger("submit.validation");
+          
+          // But all of them are out-of-focus now, because we're submitting.
+          $allInputs.trigger("validationLostFocus.validation");
 
-          $inputs.each(function (i, el) {
-            var $this = $(el),
-              $controlGroup = $this.parents(".control-group").first();
-            if (
-              $controlGroup.hasClass("warning") || $controlGroup.hasClass("error")
-            ) {
+          // Okay, now check each controlgroup for errors (or warnings)
+          $allControlGroups.each(function (i, el) {
+            var $controlGroup = $(el);
+            if ($controlGroup.hasClass("warning") || $controlGroup.hasClass("error")) {
               $controlGroup.removeClass("warning").addClass("error");
               warningsFound++;
             }
           });
 
           if (warningsFound) {
+            // If we found any warnings, maybe we should prevent the submit
+            // event, and trigger 'submitError' (if they're set up)
             if (settings.options.preventSubmit) {
               e.preventDefault();
               e.stopImmediatePropagation();
             }
             $form.addClass("error");
             if ($.isFunction(settings.options.submitError)) {
-              settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
+              settings.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
             }
           } else {
+            // Woo! No errors! We can pass the submit event to submitSuccess
+            // (if it has been set up)
             $form.removeClass("error");
             if ($.isFunction(settings.options.submitSuccess)) {
               settings.options.submitSuccess($form, e);
@@ -290,6 +303,26 @@
           // =============================================================
           //                                       SET UP VALIDATOR ARRAYS
           // =============================================================
+          
+          /* We're gonna generate something like 
+           * 
+           * {
+           *   "regex": [
+           *     { -- a validator object here --},
+           *     { -- a validator object here --}
+           *   ],
+           *   "required": [
+           *     { -- a validator object here --},
+           *     { -- a validator object here --}
+           *   ]
+           * }
+           * 
+           * with a few more entries.
+           * 
+           * Because we only add a few validators to each field, most of the 
+           * keys will be empty arrays with no validator objects in them, and 
+           * thats fine.
+           */
 
           var validators = {};
 
@@ -438,7 +471,7 @@
                       params &&
                       !!params.submitting
                     )
-                  ) 
+                  )
                 {
                   $.each(
                     validatorTypeArray,
@@ -461,6 +494,16 @@
               return validators;
             }
           );
+            
+          var numValidators = 0;
+          
+          $.each(validators, function (i, el) {
+            numValidators += el.length;
+          });
+          
+          $this.bind("getValidatorCount.validation", function () {
+            return numValidators;
+          });
 
           // =============================================================
           //                                             WATCH FOR CHANGES
@@ -557,10 +600,12 @@
             var
               $this = $(this),
               $controlGroup = $this.parents(".control-group").first(),
-              $helpBlock = $controlGroup.find(".help-block").first();
+              $helpBlock = $controlGroup.find(".help-block").first(),
+              $form = $this.parents("form").first();
 
             // remove our events
             $this.unbind('.validation'); // events are namespaced.
+            $form.unbind(".validationSubmit");
             // reset help text
             $helpBlock.html($helpBlock.data("original-contents"));
             // reset classes
@@ -765,7 +810,7 @@
 				name: "email",
 				init: function ($this, name) {
           var result = {};
-          result.regex = regexFromString('[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
+          result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
           
           var message = "Not a valid email address";
           if ($this.data("validation" + name + "Message")) {
@@ -790,11 +835,13 @@
             message = $this.data("validation" + name + "Message");
           }
           
-					return {message: message};
+					return {message: message, includeEmpty: true};
 				},
 				validate: function ($this, value, validator) {
-					return !!(value.length === 0  && ! validator.negative) ||
-						!!(value.length > 0 && validator.negative);
+					return !!(
+            (value.length === 0  && !validator.negative) ||
+						(value.length > 0 && validator.negative)
+          );
 				},
         blockSubmit: true
 			},
@@ -1005,8 +1052,9 @@
           var multipliedValue = parseFloat(globalValue);
           var multipliedStep = parseFloat(validator.step);
           while (multipliedStep % 1 !== 0) {
-            multipliedStep *= 10;
-            multipliedValue *= 10;
+            /* thanks to @jkey #57 */
+            multipliedStep = parseFloat(multipliedStep.toPrecision(12)) * 10;
+            multipliedValue = parseFloat(multipliedValue.toPrecision(12)) * 10;
           }
           var regexResult = validator.regex.test(value);
           var stepResult = parseFloat(multipliedValue) % parseFloat(multipliedStep) === 0;
@@ -1095,22 +1143,25 @@
 
 	var getValue = function ($this) {
 		// Extract the value we're talking about
-		var value = $this.val();
+    var value = null;
 		var type = $this.attr("type");
-    var parent = null;
-    var hasParent = !!(parent = $this.parents("form").first()) || !!(parent = $this.parents(".control-group").first());
 		if (type === "checkbox") {
       value = ($this.is(":checked") ? value : "");
-      if (hasParent) {
-        value = parent.find("input[type='checkbox'][name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
+      var checkboxParent = $this.parents("form").first() || $this.parents(".control-group").first();
+      if (checkboxParent) {
+        value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
-		if (type === "radio") {
-			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? value : "");
-      if (hasParent) {
-        value = parent.find("input[type='radio'][name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
+		else if (type === "radio") {
+			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
+      var radioParent = $this.parents("form").first() || $this.parents(".control-group").first();
+      if (radioParent) {
+        value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
+    else {
+      value = $this.val();
+    }
 		return value;
 	};
 
