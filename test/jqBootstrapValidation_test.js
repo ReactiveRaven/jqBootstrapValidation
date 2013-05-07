@@ -105,22 +105,37 @@
     test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 5 * numInJQBVTest, function() {
-        $([
-            'customer/department=shipping@example.com',
-            '$A12345@example.com',
-            '!def!xyz%abc@example.com',
-            '_somename@example.com',
-            'test@example.com'
-        ]).each(function (i, el) {
-            runJQBVTest(el, ["success"], [], [], []);
+    
+    (function () {
+      var validEmails = [
+        'customer/department=shipping@example.com',
+        '$A12345@example.com',
+        '!def!xyz%abc@example.com',
+        '_somename@example.com',
+        'test@example.com',
+        '\u2019test\u2019@example.com'
+      ];
+      test('accepts valid', validEmails.length * numInJQBVTest, function() {
+          $(validEmails).each(function (i, el) {
+              runJQBVTest(el, ["success"], [], [], []);
+          });
+      });
+    })();
+    
+    (function () {
+      var invalidEmails = [
+        "not an email",
+        "not@anemail",
+        "not@an email.com",
+        "@."
+      ];
+      
+      test('rejects invalid', invalidEmails.length * numInJQBVTest, function() {
+        $(invalidEmails).each(function (i, el) {
+            runJQBVTest(el, ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
         });
-    });
-    test('rejects invalid', 3 * numInJQBVTest, function() {
-        runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-        runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-        runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-    });
+      });
+    })();
 
     module('email field (sniffed)', {
         setup: function() {
@@ -152,14 +167,37 @@
     test('is optional', 1 * numInJQBVTest, function() {
         runJQBVTest("", [], [], [], []);
     });
-    test('accepts valid', 1 * numInJQBVTest, function() {
-        runJQBVTest("test@example.com", ["success"], [], [], []);
-    });
-    test('rejects invalid', 3 * numInJQBVTest, function() {
-        runJQBVTest("not an email", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-        runJQBVTest("not@anemail", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-        runJQBVTest("not@an email.com", ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
-    });
+    
+    (function () {
+      var validEmails = [
+        'customer/department=shipping@example.com',
+        '$A12345@example.com',
+        '!def!xyz%abc@example.com',
+        '_somename@example.com',
+        'test@example.com',
+        '\u2019test\u2019@example.com'
+      ];
+      test('accepts valid', validEmails.length * numInJQBVTest, function() {
+          $(validEmails).each(function (i, el) {
+              runJQBVTest(el, ["success"], [], [], []);
+          });
+      });
+    })();
+    
+    (function () {
+      var invalidEmails = [
+        "not an email",
+        "not@anemail",
+        "not@an email.com",
+        "@."
+      ];
+      
+      test('rejects invalid', invalidEmails.length * numInJQBVTest, function() {
+        $(invalidEmails).each(function (i, el) {
+            runJQBVTest(el, ["warning"], ["error"], ["Not a valid email address"], ["Not a valid email address"]);
+        });
+      });
+    })();
 
     module('number field', {
         setup: function() {
