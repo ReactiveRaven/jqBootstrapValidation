@@ -59,13 +59,16 @@
         strictEqual(this.elems.jqBootstrapValidation(), this.elems, 'should be chaninable');
     });
 
-    test('tidies up events on destroy', 0, function () {
+    test('tidies up events on destroy', 2, function () {
         var $input = $("#qunit-fixture input");
+        var formEventsBeforeDestroy = extractEvents($input.parents("form").first());
         $input.jqBootstrapValidation("destroy");
         var inputEvents = extractEvents($input);
         var $form = $input.parents("form").first();
         var formEvents = extractEvents($form);
-        // do something to make sure the events are all removed properly. should they just be 'empty'?
+        
+        ok(!formEvents, "Form still has lingering events");
+        ok(!inputEvents, "Input still has lingering events");
     });
 
 //    test("responds to jqbv", 1, function() {

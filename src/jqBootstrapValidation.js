@@ -35,7 +35,7 @@
           }).toArray()
         );
 
-        $(uniqueForms).bind("submit", function (e) {
+        $(uniqueForms).bind("submit.validationSubmit", function (e) {
           var $form = $(this);
           var warningsFound = 0;
           // Get all inputs
@@ -596,10 +596,12 @@
             var
               $this = $(this),
               $controlGroup = $this.parents(".control-group").first(),
-              $helpBlock = $controlGroup.find(".help-block").first();
+              $helpBlock = $controlGroup.find(".help-block").first(),
+              $form = $this.parents("form").first();
 
             // remove our events
             $this.unbind('.validation'); // events are namespaced.
+            $form.unbind(".validationSubmit");
             // reset help text
             $helpBlock.html($helpBlock.data("original-contents"));
             // reset classes
