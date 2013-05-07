@@ -33,7 +33,8 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      files: ['test/**/*.html', 'test/issues/**/test.html']
+      local: ['test/notravis/**/*.html'],
+      travis: ['test/issues/**/*.html', 'test/jqBootstrapValidation.html']
     },
     lint: {
       files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
@@ -75,6 +76,6 @@ module.exports = function(grunt) {
   grunt.registerTask('default', 'lint qunit clean concat min zip');
   
   // Travis CI task.
-  grunt.registerTask('travis', 'lint qunit');
+  grunt.registerTask('travis', 'lint qunit:travis');
 
 };
