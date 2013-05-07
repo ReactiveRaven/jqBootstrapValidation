@@ -43,10 +43,10 @@
           var $allControlGroups = $form.find(".control-group");
           
           // Only trigger validation on the ones that actually _have_ validation
-          var $inputs = $allInputs.filter(function () {
-            return $(this).trigger("getValidatorCount.validation") > 0;
+          var $inputsWithValidators = $allInputs.filter(function () {
+            return $(this).triggerHandler("getValidatorCount.validation") > 0;
           });
-          $inputs.trigger("submit.validation");
+          $inputsWithValidators.trigger("submit.validation");
           
           // But all of them are out-of-focus now, because we're submitting.
           $allInputs.trigger("validationLostFocus.validation");
@@ -69,7 +69,7 @@
             }
             $form.addClass("error");
             if ($.isFunction(settings.options.submitError)) {
-              settings.options.submitError($form, e, $inputs.jqBootstrapValidation("collectErrors", true));
+              settings.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
             }
           } else {
             // Woo! No errors! We can pass the submit event to submitSuccess
@@ -804,7 +804,7 @@
 				name: "email",
 				init: function ($this, name) {
           var result = {};
-          result.regex = regexFromString('[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
+          result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
           
           var message = "Not a valid email address";
           if ($this.data("validation" + name + "Message")) {
@@ -829,11 +829,13 @@
             message = $this.data("validation" + name + "Message");
           }
           
-					return {message: message};
+					return {message: message, includeEmpty: true};
 				},
 				validate: function ($this, value, validator) {
-					return !!(value.length === 0  && ! validator.negative) ||
-						!!(value.length > 0 && validator.negative);
+					return !!(
+            (value.length === 0  && !validator.negative) ||
+						(value.length > 0 && validator.negative)
+          );
 				},
         blockSubmit: true
 			},
