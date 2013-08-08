@@ -540,7 +540,7 @@
 
               $controlGroup.find("input,textarea,select").each(function (i, el) {
                 var oldCount = errorsFound.length;
-                $.each($(el).triggerHandler("validation.validation", params), function (j, message) {
+                $.each($(el).triggerHandler("validation.validation", params) || [], function (j, message) {
                   errorsFound.push(message);
                 });
                 if (errorsFound.length > oldCount) {
