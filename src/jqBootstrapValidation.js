@@ -1155,7 +1155,7 @@
         value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}else if(type === "number"){
-      if(isNaN(parseInt(value))){
+      if(isNaN(parseInt(value, 10))){
         value = "NaN";
       }
     }else {
