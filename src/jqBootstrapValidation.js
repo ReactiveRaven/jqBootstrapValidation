@@ -111,70 +111,42 @@
             if ($this.data("validationPatternPattern")) {
               $this.attr("pattern", $this.data("validationPatternPattern"));
             }
-            if ($this.attr("pattern") !== undefined) {
-              message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
-              if ($this.data("validationPatternMessage")) {
-                message = $this.data("validationPatternMessage");
+            // ---------------------------------------------------------
+            //                                                    BASICS
+            // ---------------------------------------------------------
+            $.each(
+              {
+                "pattern": {
+                  into: "regex",
+                  message: "Not in the expected format"
+                },
+                "max": {
+                  match: ["max", "aria-valuemax"],
+                  message: "Too high: Maximum of '%'"
+                },
+                "min": {
+                  match: ["min", "aria-valuemin"],
+                  message: "Too low: Minimum of '%'"
+                },
+                "maxlength": "Too long: Maximum of '%' characters",
+                "minlength": "Too short: Minimum of '%' characters",
+                "required": settings.builtInValidators.required.message
+              },
+              function(validator, definition) {
+                if ( ! $.isPlainObject(definition) )
+                  definition = { "message": definition } ;
+                var attributes = definition.match ? definition.match : [ validator ] ;
+                var matched = $.filter(attributes, function(name) { return this.attr(name) !== undefined});
+                if (!$.isEmpty(matched)) {
+                  var value = $this.attr(matched[0]);
+                  var message = definition.message.replace("\\%", value);
+                  var msgKey = "validation-" + validator + "-message";
+                  if (!$this.data(msgKey))
+                    $this.data(msgKey, definition.message + "<!-- data-" + msgKey + " to override -->");
+                  $this.data("validation-" + validator + "-" + (definition.into || validator), value);
+                }
               }
-              $this.data("validationPatternMessage", message);
-              $this.data("validationPatternRegex", $this.attr("pattern"));
-            }
-            // ---------------------------------------------------------
-            //                                                       MAX
-            // ---------------------------------------------------------
-            if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
-              var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-              message = "Too high: Maximum of '" + max + "'<!-- data-validation-max-message to override -->";
-              if ($this.data("validationMaxMessage")) {
-                message = $this.data("validationMaxMessage");
-              }
-              $this.data("validationMaxMessage", message);
-              $this.data("validationMaxMax", max);
-            }
-            // ---------------------------------------------------------
-            //                                                       MIN
-            // ---------------------------------------------------------
-            if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
-              var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-              message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
-              if ($this.data("validationMinMessage")) {
-                message = $this.data("validationMinMessage");
-              }
-              $this.data("validationMinMessage", message);
-              $this.data("validationMinMin", min);
-            }
-            // ---------------------------------------------------------
-            //                                                 MAXLENGTH
-            // ---------------------------------------------------------
-            if ($this.attr("maxlength") !== undefined) {
-              message = "Too long: Maximum of '" + $this.attr("maxlength") + "' characters<!-- data-validation-maxlength-message to override -->";
-              if ($this.data("validationMaxlengthMessage")) {
-                message = $this.data("validationMaxlengthMessage");
-              }
-              $this.data("validationMaxlengthMessage", message);
-              $this.data("validationMaxlengthMaxlength", $this.attr("maxlength"));
-            }
-            // ---------------------------------------------------------
-            //                                                 MINLENGTH
-            // ---------------------------------------------------------
-            if ($this.attr("minlength") !== undefined) {
-              message = "Too short: Minimum of '" + $this.attr("minlength") + "' characters<!-- data-validation-minlength-message to override -->";
-              if ($this.data("validationMinlengthMessage")) {
-                message = $this.data("validationMinlengthMessage");
-              }
-              $this.data("validationMinlengthMessage", message);
-              $this.data("validationMinlengthMinlength", $this.attr("minlength"));
-            }
-            // ---------------------------------------------------------
-            //                                                  REQUIRED
-            // ---------------------------------------------------------
-            if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
-              message = settings.builtInValidators.required.message;
-              if ($this.data("validationRequiredMessage")) {
-                message = $this.data("validationRequiredMessage");
-              }
-              $this.data("validationRequiredMessage", message);
-            }
+            );
             // ---------------------------------------------------------
             //                                                    NUMBER
             // ---------------------------------------------------------
@@ -402,41 +374,17 @@
           //                                         STORE FALLBACK VALUES
           // =============================================================
 
-          $helpBlock.data(
-            "original-contents",
-            (
-              $helpBlock.data("original-contents") ?
-                $helpBlock.data("original-contents") : 
-                $helpBlock.html()
-            )
-          );
-
-          $helpBlock.data(
-            "original-role",
-            (
-              $helpBlock.data("original-role") ?
-                $helpBlock.data("original-role") :
-                $helpBlock.attr("role")
-            )
-          );
-
-          $controlGroup.data(
-            "original-classes",
-            (
-              $controlGroup.data("original-clases") ?
-                $controlGroup.data("original-classes") :
-                $controlGroup.attr("class")
-            )
-          );
-
-          $this.data(
-            "original-aria-invalid",
-            (
-              $this.data("original-aria-invalid") ?
-                $this.data("original-aria-invalid") :
-                $this.attr("aria-invalid")
-            )
-          );
+          $.each({
+              "original-contents": { el: $helpBlock, attr: function(el) { return el.html() } },
+              "original-role": { el: $helpBlock, attr: "role" },
+              "original-classes": { el: $controlGroup, attr: "class" },
+              "original-aria-invalid": { el: $this, attr: "aria-invalid" }
+          }, function(key, def) {
+              var original = $helpBlock.data(key);
+              if (! original) {
+                  $helpBlock.data(key, $.isFunction(def.attr) ? def.attr(def.el) : def.el.attr(def.attr));
+              }
+          });
 
           // =============================================================
           //                                                    VALIDATION
