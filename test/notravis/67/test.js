@@ -1,5 +1,5 @@
 /*global QUnit:false, module:false, test:false, asyncTest:false, expect:false, console:false*/
-/*global start:false, stop:false ok:false, equal:false, notEqual:false, deepEqual:false*/
+/*global start:false, stop:false, ok:false, equal:false, notEqual:false, deepEqual:false*/
 /*global notDeepEqual:false, strictEqual:false, notStrictEqual:false, raises:false*/
 /*global JSON:false */
 /*global runJQBVTest:false, attachJqbv:false, numInJQBVTest:false, startJQBVTestQueue:false, pushJQBVTest:false, extractEvents:false*/
