@@ -1158,14 +1158,14 @@
 		var type = $this.attr("type");
 		if (type === "checkbox") {
       value = ($this.is(":checked") ? value : "");
-      var checkboxParent = $this.parents("form").first() || $this.parents(settings.options.classNames.group).first();
+      var checkboxParent = $this.parents("form").first() || $this.parents(defaults.options.classNames.group).first();
       if (checkboxParent) {
         value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
 		else if (type === "radio") {
 			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
-      var radioParent = $this.parents("form").first() || $this.parents(settings.options.classNames.group).first();
+      var radioParent = $this.parents("form").first() || $this.parents(defaults.options.classNames.group).first();
       if (radioParent) {
         value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
