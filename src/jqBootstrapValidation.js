@@ -610,7 +610,7 @@
 
             var
               $this = $(this),
-              $controlGroup = $this.parents(settings.options.classNames.group).first(),
+              $controlGroup = $this.parents(defaults.options.classNames.group).first(),
               $helpBlock = $controlGroup.find(".help-block").first(),
               $form = $this.parents("form").first();
 
@@ -876,7 +876,7 @@
           var $label = null;
           if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
             message += " '" + $label.text() + "'";
-          } else if (($label = $element.parents(settings.options.classNames.group).first().find("label")).length) {
+          } else if (($label = $element.parents(defaults.options.classNames.group).first().find("label")).length) {
             message += " '" + $label.first().text() + "'";
           }
         
@@ -1158,14 +1158,14 @@
 		var type = $this.attr("type");
 		if (type === "checkbox") {
       value = ($this.is(":checked") ? value : "");
-      var checkboxParent = $this.parents("form").first() || $this.parents(settings.options.classNames.group).first();
+      var checkboxParent = $this.parents("form").first() || $this.parents(defaults.options.classNames.group).first();
       if (checkboxParent) {
         value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
 		}
 		else if (type === "radio") {
 			value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
-      var radioParent = $this.parents("form").first() || $this.parents(settings.options.classNames.group).first();
+      var radioParent = $this.parents("form").first() || $this.parents(defaults.options.classNames.group).first();
       if (radioParent) {
         value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) { return $(el).val(); }).toArray().join(",");
       }
