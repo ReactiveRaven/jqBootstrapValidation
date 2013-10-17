@@ -22,6 +22,10 @@
             }
         );
     };
+    
+    window.removeJqbv = function() {
+      $("#qunit-fixture").find("input,select,textarea").not("[type=submit]").jqBootstrapValidation("destroy");
+    };
 
     window.importFromTd = function($td) {
 

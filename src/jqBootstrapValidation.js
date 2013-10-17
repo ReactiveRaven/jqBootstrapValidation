@@ -1,3 +1,4 @@
+/* globals console:false */
 (function( $ ){
 
 	var createdElements = [];
@@ -119,6 +120,7 @@
           // *snort sniff snuffle*
 
           if (settings.options.sniffHtml) {
+            $this.data("jqbv-original-datas", $.extend({}, $this.data()));
             var message;
             // ---------------------------------------------------------
             //                                                   PATTERN
@@ -613,7 +615,7 @@
               $controlGroup = $this.parents(defaults.options.classNames.group).first(),
               $helpBlock = $controlGroup.find(".help-block").first(),
               $form = $this.parents("form").first();
-
+      
             // remove our events
             $this.unbind('.validation'); // events are namespaced.
             $form.unbind(".validationSubmit");
@@ -628,6 +630,16 @@
             // remove all elements we created
             if ($.inArray($helpBlock[0], createdElements) > -1) {
                 $helpBlock.remove();
+            }
+
+            // remove data-attributes that weren't present at the start
+            while ($this.data("jqbv-original-datas")) {
+              var alloweds = Object.keys($this.data("jqbv-original-datas"));
+              for (var key in $this.data()) {
+                if (alloweds.indexOf(key) === -1) {
+                  $this.removeData(key);
+                }
+              }
             }
 
           }
