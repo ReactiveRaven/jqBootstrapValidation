@@ -728,6 +728,7 @@
                     return {
                         validatorName: name,
                         url: $this.data("validation" + name + "Ajax"),
+                        ajaxType: $this.data("validation" + name + "Type"),
                         lastValue: $this.val(),
                         lastValid: true,
                         lastFinished: true
@@ -738,6 +739,8 @@
                         return validator.lastValid === false;
                     }
 
+                    var ajaxType = validator.ajaxType || 'GET';
+
                     if (validator.lastFinished === true) {
                         validator.lastValue = value;
                         validator.lastValid = true;
@@ -746,6 +749,7 @@
                             url: validator.url,
                             data: "value=" + encodeURIComponent(value) + "&field=" + $this.attr("name"),
                             dataType: "json",
+                            type: ajaxType,
                             success: function (data) {
                                 if ("" + validator.lastValue === "" + data.value) {
                                     validator.lastValid = !!(data.valid);
