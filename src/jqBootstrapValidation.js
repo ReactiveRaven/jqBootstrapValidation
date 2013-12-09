@@ -10,7 +10,7 @@
         success: "has-success"
       };
 
-  var boostrap2Classes = {
+  var bootstrap2Classes = {
         group: ".control-group",
         warning: "warning",
         error: "error",
@@ -33,7 +33,7 @@
         // return $(this).is(":visible"); // only validate elements you can see
         return true; // validate everything
       },
-      classNames: boostrap2Classes
+      classNames: bootstrap2Classes
 		},
     methods: {
       init : function( options ) {
