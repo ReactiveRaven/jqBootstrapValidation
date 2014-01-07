@@ -11,7 +11,15 @@
             submitSuccess: false, // function called just before a successful submit event is sent to the server
             semanticallyStrict: false, // set to true to tidy up generated HTML output
             removeSuccess : true,
-            bindEvents: [],
+            bindEvents: [
+                "keyup",
+                "focus",
+                "blur",
+                "click",
+                "keydown",
+                "keypress",
+                "change"
+            ],
             autoAdd: {
                 helpBlocks: true
             },
@@ -509,19 +517,7 @@
                         }
                     );
                     $this.bind(
-                        (
-                            settings.options.bindEvents.length > 0 ?
-                                settings.options.bindEvents :
-                                [
-                                    "keyup",
-                                    "focus",
-                                    "blur",
-                                    "click",
-                                    "keydown",
-                                    "keypress",
-                                    "change"
-                                ]
-                            ).concat(["revalidate"]).join(".validation ") + ".validation",
+                        (settings.options.bindEvents).concat(["revalidate"]).join(".validation ") + ".validation",
                         function (e, params) {
 
                             var value = getValue($this);
