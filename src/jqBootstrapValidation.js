@@ -8,13 +8,15 @@
         warning: "has-warning",
         error: "has-error",
         success: "has-success"
+        control: ".form-control"
       };
 
-  var boostrap2Classes = {
+  var bootstrap2Classes = {
         group: ".control-group",
         warning: "warning",
         error: "error",
-        success: "success"
+        success: "success",
+        control: ".controls"
       };
 
 	var defaults = {
@@ -33,7 +35,7 @@
         // return $(this).is(":visible"); // only validate elements you can see
         return true; // validate everything
       },
-      classNames: boostrap2Classes
+      classNames: bootstrap2Classes
 		},
     methods: {
       init : function( options ) {
@@ -108,9 +110,15 @@
 
           // create message container if not exists
           if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
-              $helpBlock = $('<div class="help-block" />');
-              $controlGroup.find('.controls').append($helpBlock);
-							createdElements.push($helpBlock[0]);
+              $helpBlock = $('<div class="help-block" />');              
+              // The container .controls doesn't exists in Bootstrap 3, instead there is a class named .form-control in the input
+              var $control = $controlGroup.find(settings.options.classNames.control);
+              if ( $control.is(":input") ) {
+                $control.after($helpBlock);
+              } else {
+                $control.append($helpBlock);
+              }
+              createdElements.push($helpBlock[0]);
           }
 
           // =============================================================
