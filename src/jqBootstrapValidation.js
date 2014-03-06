@@ -1171,6 +1171,9 @@
         } else {
             value = $this.val();
         }
+        if (value == null) {
+            value = "";
+        }
         return value;
     };
 
