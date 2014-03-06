@@ -36,7 +36,6 @@
                                 name='input'\\n\
                                 data-validation-required-required='true'\
                             >\
-                                <option value=''>f</option>\
                                 <option value='t'>t</option>\
                             </select>\
                         </div>\
@@ -55,8 +54,8 @@
         }
     });
 
-    test('select multiple value', 1 * numInJQBVTest, function () {
-        // runJQBVTest(null, [], ["error"], [], ["This is required"]);
+    test('select multiple value', 2 * numInJQBVTest, function () {
+        runJQBVTest(null, [], ["error"], [], ["This is required"]);
         runJQBVTest(["t"], ["success"], [], [], []);
     });
 
