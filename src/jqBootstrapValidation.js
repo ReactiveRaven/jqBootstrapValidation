@@ -3,8 +3,7 @@
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
      String.prototype.format = String.prototype.f = function() {
-        var s = this,
-        i = arguments.length;
+        var s = this, i = arguments.length;
 
         while (i--) {
             s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
@@ -149,7 +148,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
                             var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-                            message = "Too low: Minimum of '" + min + "'<!-- data-validation-min-message to override -->";
+                            message = "Too low: Minimum of '{0}'<!-- data-validation-min-message to override -->".f(min);
                             if ($this.data("validationMinMessage")) {
                                 message = $this.data("validationMinMessage");
                             }
@@ -160,7 +159,7 @@
                         //                                                 MAXLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("maxlength") !== undefined) {
-                            message = "Too long: Maximum of '" + $this.attr("maxlength") + "' characters<!-- data-validation-maxlength-message to override -->";
+                            message = "Too long: Maximum of '{0}' characters<!-- data-validation-maxlength-message to override -->".f($this.attr("maxlength"));
                             if ($this.data("validationMaxlengthMessage")) {
                                 message = $this.data("validationMaxlengthMessage");
                             }
@@ -681,8 +680,8 @@
                     };
 
                     var message = "Not valid";
-                    if ($this.data("validation" + name + "Message")) {
-                        message = $this.data("validation" + name + "Message");
+                    if ($this.data("validation{0}Message".f(name))) {
+                        message = $this.data("validation{0}Message".f(name));
                     }
                     result.message = message;
 
@@ -796,7 +795,7 @@
                     var regexString = $this.data("validation" + name + "Regex");
                     result.regex = regexFromString(regexString);
                     if (regexString === undefined) {
-                        $.error("Can't find regex for '" + name + "' validator on '" + $this.attr("name") + "'");
+                        $.error("Can't find regex for '{0}' validator on '{1}'".f(name, $this.attr("name")));
                     }
 
                     var message = "Not in the expected format";
@@ -872,9 +871,9 @@
                     var message = "Must match";
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
-                        message += " '" + $label.text() + "'";
+                        message += " '{0}'".f($label.text());
                     } else if (($label = $element.parents(".control-group").first().find("label")).length) {
-                        message += " '" + $label.first().text() + "'";
+                        message += " '{0}'".f($label.first().text());
                     }
 
                     if ($this.data("validation{0}Message".f(name))) {
@@ -899,7 +898,7 @@
 
                     result.max = $this.data("validation{0}Max".f(name));
 
-                    result.message = "Too high: Maximum of '" + result.max + "'";
+                    result.message = "Too high: Maximum of '{0}'".f(result.max);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -918,7 +917,7 @@
 
                     result.min = $this.data("validation" + name + "Min");
 
-                    result.message = "Too low: Minimum of '" + result.min + "'";
+                    result.message = "Too low: Minimum of '{0}'".f(result.min);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -937,7 +936,7 @@
 
                     result.maxlength = $this.data("validation" + name + "Maxlength");
 
-                    result.message = "Too long: Maximum of '" + result.maxlength + "' characters";
+                    result.message = "Too long: Maximum of '{0}' characters".f(result.maxlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -956,7 +955,7 @@
 
                     result.minlength = $this.data("validation" + name + "Minlength");
 
-                    result.message = "Too short: Minimum of '" + result.minlength + "' characters";
+                    result.message = "Too short: Minimum of '{0}' characters".f(result.minlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -981,7 +980,7 @@
                     result.elements = elements;
                     result.maxchecked = $this.data("validation" + name + "Maxchecked");
 
-                    var message = "Too many: Max '" + result.maxchecked + "' checked";
+                    var message = "Too many: Max '{0}' checked".f(result.maxchecked);
                     if ($this.data("validation" + name + "Message")) {
                         message = $this.data("validation" + name + "Message");
                     }
@@ -1008,7 +1007,7 @@
                     result.elements = elements;
                     result.minchecked = $this.data("validation" + name + "Minchecked");
 
-                    var message = "Too few: Min '" + result.minchecked + "' checked";
+                    var message = "Too few: Min '{0}' checked".f(result.minchecked);
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
