@@ -1,5 +1,9 @@
 (function ($) {
     
+    var MSG_MAXIMUM = "Too high: Maximum of '{0}'";
+    var MSG_MINIMUM = "Too low: Minimum of '{0}'";
+    var MSG_TOO_LONG = "Too long: Maximum of '{0}' characters";
+    
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
      String.prototype.format = String.prototype.f = function() {
@@ -136,7 +140,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
                             var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-                            message = "Too high: Maximum of '{0}'<!-- data-validation-max-message to override -->".f(max);
+                            message = (MSG_MAXIMUM + "<!-- data-validation-max-message to override -->").f(max);
                             if ($this.data("validationMaxMessage")) {
                                 message = $this.data("validationMaxMessage");
                             }
@@ -148,7 +152,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
                             var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-                            message = "Too low: Minimum of '{0}'<!-- data-validation-min-message to override -->".f(min);
+                            message = (MSG_MINIMUM + "<!-- data-validation-min-message to override -->").f(min);
                             if ($this.data("validationMinMessage")) {
                                 message = $this.data("validationMinMessage");
                             }
@@ -159,7 +163,7 @@
                         //                                                 MAXLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("maxlength") !== undefined) {
-                            message = "Too long: Maximum of '{0}' characters<!-- data-validation-maxlength-message to override -->".f($this.attr("maxlength"));
+                            message = (MSG_TOO_LONG + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
                             if ($this.data("validationMaxlengthMessage")) {
                                 message = $this.data("validationMaxlengthMessage");
                             }
@@ -898,7 +902,7 @@
 
                     result.max = $this.data("validation{0}Max".f(name));
 
-                    result.message = "Too high: Maximum of '{0}'".f(result.max);
+                    result.message = MSG_MAXIMUM.f(result.max);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -917,7 +921,7 @@
 
                     result.min = $this.data("validation" + name + "Min");
 
-                    result.message = "Too low: Minimum of '{0}'".f(result.min);
+                    result.message = MSG_MINIMUM.f(result.min);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -936,7 +940,7 @@
 
                     result.maxlength = $this.data("validation" + name + "Maxlength");
 
-                    result.message = "Too long: Maximum of '{0}' characters".f(result.maxlength);
+                    result.message = MSG_TOO_LONG.f(result.maxlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
