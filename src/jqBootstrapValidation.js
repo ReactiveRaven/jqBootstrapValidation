@@ -6,10 +6,19 @@
     var MSG_TOO_SHORT = "Too short: Minimum of '{0}' characters";
     var MSG_TOO_MANY = "Too many: Max '{0}' checked";
     var MSG_TOO_FEW = "Too few: Min '{0}' checked";
+    var MSG_INVALID = "Not valid";
     var MSG_INVALID_EMAIL = "Not a valid email address";
     var MSG_INVALID_FORMAT = "Not in the expected format";
     var MSG_REQUIRED = "This is required";
     var MSG_MUST_NUMBER = "Must be a number";
+    var MSG_MUST_MATCH = "Must match";
+    var MSG_PASSWD_MATCH = "Does not match the given password";
+    var MSG_NO_DEC_ALLOWED = "No decimal places allowed";
+    var MSG_NUM_POSITIV = "Must be a positive number";
+    var MSG_NUM_NEGATIV = "Must be a negative number";
+    var MSG_CHECK_OPTION = "Check at least one option";
+    var MSG_MINCHECKED = "Not enough options checked; Minimum of '{0}' required";
+    var MSG_MAXCHECKED = "Too many options checked; Maximum of '{0}' required";
     
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
@@ -234,7 +243,7 @@
                         //                                                MINCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("minchecked") !== undefined) {
-                            message = "Not enough options checked; Minimum of '{0}' required<!-- data-validation-minchecked-message to override -->".f($this.attr("minchecked"));
+                            message = (MSG_MINCHECKED + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
                             if ($this.data("validationMincheckedMessage")) {
                                 message = $this.data("validationMincheckedMessage");
                             }
@@ -245,7 +254,7 @@
                         //                                                MAXCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("maxchecked") !== undefined) {
-                            message = "Too many options checked; Maximum of '{0}' required<!-- data-validation-maxchecked-message to override -->".f($this.attr("maxchecked"));
+                            message = (MSG_MAXCHECKED + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
                             if ($this.data("validationMaxcheckedMessage")) {
                                 message = $this.data("validationMaxcheckedMessage");
                             }
@@ -690,7 +699,7 @@
                         lastFinished: true
                     };
 
-                    var message = "Not valid";
+                    var message = MSG_INVALID;
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -879,7 +888,7 @@
                         $.error("Can't find field '" + elementName + "' to match '" + $this.attr("name") + "' against in '" + name + "' validator");
                     }
 
-                    var message = "Must match";
+                    var message = MSG_MUST_MATCH;
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
                         message += " '{0}'".f($label.text());
@@ -1092,7 +1101,7 @@
                 name: "Passwordagain",
                 type: "match",
                 match: "password",
-                message: "Does not match the given password<!-- data-validator-paswordagain-message to override -->"
+                message: MSG_PASSWD_MATCH + "<!-- data-validator-paswordagain-message to override -->"
             },
             positive: {
                 name: "Positive",
@@ -1108,19 +1117,19 @@
                 name: "Integer",
                 type: "regex",
                 regex: "[+-]?\\d+",
-                message: "No decimal places allowed<!-- data-validator-integer-message to override -->"
+                message: MSG_NO_DEC_ALLOWED + "<!-- data-validator-integer-message to override -->"
             },
             positivenumber: {
                 name: "Positivenumber",
                 type: "min",
                 min: 0,
-                message: "Must be a positive number<!-- data-validator-positivenumber-message to override -->"
+                message: MSG_NUM_POSITIV + "<!-- data-validator-positivenumber-message to override -->"
             },
             negativenumber: {
                 name: "Negativenumber",
                 type: "max",
                 max: 0,
-                message: "Must be a negative number<!-- data-validator-negativenumber-message to override -->"
+                message: MSG_NUM_NEGATIV + "<!-- data-validator-negativenumber-message to override -->"
             },
             required: {
                 name: "Required",
@@ -1131,7 +1140,7 @@
                 name: "Checkone",
                 type: "minchecked",
                 minchecked: 1,
-                message: "Check at least one option<!-- data-validation-checkone-message to override -->"
+                message: MSG_CHECK_OPTION + "<!-- data-validation-checkone-message to override -->"
             },
             number: {
                 name: "Number",
