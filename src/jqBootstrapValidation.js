@@ -19,6 +19,7 @@
     var MSG_CHECK_OPTION = "Check at least one option";
     var MSG_MINCHECKED = "Not enough options checked; Minimum of '{0}' required";
     var MSG_MAXCHECKED = "Too many options checked; Maximum of '{0}' required";
+    var MSG_AJAX_FAILED = "ajax call failed";
     
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
@@ -793,7 +794,7 @@
                             },
                             failure: function () {
                                 validator.lastValid = true;
-                                validator.message = "ajax call failed";
+                                validator.message = MSG_AJAX_FAILED;
                                 validator.lastFinished = true;
                                 $this.data("validation" + validator.validatorName + "Message", validator.message);
                                 // Timeout is set to avoid problems with the events being considered 'already fired'
