@@ -3,6 +3,13 @@
     var MSG_MAXIMUM = "Too high: Maximum of '{0}'";
     var MSG_MINIMUM = "Too low: Minimum of '{0}'";
     var MSG_TOO_LONG = "Too long: Maximum of '{0}' characters";
+    var MSG_TOO_SHORT = "Too short: Minimum of '{0}' characters";
+    var MSG_TOO_MANY = "Too many: Max '{0}' checked";
+    var MSG_TOO_FEW = "Too few: Min '{0}' checked";
+    var MSG_INVALID_EMAIL = "Not a valid email address";
+    var MSG_INVALID_FORMAT = "Not in the expected format";
+    var MSG_REQUIRED = "This is required";
+    var MSG_MUST_NUMBER = "Must be a number";
     
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
@@ -128,7 +135,7 @@
                             $this.attr("pattern", $this.data("validationPatternPattern"));
                         }
                         if ($this.attr("pattern") !== undefined) {
-                            message = "Not in the expected format<!-- data-validation-pattern-message to override -->";
+                            message = MSG_INVALID_FORMAT + "<!-- data-validation-pattern-message to override -->";
                             if ($this.data("validationPatternMessage")) {
                                 message = $this.data("validationPatternMessage");
                             }
@@ -174,7 +181,7 @@
                         //                                                 MINLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("minlength") !== undefined) {
-                            message = "Too short: Minimum of '{0}' characters<!-- data-validation-minlength-message to override -->".f($this.attr("minlength"));
+                            message = MSG_TOO_SHORT + "<!-- data-validation-minlength-message to override -->".f($this.attr("minlength"));
                             if ($this.data("validationMinlengthMessage")) {
                                 message = $this.data("validationMinlengthMessage");
                             }
@@ -217,7 +224,7 @@
                         //                                                     EMAIL
                         // ---------------------------------------------------------
                         if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-                            message = "Not a valid email address<!-- data-validation-email-message to override -->";
+                            message = MSG_INVALID_EMAIL + "<!-- data-validation-email-message to override -->";
                             if ($this.data("validationEmailMessage")) {
                                 message = $this.data("validationEmailMessage");
                             }
@@ -802,7 +809,7 @@
                         $.error("Can't find regex for '{0}' validator on '{1}'".f(name, $this.attr("name")));
                     }
 
-                    var message = "Not in the expected format";
+                    var message = MSG_INVALID_FORMAT;
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -823,7 +830,7 @@
                     var result = {};
                     result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
 
-                    var message = "Not a valid email address";
+                    var message = MSG_INVALID_EMAIL;
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -841,7 +848,7 @@
             required: {
                 name: "required",
                 init: function ($this, name) {
-                    var message = "This is required";
+                    var message = MSG_REQUIRED;
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -959,7 +966,7 @@
 
                     result.minlength = $this.data("validation" + name + "Minlength");
 
-                    result.message = "Too short: Minimum of '{0}' characters".f(result.minlength);
+                    result.message = MSG_TOO_SHORT.f(result.minlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -984,7 +991,7 @@
                     result.elements = elements;
                     result.maxchecked = $this.data("validation" + name + "Maxchecked");
 
-                    var message = "Too many: Max '{0}' checked".f(result.maxchecked);
+                    var message = MSG_TOO_MANY.f(result.maxchecked);
                     if ($this.data("validation" + name + "Message")) {
                         message = $this.data("validation" + name + "Message");
                     }
@@ -1011,7 +1018,7 @@
                     result.elements = elements;
                     result.minchecked = $this.data("validation" + name + "Minchecked");
 
-                    var message = "Too few: Min '{0}' checked".f(result.minchecked);
+                    var message = MSG_TOO_FEW.f(result.minchecked);
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -1050,7 +1057,7 @@
 
                     result.regex = regexFromString("([+-]?\\d+(\\" + result.decimal + "\\d+)?)?");
 
-                    result.message = "Must be a number";
+                    result.message = MSG_MUST_NUMBER;
                     var dataMessage = $this.data("validation{0}Message".f(name));
                     if (dataMessage) {
                         result.message = dataMessage;
@@ -1073,7 +1080,7 @@
                     var result = !(regexResult && stepResult && typeResult);
                     return result;
                 },
-                message: "Must be a number"
+                message: MSG_MUST_NUMBER
             }
         },
         builtInValidators: {
@@ -1118,7 +1125,7 @@
             required: {
                 name: "Required",
                 type: "required",
-                message: "This is required<!-- data-validator-required-message to override -->"
+                message: MSG_REQUIRED + "<!-- data-validator-required-message to override -->"
             },
             checkone: {
                 name: "Checkone",
@@ -1135,7 +1142,7 @@
             pattern: {
                 name: "Pattern",
                 type: "regex",
-                message: "Not in expected format"
+                message: MSG_INVALID_FORMAT
             }
         }
     };
