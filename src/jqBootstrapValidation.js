@@ -1,7 +1,9 @@
 (function ($) {
+        
+    var messages = {};
+    messages["max"] = "Too high: Maximum of '{0}'";
+    messages["min"] = "Too low: Minimum of '{0}'";
     
-    var MSG_MAXIMUM = "Too high: Maximum of '{0}'";
-    var MSG_MINIMUM = "Too low: Minimum of '{0}'";
     var MSG_TOO_LONG = "Too long: Maximum of '{0}' characters";
     var MSG_TOO_SHORT = "Too short: Minimum of '{0}' characters";
     var MSG_TOO_MANY = "Too many: Max '{0}' checked";
@@ -31,6 +33,10 @@
         }
         return s;
     };
+    
+    function getMessage(key){
+        return messages[key];
+    }
 
     var createdElements = [];
 
@@ -157,7 +163,8 @@
                         // ---------------------------------------------------------
                         if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
                             var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-                            message = (MSG_MAXIMUM + "<!-- data-validation-max-message to override -->").f(max);
+                            message = getMessage("max");
+                            message = (message + "<!-- data-validation-max-message to override -->").f(max);
                             if ($this.data("validationMaxMessage")) {
                                 message = $this.data("validationMaxMessage");
                             }
@@ -169,7 +176,8 @@
                         // ---------------------------------------------------------
                         if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
                             var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-                            message = (MSG_MINIMUM + "<!-- data-validation-min-message to override -->").f(min);
+                            message = getMessage("min");
+                            message = (message + "<!-- data-validation-min-message to override -->").f(min);
                             if ($this.data("validationMinMessage")) {
                                 message = $this.data("validationMinMessage");
                             }
@@ -919,7 +927,7 @@
 
                     result.max = $this.data("validation{0}Max".f(name));
 
-                    result.message = MSG_MAXIMUM.f(result.max);
+                    result.message = messages.max.f(result.max);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -938,7 +946,7 @@
 
                     result.min = $this.data("validation" + name + "Min");
 
-                    result.message = MSG_MINIMUM.f(result.min);
+                    result.message = messages.min.f(result.min);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
