@@ -3,25 +3,22 @@
     var messages = {};
     messages["max"] = "Too high: Maximum of '{0}'";
     messages["min"] = "Too low: Minimum of '{0}'";
-    
-    var MSG_TOO_LONG = "Too long: Maximum of '{0}' characters";
-    var MSG_TOO_SHORT = "Too short: Minimum of '{0}' characters";
-    var MSG_TOO_MANY = "Too many: Max '{0}' checked";
-    var MSG_TOO_FEW = "Too few: Min '{0}' checked";
-    var MSG_INVALID = "Not valid";
-    var MSG_INVALID_EMAIL = "Not a valid email address";
-    var MSG_INVALID_FORMAT = "Not in the expected format";
-    var MSG_REQUIRED = "This is required";
-    var MSG_MUST_NUMBER = "Must be a number";
-    var MSG_MUST_MATCH = "Must match";
-    var MSG_PASSWD_MATCH = "Does not match the given password";
-    var MSG_NO_DEC_ALLOWED = "No decimal places allowed";
-    var MSG_NUM_POSITIV = "Must be a positive number";
-    var MSG_NUM_NEGATIV = "Must be a negative number";
-    var MSG_CHECK_OPTION = "Check at least one option";
-    var MSG_MINCHECKED = "Not enough options checked; Minimum of '{0}' required";
-    var MSG_MAXCHECKED = "Too many options checked; Maximum of '{0}' required";
-    var MSG_AJAX_FAILED = "ajax call failed";
+    messages["maxlength"] = "Too long: Maximum of '{0}' characters";
+    messages["minlength"] = "Too short: Minimum of '{0}' characters";
+    messages["maxchecked"] = "Too many: Max '{0}' checked";
+    messages["minchecked"] = "Too few: Min '{0}' checked";
+    messages["invalid"] = "Not valid";
+    messages["email"] = "Not a valid email address";
+    messages["pattern"] = "Not in the expected format";
+    messages["required"] = "This is required";
+    messages["number"] = "Must be a number";
+    messages["match"] = "Must match";
+    messages["match_passwd"] = "Does not match the given password";
+    messages["integer"] = "No decimal places allowed";
+    messages["num_positiv"] = "Must be a positive number";
+    messages["num_negativ"] = "Must be a negative number";
+    messages["option_required"] = "Check at least one option";
+    messages["ajax_failed"] = "ajax call failed";
     
     //String formating
     // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
@@ -151,7 +148,7 @@
                             $this.attr("pattern", $this.data("validationPatternPattern"));
                         }
                         if ($this.attr("pattern") !== undefined) {
-                            message = MSG_INVALID_FORMAT + "<!-- data-validation-pattern-message to override -->";
+                            message = getMessage("pattern") + "<!-- data-validation-pattern-message to override -->";
                             if ($this.data("validationPatternMessage")) {
                                 message = $this.data("validationPatternMessage");
                             }
@@ -188,7 +185,7 @@
                         //                                                 MAXLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("maxlength") !== undefined) {
-                            message = (MSG_TOO_LONG + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
+                            message = (getMessage("maxlength") + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
                             if ($this.data("validationMaxlengthMessage")) {
                                 message = $this.data("validationMaxlengthMessage");
                             }
@@ -199,7 +196,7 @@
                         //                                                 MINLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("minlength") !== undefined) {
-                            message = MSG_TOO_SHORT + "<!-- data-validation-minlength-message to override -->".f($this.attr("minlength"));
+                            message = (getMessage("minlength") + "<!-- data-validation-minlength-message to override -->").f($this.attr("minlength"));
                             if ($this.data("validationMinlengthMessage")) {
                                 message = $this.data("validationMinlengthMessage");
                             }
@@ -242,7 +239,7 @@
                         //                                                     EMAIL
                         // ---------------------------------------------------------
                         if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-                            message = MSG_INVALID_EMAIL + "<!-- data-validation-email-message to override -->";
+                            message = getMessage("email") + "<!-- data-validation-email-message to override -->";
                             if ($this.data("validationEmailMessage")) {
                                 message = $this.data("validationEmailMessage");
                             }
@@ -252,7 +249,7 @@
                         //                                                MINCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("minchecked") !== undefined) {
-                            message = (MSG_MINCHECKED + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
+                            message = (getMessage("minchecked") + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
                             if ($this.data("validationMincheckedMessage")) {
                                 message = $this.data("validationMincheckedMessage");
                             }
@@ -263,7 +260,7 @@
                         //                                                MAXCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("maxchecked") !== undefined) {
-                            message = (MSG_MAXCHECKED + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
+                            message = (getMessage("maxchecked") + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
                             if ($this.data("validationMaxcheckedMessage")) {
                                 message = $this.data("validationMaxcheckedMessage");
                             }
@@ -708,7 +705,7 @@
                         lastFinished: true
                     };
 
-                    var message = MSG_INVALID;
+                    var message = getMessage("invalid");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -802,7 +799,7 @@
                             },
                             failure: function () {
                                 validator.lastValid = true;
-                                validator.message = MSG_AJAX_FAILED;
+                                validator.message = getMessage("ajax_failed");
                                 validator.lastFinished = true;
                                 $this.data("validation" + validator.validatorName + "Message", validator.message);
                                 // Timeout is set to avoid problems with the events being considered 'already fired'
@@ -827,7 +824,7 @@
                         $.error("Can't find regex for '{0}' validator on '{1}'".f(name, $this.attr("name")));
                     }
 
-                    var message = MSG_INVALID_FORMAT;
+                    var message = getMessage("pattern");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -848,7 +845,7 @@
                     var result = {};
                     result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
 
-                    var message = MSG_INVALID_EMAIL;
+                    var message = getMessage("email");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -866,7 +863,7 @@
             required: {
                 name: "required",
                 init: function ($this, name) {
-                    var message = MSG_REQUIRED;
+                    var message = getMessage("required");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -897,7 +894,7 @@
                         $.error("Can't find field '" + elementName + "' to match '" + $this.attr("name") + "' against in '" + name + "' validator");
                     }
 
-                    var message = MSG_MUST_MATCH;
+                    var message = getMessage("match");
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
                         message += " '{0}'".f($label.text());
@@ -965,7 +962,7 @@
 
                     result.maxlength = $this.data("validation" + name + "Maxlength");
 
-                    result.message = MSG_TOO_LONG.f(result.maxlength);
+                    result.message = getMessage("maxlength").f(result.maxlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -984,7 +981,7 @@
 
                     result.minlength = $this.data("validation" + name + "Minlength");
 
-                    result.message = MSG_TOO_SHORT.f(result.minlength);
+                    result.message = getMessage("minlength").f(result.minlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -1009,7 +1006,7 @@
                     result.elements = elements;
                     result.maxchecked = $this.data("validation" + name + "Maxchecked");
 
-                    var message = MSG_TOO_MANY.f(result.maxchecked);
+                    var message = getMessage("maxchecked").f(result.maxchecked);
                     if ($this.data("validation" + name + "Message")) {
                         message = $this.data("validation" + name + "Message");
                     }
@@ -1036,7 +1033,7 @@
                     result.elements = elements;
                     result.minchecked = $this.data("validation" + name + "Minchecked");
 
-                    var message = MSG_TOO_FEW.f(result.minchecked);
+                    var message = getMessage("minchecked").f(result.minchecked);
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -1075,7 +1072,7 @@
 
                     result.regex = regexFromString("([+-]?\\d+(\\" + result.decimal + "\\d+)?)?");
 
-                    result.message = MSG_MUST_NUMBER;
+                    result.message = getMessage("number");
                     var dataMessage = $this.data("validation{0}Message".f(name));
                     if (dataMessage) {
                         result.message = dataMessage;
@@ -1098,7 +1095,7 @@
                     var result = !(regexResult && stepResult && typeResult);
                     return result;
                 },
-                message: MSG_MUST_NUMBER
+                message: getMessage("number")
             }
         },
         builtInValidators: {
@@ -1110,7 +1107,7 @@
                 name: "Passwordagain",
                 type: "match",
                 match: "password",
-                message: MSG_PASSWD_MATCH + "<!-- data-validator-paswordagain-message to override -->"
+                message: getMessage("match_passwd") + "<!-- data-validator-paswordagain-message to override -->"
             },
             positive: {
                 name: "Positive",
@@ -1126,30 +1123,30 @@
                 name: "Integer",
                 type: "regex",
                 regex: "[+-]?\\d+",
-                message: MSG_NO_DEC_ALLOWED + "<!-- data-validator-integer-message to override -->"
+                message: getMessage("integer") + "<!-- data-validator-integer-message to override -->"
             },
             positivenumber: {
                 name: "Positivenumber",
                 type: "min",
                 min: 0,
-                message: MSG_NUM_POSITIV + "<!-- data-validator-positivenumber-message to override -->"
+                message: getMessage("num_positiv") + "<!-- data-validator-positivenumber-message to override -->"
             },
             negativenumber: {
                 name: "Negativenumber",
                 type: "max",
                 max: 0,
-                message: MSG_NUM_NEGATIV + "<!-- data-validator-negativenumber-message to override -->"
+                message: getMessage("num_negativ") + "<!-- data-validator-negativenumber-message to override -->"
             },
             required: {
                 name: "Required",
                 type: "required",
-                message: MSG_REQUIRED + "<!-- data-validator-required-message to override -->"
+                message: getMessage("required") + "<!-- data-validator-required-message to override -->"
             },
             checkone: {
                 name: "Checkone",
                 type: "minchecked",
                 minchecked: 1,
-                message: MSG_CHECK_OPTION + "<!-- data-validation-checkone-message to override -->"
+                message: getMessage("option_required") + "<!-- data-validation-checkone-message to override -->"
             },
             number: {
                 name: "Number",
@@ -1160,7 +1157,7 @@
             pattern: {
                 name: "Pattern",
                 type: "regex",
-                message: MSG_INVALID_FORMAT
+                message: getMessage("pattern")
             }
         }
     };
