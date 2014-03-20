@@ -20,21 +20,6 @@
     messages["option_required"] = "Check at least one option";
     messages["ajax_failed"] = "ajax call failed";
     
-    //String formating
-    // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
-     String.prototype.format = String.prototype.f = function() {
-        var s = this, i = arguments.length;
-
-        while (i--) {
-            s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
-        }
-        return s;
-    };
-    
-    function getMessage(key){
-        return messages[key];
-    }
-
     var createdElements = [];
 
     var defaults = {
@@ -53,6 +38,9 @@
             filter: function () {
                 // return $(this).is(":visible"); // only validate elements you can see
                 return true; // validate everything
+            },
+            resource: function(key) {
+                return messages[key];
             }
         },
         methods: {
@@ -148,7 +136,7 @@
                             $this.attr("pattern", $this.data("validationPatternPattern"));
                         }
                         if ($this.attr("pattern") !== undefined) {
-                            message = getMessage("pattern") + "<!-- data-validation-pattern-message to override -->";
+                            message = settings.options.resource("pattern") + "<!-- data-validation-pattern-message to override -->";
                             if ($this.data("validationPatternMessage")) {
                                 message = $this.data("validationPatternMessage");
                             }
@@ -160,7 +148,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
                             var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-                            message = getMessage("max");
+                            message = settings.options.resource("max");
                             message = (message + "<!-- data-validation-max-message to override -->").f(max);
                             if ($this.data("validationMaxMessage")) {
                                 message = $this.data("validationMaxMessage");
@@ -173,7 +161,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
                             var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-                            message = getMessage("min");
+                            message = settings.options.resource("min");
                             message = (message + "<!-- data-validation-min-message to override -->").f(min);
                             if ($this.data("validationMinMessage")) {
                                 message = $this.data("validationMinMessage");
@@ -185,7 +173,7 @@
                         //                                                 MAXLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("maxlength") !== undefined) {
-                            message = (getMessage("maxlength") + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
+                            message = (settings.options.resource("maxlength") + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
                             if ($this.data("validationMaxlengthMessage")) {
                                 message = $this.data("validationMaxlengthMessage");
                             }
@@ -196,7 +184,7 @@
                         //                                                 MINLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("minlength") !== undefined) {
-                            message = (getMessage("minlength") + "<!-- data-validation-minlength-message to override -->").f($this.attr("minlength"));
+                            message = (prop("minlength") + "<!-- data-validation-minlength-message to override -->").f($this.attr("minlength"));
                             if ($this.data("validationMinlengthMessage")) {
                                 message = $this.data("validationMinlengthMessage");
                             }
@@ -239,7 +227,7 @@
                         //                                                     EMAIL
                         // ---------------------------------------------------------
                         if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-                            message = getMessage("email") + "<!-- data-validation-email-message to override -->";
+                            message = prop("email") + "<!-- data-validation-email-message to override -->";
                             if ($this.data("validationEmailMessage")) {
                                 message = $this.data("validationEmailMessage");
                             }
@@ -249,7 +237,7 @@
                         //                                                MINCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("minchecked") !== undefined) {
-                            message = (getMessage("minchecked") + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
+                            message = (prop("minchecked") + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
                             if ($this.data("validationMincheckedMessage")) {
                                 message = $this.data("validationMincheckedMessage");
                             }
@@ -260,7 +248,7 @@
                         //                                                MAXCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("maxchecked") !== undefined) {
-                            message = (getMessage("maxchecked") + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
+                            message = (prop("maxchecked") + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
                             if ($this.data("validationMaxcheckedMessage")) {
                                 message = $this.data("validationMaxcheckedMessage");
                             }
@@ -705,7 +693,7 @@
                         lastFinished: true
                     };
 
-                    var message = getMessage("invalid");
+                    var message = prop("invalid");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -799,7 +787,7 @@
                             },
                             failure: function () {
                                 validator.lastValid = true;
-                                validator.message = getMessage("ajax_failed");
+                                validator.message = prop("ajax_failed");
                                 validator.lastFinished = true;
                                 $this.data("validation" + validator.validatorName + "Message", validator.message);
                                 // Timeout is set to avoid problems with the events being considered 'already fired'
@@ -824,7 +812,7 @@
                         $.error("Can't find regex for '{0}' validator on '{1}'".f(name, $this.attr("name")));
                     }
 
-                    var message = getMessage("pattern");
+                    var message = prop("pattern");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -845,7 +833,7 @@
                     var result = {};
                     result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
 
-                    var message = getMessage("email");
+                    var message = prop("email");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -863,7 +851,7 @@
             required: {
                 name: "required",
                 init: function ($this, name) {
-                    var message = getMessage("required");
+                    var message = prop("required");
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -894,7 +882,7 @@
                         $.error("Can't find field '" + elementName + "' to match '" + $this.attr("name") + "' against in '" + name + "' validator");
                     }
 
-                    var message = getMessage("match");
+                    var message = prop("match");
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
                         message += " '{0}'".f($label.text());
@@ -962,7 +950,7 @@
 
                     result.maxlength = $this.data("validation" + name + "Maxlength");
 
-                    result.message = getMessage("maxlength").f(result.maxlength);
+                    result.message = prop("maxlength").f(result.maxlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -981,7 +969,7 @@
 
                     result.minlength = $this.data("validation" + name + "Minlength");
 
-                    result.message = getMessage("minlength").f(result.minlength);
+                    result.message = prop("minlength").f(result.minlength);
                     if ($this.data("validation{0}Message".f(name))) {
                         result.message = $this.data("validation{0}Message".f(name));
                     }
@@ -1006,7 +994,7 @@
                     result.elements = elements;
                     result.maxchecked = $this.data("validation" + name + "Maxchecked");
 
-                    var message = getMessage("maxchecked").f(result.maxchecked);
+                    var message = prop("maxchecked").f(result.maxchecked);
                     if ($this.data("validation" + name + "Message")) {
                         message = $this.data("validation" + name + "Message");
                     }
@@ -1033,7 +1021,7 @@
                     result.elements = elements;
                     result.minchecked = $this.data("validation" + name + "Minchecked");
 
-                    var message = getMessage("minchecked").f(result.minchecked);
+                    var message = prop("minchecked").f(result.minchecked);
                     if ($this.data("validation{0}Message".f(name))) {
                         message = $this.data("validation{0}Message".f(name));
                     }
@@ -1072,7 +1060,7 @@
 
                     result.regex = regexFromString("([+-]?\\d+(\\" + result.decimal + "\\d+)?)?");
 
-                    result.message = getMessage("number");
+                    result.message = prop("number");
                     var dataMessage = $this.data("validation{0}Message".f(name));
                     if (dataMessage) {
                         result.message = dataMessage;
@@ -1095,7 +1083,7 @@
                     var result = !(regexResult && stepResult && typeResult);
                     return result;
                 },
-                message: getMessage("number")
+                message: prop("number")
             }
         },
         builtInValidators: {
@@ -1107,7 +1095,7 @@
                 name: "Passwordagain",
                 type: "match",
                 match: "password",
-                message: getMessage("match_passwd") + "<!-- data-validator-paswordagain-message to override -->"
+                message: prop("match_passwd") + "<!-- data-validator-paswordagain-message to override -->"
             },
             positive: {
                 name: "Positive",
@@ -1123,30 +1111,30 @@
                 name: "Integer",
                 type: "regex",
                 regex: "[+-]?\\d+",
-                message: getMessage("integer") + "<!-- data-validator-integer-message to override -->"
+                message: prop("integer") + "<!-- data-validator-integer-message to override -->"
             },
             positivenumber: {
                 name: "Positivenumber",
                 type: "min",
                 min: 0,
-                message: getMessage("num_positiv") + "<!-- data-validator-positivenumber-message to override -->"
+                message: prop("num_positiv") + "<!-- data-validator-positivenumber-message to override -->"
             },
             negativenumber: {
                 name: "Negativenumber",
                 type: "max",
                 max: 0,
-                message: getMessage("num_negativ") + "<!-- data-validator-negativenumber-message to override -->"
+                message: prop("num_negativ") + "<!-- data-validator-negativenumber-message to override -->"
             },
             required: {
                 name: "Required",
                 type: "required",
-                message: getMessage("required") + "<!-- data-validator-required-message to override -->"
+                message: prop("required") + "<!-- data-validator-required-message to override -->"
             },
             checkone: {
                 name: "Checkone",
                 type: "minchecked",
                 minchecked: 1,
-                message: getMessage("option_required") + "<!-- data-validation-checkone-message to override -->"
+                message: prop("option_required") + "<!-- data-validation-checkone-message to override -->"
             },
             number: {
                 name: "Number",
@@ -1157,7 +1145,7 @@
             pattern: {
                 name: "Pattern",
                 type: "regex",
-                message: getMessage("pattern")
+                message: prop("pattern")
             }
         }
     };
@@ -1228,6 +1216,21 @@
             context = context[namespaces[i]];
         }
         return context[func].apply(context, args);
+    }
+    
+    //String formating
+    // http://stackoverflow.com/questions/1038746/equivalent-of-string-format-in-jquery
+     String.prototype.format = String.prototype.f = function() {
+        var s = this, i = arguments.length;
+
+        while (i--) {
+            s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+        }
+        return s;
+    };
+    
+    function prop(key){
+        return messages[key];
     }
 
     $.fn.jqBootstrapValidation = function (method) {
