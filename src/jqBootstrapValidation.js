@@ -40,7 +40,7 @@
                 return true; // validate everything
             },
             resource: function(key) {
-                return messages[key];
+                return "";
             }
         },
         methods: {
@@ -136,7 +136,7 @@
                             $this.attr("pattern", $this.data("validationPatternPattern"));
                         }
                         if ($this.attr("pattern") !== undefined) {
-                            message = settings.options.resource("pattern") + "<!-- data-validation-pattern-message to override -->";
+                            message = msg(settings.options.resource, "pattern") + "<!-- data-validation-pattern-message to override -->";
                             if ($this.data("validationPatternMessage")) {
                                 message = $this.data("validationPatternMessage");
                             }
@@ -148,7 +148,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("max") !== undefined || $this.attr("aria-valuemax") !== undefined) {
                             var max = ($this.attr("max") !== undefined ? $this.attr("max") : $this.attr("aria-valuemax"));
-                            message = settings.options.resource("max");
+                            message = msg(settings.options.resource, "max");
                             message = (message + "<!-- data-validation-max-message to override -->").f(max);
                             if ($this.data("validationMaxMessage")) {
                                 message = $this.data("validationMaxMessage");
@@ -161,7 +161,7 @@
                         // ---------------------------------------------------------
                         if ($this.attr("min") !== undefined || $this.attr("aria-valuemin") !== undefined) {
                             var min = ($this.attr("min") !== undefined ? $this.attr("min") : $this.attr("aria-valuemin"));
-                            message = settings.options.resource("min");
+                            message = msg(settings.options.resource, "min");
                             message = (message + "<!-- data-validation-min-message to override -->").f(min);
                             if ($this.data("validationMinMessage")) {
                                 message = $this.data("validationMinMessage");
@@ -173,7 +173,7 @@
                         //                                                 MAXLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("maxlength") !== undefined) {
-                            message = (settings.options.resource("maxlength") + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
+                            message = (prop("maxlength") + "<!-- data-validation-maxlength-message to override -->").f($this.attr("maxlength"));
                             if ($this.data("validationMaxlengthMessage")) {
                                 message = $this.data("validationMaxlengthMessage");
                             }
@@ -184,7 +184,7 @@
                         //                                                 MINLENGTH
                         // ---------------------------------------------------------
                         if ($this.attr("minlength") !== undefined) {
-                            message = (prop("minlength") + "<!-- data-validation-minlength-message to override -->").f($this.attr("minlength"));
+                            message = (msg(settings.options.resource, "minlength") + "<!-- data-validation-minlength-message to override -->").f($this.attr("minlength"));
                             if ($this.data("validationMinlengthMessage")) {
                                 message = $this.data("validationMinlengthMessage");
                             }
@@ -227,7 +227,7 @@
                         //                                                     EMAIL
                         // ---------------------------------------------------------
                         if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-                            message = prop("email") + "<!-- data-validation-email-message to override -->";
+                            message = msg(settings.options.resource, "email") + "<!-- data-validation-email-message to override -->";
                             if ($this.data("validationEmailMessage")) {
                                 message = $this.data("validationEmailMessage");
                             }
@@ -237,7 +237,7 @@
                         //                                                MINCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("minchecked") !== undefined) {
-                            message = (prop("minchecked") + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
+                            message = (msg(settings.options.resource, "minchecked") + "<!-- data-validation-minchecked-message to override -->").f($this.attr("minchecked"));
                             if ($this.data("validationMincheckedMessage")) {
                                 message = $this.data("validationMincheckedMessage");
                             }
@@ -248,7 +248,7 @@
                         //                                                MAXCHECKED
                         // ---------------------------------------------------------
                         if ($this.attr("maxchecked") !== undefined) {
-                            message = (prop("maxchecked") + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
+                            message = (msg(settings.options.resource, "maxchecked") + "<!-- data-validation-maxchecked-message to override -->").f($this.attr("maxchecked"));
                             if ($this.data("validationMaxcheckedMessage")) {
                                 message = $this.data("validationMaxcheckedMessage");
                             }
@@ -1228,6 +1228,14 @@
         }
         return s;
     };
+    
+    function msg(resources, key){
+        var res = resources(key);
+        if(res === ""){
+            res = prop(key);
+        }
+        return res;
+    }
     
     function prop(key){
         return messages[key];
