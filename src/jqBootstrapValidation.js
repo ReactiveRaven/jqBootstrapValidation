@@ -195,7 +195,6 @@
                         //                                                  REQUIRED
                         // ---------------------------------------------------------
                         if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
-//                            message = settings.builtInValidators.required.message;
                             message = msg(settings.options.resource, "required");
                             if ($this.data("validationRequiredMessage")) {
                                 message = $this.data("validationRequiredMessage");
