@@ -93,7 +93,7 @@
     window.runJQBVTest = function(value, classChange, classSubmit, messageChange, messageSubmit) {
 
         var $input = $("#qunit-fixture").find("[name=input]");
-        var $controlGroup = $($input.parents(".control-group")[0]);
+        var $controlGroup = $($input.parents(".form-group")[0]);
         var $form = $input.parents("form").first();
         var isMulti = ($input.length > 1);
 
@@ -143,7 +143,7 @@
         }
 
         $input.trigger("change.validation");
-        var changeClassExpected = ["control-group"].concat(classChange);
+        var changeClassExpected = ["form-group"].concat(classChange);
         var changeClassActual = $controlGroup.attr("class").split(" ");
         deepEqual(changeClassActual, changeClassExpected, "classes as expected on change - " + valueJson);
 
@@ -156,7 +156,7 @@
         var nowErrors = window.number_of_submit_errors;
         var nowSuccess = window.number_of_submit_successes;
         
-        var submitClassExpected = ["control-group"].concat(classSubmit);
+        var submitClassExpected = ["form-group"].concat(classSubmit);
         var submitClassActual = $controlGroup.attr("class").split(" ");
         deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
 
@@ -183,7 +183,7 @@
     window.runJQBVTestAsync = function(value, classChange, classSubmit, messageChange, messageSubmit, callback) {
 
         var $input = $("#qunit-fixture").find("[name=input]");
-        var $controlGroup = $($input.parents(".control-group")[0]);
+        var $controlGroup = $($input.parents(".form-group")[0]);
         var $form = $input.parents("form").first();
         var isMulti = ($input.length > 1);
 
@@ -235,7 +235,7 @@
         $input.trigger("change.validation");
         setTimeout(
             function() {
-                var changeClassExpected = ["control-group"].concat(classChange);
+                var changeClassExpected = ["form-group"].concat(classChange);
                 var changeClassActual = $controlGroup.attr("class").split(" ");
                 deepEqual(changeClassActual, changeClassExpected, "classes as expected on change - " + valueJson);
 
@@ -251,7 +251,7 @@
         var nowErrors = window.number_of_submit_errors;
         var nowSuccess = window.number_of_submit_successes;
         
-        var submitClassExpected = ["control-group"].concat(classSubmit);
+        var submitClassExpected = ["form-group"].concat(classSubmit);
         var submitClassActual = $controlGroup.attr("class").split(" ");
         deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
 
@@ -273,7 +273,7 @@
                 $form.trigger("submit");
                 setTimeout(
                     function() {
-                        var submitClassExpected = ["control-group"].concat(classSubmit);
+                        var submitClassExpected = ["form-group"].concat(classSubmit);
                         var submitClassActual = $controlGroup.attr("class").split(" ");
 
                         deepEqual(submitClassActual, submitClassExpected, "classes as expected on submit - " + valueJson);
