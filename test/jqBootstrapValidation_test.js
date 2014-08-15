@@ -29,7 +29,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -81,7 +81,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -144,7 +144,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -206,7 +206,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -250,7 +250,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -286,7 +286,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -328,7 +328,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -370,7 +370,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -406,7 +406,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -442,7 +442,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -483,7 +483,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -524,7 +524,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -564,7 +564,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -604,7 +604,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -646,7 +646,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -688,7 +688,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -730,7 +730,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -772,7 +772,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -812,7 +812,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -852,7 +852,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='other' class='control-label'>Other</label>\
                         <div class='controls'>\
                             <input\
@@ -863,7 +863,7 @@
                             />\
                         </div>\
                     </div>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='input' class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -894,7 +894,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='other' class='control-label'>Other</label>\
                         <div class='controls'>\
                             <input\
@@ -905,7 +905,7 @@
                             />\
                         </div>\
                     </div>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='input' class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -945,7 +945,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Other</label>\
                         <div class='controls'>\
                             <input\
@@ -956,7 +956,7 @@
                             />\
                         </div>\
                     </div>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -996,7 +996,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <div class='controls'>\
                             <input\
                                 type='text'\
@@ -1006,7 +1006,7 @@
                             />\
                         </div>\
                     </div>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1046,7 +1046,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='input' class='control-label'>Choose Three</label>\
                         <div class='controls'>\
                             <label class='checkbox'>\
@@ -1138,7 +1138,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label for='input' class='control-label'>Choose Three</label>\
                         <div class='controls'>\
                             <label class='checkbox'>\
@@ -1231,7 +1231,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1271,7 +1271,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1314,7 +1314,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1357,7 +1357,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1400,7 +1400,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1444,7 +1444,7 @@
             $("#qunit-fixture").empty();
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
@@ -1513,7 +1513,7 @@
             $("#qunit-fixture").empty();
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Input</label>\
                         <div class='controls'>\
                             <input\
