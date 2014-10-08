@@ -29,7 +29,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -58,7 +58,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
@@ -82,7 +82,7 @@
         }
     });
     test('is required', 1 * numInJQBVTest, function() {
-        runJQBVTest("", [], ["error"], [], ["This is required"]);
+        runJQBVTest("", [], ["has-error"], [], ["This is required"]);
     });
 
 }(jQuery));

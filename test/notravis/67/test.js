@@ -29,7 +29,7 @@
         setup: function() {
             $("#qunit-fixture").append("\
                 <form class='form-horizontal' novalidate>\
-                    <div class='control-group'>\
+                    <div class='form-group'>\
                         <label class='control-label'>Email address</label>\
                         <div class='controls'>\
                             <input\
