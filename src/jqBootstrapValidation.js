@@ -2,8 +2,13 @@
 
     var createdElements = [];
 
-    var defaults = {
+    var base = {
         options: {
+            controlGroupSelector: ".control-group", // selector for control-group
+            controlGroupSuccess: "success", // css class for success validation
+            controlGroupWarning: "warning", // css class for warning validation
+            controlGroupError: "error", // css class for error validation
+            controlGroupControls: true, // require html element with class 'controls'
             prependExistingHelpBlock: false,
             sniffHtml: true, // sniff for 'required', 'maxlength', etc
             preventSubmit: true, // stop the form submit event from firing if validation fails
@@ -23,10 +28,10 @@
         methods: {
             init: function (options) {
 
-                // Get a clean copy of the defaults for extending
-                var settings = $.extend(true, {}, defaults);
-                // Set up the options based on the input
-                settings.options = $.extend(true, settings.options, options);
+                // Reset bindEvent value
+                base.options.bindEvents = [];
+                // Extending the base's options based on the input
+                base.options = $.extend(true, base.options, options);
 
                 var $siblingElements = this;
 
@@ -40,8 +45,8 @@
                     var $form = $(this);
                     var warningsFound = 0;
                     // Get all inputs
-                    var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
-                    var $allControlGroups = $form.find(".control-group");
+                    var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(base.options.filter);
+                    var $allControlGroups = $form.find(base.options.controlGroupSelector);
 
                     // Only trigger validation on the ones that actually _have_ validation
                     var $inputsWithValidators = $allInputs.filter(function () {
@@ -64,20 +69,20 @@
                     if (warningsFound) {
                         // If we found any warnings, maybe we should prevent the submit
                         // event, and trigger 'submitError' (if they're set up)
-                        if (settings.options.preventSubmit) {
+                        if (base.options.preventSubmit) {
                             e.preventDefault();
                             e.stopImmediatePropagation();
                         }
                         $form.addClass("error");
-                        if ($.isFunction(settings.options.submitError)) {
-                            settings.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
+                        if ($.isFunction(base.options.submitError)) {
+                            base.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
                         }
                     } else {
                         // Woo! No errors! We can pass the submit event to submitSuccess
                         // (if it has been set up)
                         $form.removeClass("error");
-                        if ($.isFunction(settings.options.submitSuccess)) {
-                            settings.options.submitSuccess($form, e);
+                        if ($.isFunction(base.options.submitSuccess)) {
+                            base.options.submitSuccess($form, e);
                         }
                     }
                 });
@@ -86,13 +91,13 @@
 
                     // Get references to everything we're interested in
                     var $this = $(this),
-                        $controlGroup = $this.parents(".control-group").first(),
+                        $controlGroup = $this.parents(base.options.controlGroupSelector).first(),
                         $helpBlock = $controlGroup.find(".help-block").first(),
                         $form = $this.parents("form").first(),
                         validatorNames = [];
 
                     // create message container if not exists
-                    if (!$helpBlock.length && settings.options.autoAdd && settings.options.autoAdd.helpBlocks) {
+                    if (!$helpBlock.length && base.options.autoAdd && base.options.autoAdd.helpBlocks) {
                         $helpBlock = $('<div class="help-block" />');
                         $controlGroup.find('.controls').append($helpBlock);
                         createdElements.push($helpBlock[0]);
@@ -104,7 +109,7 @@
 
                     // *snort sniff snuffle*
 
-                    if (settings.options.sniffHtml) {
+                    if (base.options.sniffHtml) {
                         var message;
                         // ---------------------------------------------------------
                         //                                                   PATTERN
@@ -170,7 +175,7 @@
                         //                                                  REQUIRED
                         // ---------------------------------------------------------
                         if ($this.attr("required") !== undefined || $this.attr("aria-required") !== undefined) {
-                            message = settings.builtInValidators.required.message;
+                            message = base.builtInValidators.required.message;
                             if ($this.data("validationRequiredMessage")) {
                                 message = $this.data("validationRequiredMessage");
                             }
@@ -180,19 +185,19 @@
                         //                                                    NUMBER
                         // ---------------------------------------------------------
                         if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "number") {
-                            message = settings.validatorTypes.number.message; // TODO: fix this
+                            message = base.validatorTypes.number.message; // TODO: fix this
                             if ($this.data("validationNumberMessage")) {
                                 message = $this.data("validationNumberMessage");
                             }
                             $this.data("validationNumberMessage", message);
 
-                            var step = settings.validatorTypes.number.step; // TODO: and this
+                            var step = base.validatorTypes.number.step; // TODO: and this
                             if ($this.data("validationNumberStep")) {
                                 step = $this.data("validationNumberStep");
                             }
                             $this.data("validationNumberStep", step);
 
-                            var decimal = settings.validatorTypes.number.decimal;
+                            var decimal = base.validatorTypes.number.decimal;
                             if ($this.data("validationNumberDecimal")) {
                                 decimal = $this.data("validationNumberDecimal");
                             }
@@ -267,10 +272,10 @@
                             $.each($this.data("validation" + el + "Shortcut").split(","), function (i2, el2) {
                                 newValidatorNamesToInspect.push(el2);
                             });
-                        } else if (settings.builtInValidators[el.toLowerCase()]) {
+                        } else if (base.builtInValidators[el.toLowerCase()]) {
                             // Is this a recognised built-in?
                             // Pull it out!
-                            var validator = settings.builtInValidators[el.toLowerCase()];
+                            var validator = base.builtInValidators[el.toLowerCase()];
                             if (validator.type.toLowerCase() === "shortcut") {
                                 $.each(validator.shortcut.split(","), function (i, el) {
                                     el = formatValidatorName(el);
@@ -333,7 +338,7 @@
                         }
 
                         $.each(
-                            settings.validatorTypes,
+                            base.validatorTypes,
                             function (validatorType, validatorTemplate) {
                                 if (validators[validatorType] === undefined) {
                                     validators[validatorType] = [];
@@ -359,9 +364,9 @@
                             }
                         );
 
-                        if (!foundValidator && settings.builtInValidators[el.toLowerCase()]) {
+                        if (!foundValidator && base.builtInValidators[el.toLowerCase()]) {
 
-                            var validator = $.extend(true, {}, settings.builtInValidators[el.toLowerCase()]);
+                            var validator = $.extend(true, {}, base.builtInValidators[el.toLowerCase()]);
                             if (hasOverrideMessage) {
                                 validator.message = message;
                             }
@@ -371,7 +376,7 @@
                                 foundValidator = true;
                             } else {
                                 $.each(
-                                    settings.validatorTypes,
+                                    base.validatorTypes,
                                     function (validatorTemplateType, validatorTemplate) {
                                         if (validators[validatorTemplateType] === undefined) {
                                             validators[validatorTemplateType] = [];
@@ -460,17 +465,17 @@
                                             (
                                                 params &&
                                                     params.includeEmpty
-                                                ) || !!settings.validatorTypes[validatorType].includeEmpty
+                                                ) || !!base.validatorTypes[validatorType].includeEmpty
                                             ) ||
                                         ( // validator is blocking submit
-                                            !!settings.validatorTypes[validatorType].blockSubmit &&
+                                            !!base.validatorTypes[validatorType].blockSubmit &&
                                                 params && !!params.submitting
                                             )
                                     ) {
                                     $.each(
                                         validatorTypeArray,
                                         function (i, validator) {
-                                            if (settings.validatorTypes[validatorType].validate($this, value, validator)) {
+                                            if (base.validatorTypes[validatorType].validate($this, value, validator)) {
                                                 errorsFound.push(validator.message);
                                             }
                                         }
@@ -510,8 +515,8 @@
                     );
                     $this.bind(
                         (
-                            settings.options.bindEvents.length > 0 ?
-                                settings.options.bindEvents :
+                            base.options.bindEvents.length > 0 ?
+                                base.options.bindEvents :
                                 [
                                     "keyup",
                                     "focus",
@@ -559,14 +564,14 @@
                                 $controlGroup.removeClass("success error warning").addClass(formIsSubmitting ? "error" : "warning");
 
                                 // How many errors did we find?
-                                if (settings.options.semanticallyStrict && errorsFound.length === 1) {
+                                if (base.options.semanticallyStrict && errorsFound.length === 1) {
                                     // Only one? Being strict? Just output it.
                                     $helpBlock.html(errorsFound[0] +
-                                        ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
+                                        ( base.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                                 } else {
                                     // Multiple? Being sloppy? Glue them together into an UL.
                                     $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
-                                        ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
+                                        ( base.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                                 }
                             } else {
                                 $controlGroup.removeClass("warning error success");
@@ -577,14 +582,14 @@
                             }
 
                             if (e.type === "blur") {
-                                if( settings.options.removeSuccess ){
+                                if( base.options.removeSuccess ){
                                     $controlGroup.removeClass("success");
                                 }
                             }
                         }
                     );
                     $this.bind("validationLostFocus.validation", function () {
-                        if( settings.options.removeSuccess ){
+                        if( base.options.removeSuccess ){
                             $controlGroup.removeClass("success");
                         }
                     });
@@ -597,7 +602,7 @@
 
                         var
                             $this = $(this),
-                            $controlGroup = $this.parents(".control-group").first(),
+                            $controlGroup = $this.parents(base.options.controlGroupSelector).first(),
                             $helpBlock = $controlGroup.find(".help-block").first(),
                             $form = $this.parents("form").first();
 
@@ -652,8 +657,8 @@
 
                 return (errorMessages.length > 0);
             },
-            override: function (newDefaults) {
-                defaults = $.extend(true, defaults, newDefaults);
+            override: function (newBase) {
+                base = $.extend(true, base, newBase);
             }
         },
         validatorTypes: {
@@ -861,7 +866,7 @@
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
                         message += " '" + $label.text() + "'";
-                    } else if (($label = $element.parents(".control-group").first().find("label")).length) {
+                    } else if (($label = $element.parents(base.options.controlGroupSelector).first().find("label")).length) {
                         message += " '" + $label.first().text() + "'";
                     }
 
@@ -1143,7 +1148,7 @@
         var type = $this.attr("type");
         if (type === "checkbox") {
             value = ($this.is(":checked") ? value : "");
-            var checkboxParent = $this.parents("form").first() || $this.parents(".control-group").first();
+            var checkboxParent = $this.parents("form").first() || $this.parents(base.options.controlGroupSelector).first();
             if (checkboxParent) {
                 value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) {
                     return $(el).val();
@@ -1152,7 +1157,7 @@
         }
         else if (type === "radio") {
             value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
-            var radioParent = $this.parents("form").first() || $this.parents(".control-group").first();
+            var radioParent = $this.parents("form").first() || $this.parents(base.options.controlGroupSelector).first();
             if (radioParent) {
                 value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) {
                     return $(el).val();
@@ -1195,10 +1200,10 @@
 
     $.fn.jqBootstrapValidation = function (method) {
 
-        if (defaults.methods[method]) {
-            return defaults.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        if (base.methods[method]) {
+            return base.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
-            return defaults.methods.init.apply(this, arguments);
+            return base.methods.init.apply(this, arguments);
         } else {
             $.error('Method ' + method + ' does not exist on jQuery.jqBootstrapValidation');
             return null;
