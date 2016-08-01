@@ -60,8 +60,8 @@
                     // Okay, now check each controlgroup for errors (or warnings)
                     $allControlGroups.each(function (i, el) {
                         var $controlGroup = $(el);
-                        if ($controlGroup.hasClass("warning") || $controlGroup.hasClass("error")) {
-                            $controlGroup.removeClass("warning").addClass("error");
+                        if ($controlGroup.hasClass(defaults.options.controlGroupWarning) || $controlGroup.hasClass(defaults.options.controlGroupError)) {
+                            $controlGroup.removeClass(defaults.options.controlGroupWarning).addClass(defaults.options.controlGroupError);
                             warningsFound++;
                         }
                     });
@@ -73,14 +73,14 @@
                             e.preventDefault();
                             e.stopImmediatePropagation();
                         }
-                        $form.addClass("error");
+                        $form.addClass(defaults.options.controlGroupError);
                         if ($.isFunction(defaults.options.submitError)) {
                             defaults.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
                         }
                     } else {
                         // Woo! No errors! We can pass the submit event to submitSuccess
                         // (if it has been set up)
-                        $form.removeClass("error");
+                        $form.removeClass(defaults.options.controlGroupError);
                         if ($.isFunction(defaults.options.submitSuccess)) {
                             defaults.options.submitSuccess($form, e);
                         }
@@ -565,7 +565,7 @@
                             // Were there any errors?
                             if (errorsFound.length) {
                                 // Better flag it up as a warning.
-                                $controlGroup.removeClass("success error warning").addClass(formIsSubmitting ? "error" : "warning");
+                                $controlGroup.removeClass(defaults.options.controlGroupSuccess +" "+ defaults.options.controlGroupError +" "+ defaults.options.controlGroupWarning).addClass(formIsSubmitting ? defaults.options.controlGroupError : defaults.options.controlGroupWarning);
 
                                 // How many errors did we find?
                                 if (defaults.options.semanticallyStrict && errorsFound.length === 1) {
@@ -578,23 +578,23 @@
                                         ( defaults.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                                 }
                             } else {
-                                $controlGroup.removeClass("warning error success");
+                                $controlGroup.removeClass(defaults.options.controlGroupWarning +" "+ defaults.options.controlGroupError +" "+ defaults.options.controlGroupSuccess);
                                 if (value.length > 0) {
-                                    $controlGroup.addClass("success");
+                                    $controlGroup.addClass(defaults.options.controlGroupSuccess);
                                 }
                                 $helpBlock.html($helpBlock.data("original-contents"));
                             }
 
                             if (e.type === "blur") {
                                 if( defaults.options.removeSuccess ){
-                                    $controlGroup.removeClass("success");
+                                    $controlGroup.removeClass(defaults.options.controlGroupSuccess);
                                 }
                             }
                         }
                     );
                     $this.bind("validationLostFocus.validation", function () {
                         if( defaults.options.removeSuccess ){
-                            $controlGroup.removeClass("success");
+                            $controlGroup.removeClass(defaults.options.controlGroupSuccess);
                         }
                     });
                 });
