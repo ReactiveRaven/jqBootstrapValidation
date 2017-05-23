@@ -1,6 +1,8 @@
 jqBootstapValidation
 ====================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ReactiveRaven/jqBootstrapValidation.svg)](https://greenkeeper.io/)
+
 A JQuery validation framework for bootstrap forms. 
 
 Displays validation errors in `help-block` elements as users type.
