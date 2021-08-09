@@ -9,7 +9,7 @@ Displays validation errors in `help-block` elements as users type.
 
 How to use?
 -----------
-The documentation is [here](http://ReactiveRaven.github.com/jqBootstrapValidation).
+The documentation is [here](https://reactiveraven.github.io/jqBootstrapValidation/).
 
 Developers
 ------------------
