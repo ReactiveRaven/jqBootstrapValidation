@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jqBootstrapValidation Test Suite</title>
+  <!-- Load local jQuery. This can be overridden with a ?jquery=___ param. -->
+  <script src="../../../libs/jquery/jquery-1.9.1.js"></script>
+  <script>
+    jQuery.migrateMute = true;
+  </script>
+  <script src="../../../libs/jquery/jquery-migrate.1.2.0.js"></script>
+  <!-- Load local QUnit (grunt requires v1.0.0 or newer). -->
+  <link rel="stylesheet" href="../../../libs/qunit/qunit.css" media="screen">
+  <script src="../../../libs/qunit/qunit.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="../../../src/jqBootstrapValidation.js"></script>
+  <script src="../../jqBootstrapValidation_helpers.js"></script>
+  <script src="test.js"></script>
+  <script>
+    function testCapitalsSynchronousCallback($el, value, callback) {
+        callback({
+            value: value,
+            valid: /^[A-Z]*$/.test(value)
+        });
+    }
+    function testCapitalsSynchronousCallbackWithMessage($el, value, callback) {
+        callback({
+            value: value,
+            valid: /^[A-Z]*$/.test(value),
+            message: "Capitals only please"
+        });
+    }
+    function testCapitalsAsynchronousCallback($el, value, callback) {
+        setTimeout(
+            function() {
+                callback({
+                    value: value,
+                    valid: /^[A-Z]*$/.test(value)
+                });
+            }, 
+            1
+        );
+    }
+    function testCapitalsAsynchronousCallbackWithMessage($el, value, callback) {
+        setTimeout(
+            function() {
+                callback({
+                    value: value,
+                    valid: /^[A-Z]*$/.test(value),
+                    message: "Capitals only please"
+                });
+            }, 
+            1
+        );
+    }
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">jqBootstrapValidation Test Suite</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">
+    <span>lame test markup</span>
+    <span>normal test markup</span>
+    <span>awesome test markup</span>
+  </div>
+</body>
+</html>
