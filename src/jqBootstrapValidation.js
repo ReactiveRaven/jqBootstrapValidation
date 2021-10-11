@@ -41,7 +41,7 @@
                     var warningsFound = 0;
                     // Get all inputs
                     var $allInputs = $form.find("input,textarea,select").not("[type=submit],[type=image]").filter(settings.options.filter);
-                    var $allControlGroups = $form.find(".control-group");
+                    var $allControlGroups = $form.find(".");
 
                     // Only trigger validation on the ones that actually _have_ validation
                     var $inputsWithValidators = $allInputs.filter(function () {
@@ -55,8 +55,8 @@
                     // Okay, now check each controlgroup for errors (or warnings)
                     $allControlGroups.each(function (i, el) {
                         var $controlGroup = $(el);
-                        if ($controlGroup.hasClass("warning") || $controlGroup.hasClass("error")) {
-                            $controlGroup.removeClass("warning").addClass("error");
+                        if ($controlGroup.hasClass("has-warning") || $controlGroup.hasClass("has-error")) {
+                            $controlGroup.removeClass("has-warning").addClass("has-error");
                             warningsFound++;
                         }
                     });
@@ -68,14 +68,14 @@
                             e.preventDefault();
                             e.stopImmediatePropagation();
                         }
-                        $form.addClass("error");
+                        $form.addClass("has-error");
                         if ($.isFunction(settings.options.submitError)) {
                             settings.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
                         }
                     } else {
                         // Woo! No errors! We can pass the submit event to submitSuccess
                         // (if it has been set up)
-                        $form.removeClass("error");
+                        $form.removeClass("has-error");
                         if ($.isFunction(settings.options.submitSuccess)) {
                             settings.options.submitSuccess($form, e);
                         }
@@ -86,7 +86,7 @@
 
                     // Get references to everything we're interested in
                     var $this = $(this),
-                        $controlGroup = $this.parents(".control-group").first(),
+                        $controlGroup = $this.parents(".form-group").first(),
                         $helpBlock = $controlGroup.find(".help-block").first(),
                         $form = $this.parents("form").first(),
                         validatorNames = [];
@@ -556,7 +556,7 @@
                             // Were there any errors?
                             if (errorsFound.length) {
                                 // Better flag it up as a warning.
-                                $controlGroup.removeClass("success error warning").addClass(formIsSubmitting ? "error" : "warning");
+                                $controlGroup.removeClass("has-success has-error has-warning").addClass(formIsSubmitting ? "has-error" : "has-warning");
 
                                 // How many errors did we find?
                                 if (settings.options.semanticallyStrict && errorsFound.length === 1) {
@@ -565,27 +565,28 @@
                                         ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                                 } else {
                                     // Multiple? Being sloppy? Glue them together into an UL.
+                                    //$helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
                                     $helpBlock.html("<ul role=\"alert\"><li>" + errorsFound.join("</li><li>") + "</li></ul>" +
                                         ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                                 }
                             } else {
-                                $controlGroup.removeClass("warning error success");
+                                $controlGroup.removeClass("has-warning has-error has-success");
                                 if (value.length > 0) {
-                                    $controlGroup.addClass("success");
+                                    $controlGroup.addClass("has-success");
                                 }
                                 $helpBlock.html($helpBlock.data("original-contents"));
                             }
 
                             if (e.type === "blur") {
                                 if( settings.options.removeSuccess ){
-                                    $controlGroup.removeClass("success");
+                                    $controlGroup.removeClass("has-success");
                                 }
                             }
                         }
                     );
                     $this.bind("validationLostFocus.validation", function () {
                         if( settings.options.removeSuccess ){
-                            $controlGroup.removeClass("success");
+                            $controlGroup.removeClass("has-success");
                         }
                     });
                 });
@@ -597,7 +598,7 @@
 
                         var
                             $this = $(this),
-                            $controlGroup = $this.parents(".control-group").first(),
+                            $controlGroup = $this.parents(".").first(),
                             $helpBlock = $controlGroup.find(".help-block").first(),
                             $form = $this.parents("form").first();
 
@@ -861,7 +862,7 @@
                     var $label = null;
                     if (($label = $form.find("label[for=\"" + elementName + "\"]")).length) {
                         message += " '" + $label.text() + "'";
-                    } else if (($label = $element.parents(".control-group").first().find("label")).length) {
+                    } else if (($label = $element.parents(".").first().find("label")).length) {
                         message += " '" + $label.first().text() + "'";
                     }
 
@@ -1143,7 +1144,7 @@
         var type = $this.attr("type");
         if (type === "checkbox") {
             value = ($this.is(":checked") ? value : "");
-            var checkboxParent = $this.parents("form").first() || $this.parents(".control-group").first();
+            var checkboxParent = $this.parents("form").first() || $this.parents(".").first();
             if (checkboxParent) {
                 value = checkboxParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) {
                     return $(el).val();
@@ -1152,7 +1153,7 @@
         }
         else if (type === "radio") {
             value = ($('input[name="' + $this.attr("name") + '"]:checked').length > 0 ? $this.val() : "");
-            var radioParent = $this.parents("form").first() || $this.parents(".control-group").first();
+            var radioParent = $this.parents("form").first() || $this.parents(".").first();
             if (radioParent) {
                 value = radioParent.find("input[name='" + $this.attr("name") + "']:checked").map(function (i, el) {
                     return $(el).val();
