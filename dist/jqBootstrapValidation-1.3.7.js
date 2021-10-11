@@ -1,6 +1,8 @@
 /*! jqBootstrapValidation - v1.3.7 - 2013-05-07
 * http://reactiveraven.github.com/jqBootstrapValidation
-* Copyright (c) 2013 David Godfrey; Licensed MIT */
+* Copyright (c) 2013 David Godfrey; Licensed MIT
+Updated for Bootstrap v3.3.4 by David García
+ */
 
 (function( $ ){
 
@@ -58,8 +60,8 @@
           // Okay, now check each controlgroup for errors (or warnings)
           $allControlGroups.each(function (i, el) {
             var $controlGroup = $(el);
-            if ($controlGroup.hasClass("warning") || $controlGroup.hasClass("error")) {
-              $controlGroup.removeClass("warning").addClass("error");
+            if ($controlGroup.hasClass("has-warning") || $controlGroup.hasClass("has-error")) {
+              $controlGroup.removeClass("has-warning").addClass("has-error");
               warningsFound++;
             }
           });
@@ -71,14 +73,14 @@
               e.preventDefault();
               e.stopImmediatePropagation();
             }
-            $form.addClass("error");
+            $form.addClass("has-error");
             if ($.isFunction(settings.options.submitError)) {
               settings.options.submitError($form, e, $inputsWithValidators.jqBootstrapValidation("collectErrors", true));
             }
           } else {
             // Woo! No errors! We can pass the submit event to submitSuccess
             // (if it has been set up)
-            $form.removeClass("error");
+            $form.removeClass("has-error");
             if ($.isFunction(settings.options.submitSuccess)) {
               settings.options.submitSuccess($form, e);
             }
@@ -562,7 +564,7 @@
               // Were there any errors?
               if (errorsFound.length) {
                 // Better flag it up as a warning.
-                $controlGroup.removeClass("success error warning").addClass(formIsSubmitting ? "error" : "warning");
+                $controlGroup.removeClass("has-success has-error has-warning").addClass(formIsSubmitting ? "has-error" : "has-warning");
 
                 // How many errors did we find?
                 if (settings.options.semanticallyStrict && errorsFound.length === 1) {
@@ -575,20 +577,20 @@
                     ( settings.options.prependExistingHelpBlock ? $helpBlock.data("original-contents") : "" ));
                 }
               } else {
-                $controlGroup.removeClass("warning error success");
+                $controlGroup.removeClass("has-warning has-error has-success");
                 if (value.length > 0) {
-                  $controlGroup.addClass("success");
+                  $controlGroup.addClass("has-success");
                 }
                 $helpBlock.html($helpBlock.data("original-contents"));
               }
 
               if (e.type === "blur") {
-                $controlGroup.removeClass("success");
+                $controlGroup.removeClass("has-success");
               }
             }
           );
           $this.bind("validationLostFocus.validation", function () {
-            $controlGroup.removeClass("success");
+            $controlGroup.removeClass("has-success");
           });
         });
       },
