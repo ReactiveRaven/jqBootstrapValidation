@@ -1564,5 +1564,5 @@
         ok(eventsArray["blur"] && eventsArray["blur"].length === 1, "'blur' event added by default");
         ok(eventsArray["click"] && eventsArray["click"].length === 1, "'click' event added by default");
     });
-
+    
 }(jQuery));
