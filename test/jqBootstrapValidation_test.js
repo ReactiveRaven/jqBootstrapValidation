@@ -178,7 +178,8 @@
         '!def!xyz%abc@example.com',
         '_somename@example.com',
         'test@example.com',
-        '\u2019test\u2019@example.com'
+        '\u2019test\u2019@example.com',
+        'someone@tld63char.abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabc'
       ];
       test('accepts valid', validEmails.length * numInJQBVTest, function() {
           $(validEmails).each(function (i, el) {
