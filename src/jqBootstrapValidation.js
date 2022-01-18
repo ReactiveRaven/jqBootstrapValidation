@@ -819,7 +819,7 @@
                 name: "email",
                 init: function ($this, name) {
                     var result = {};
-                    result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}');
+                    result.regex = regexFromString('[a-zA-Z0-9.!#$%&\u2019*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,63}');
 
                     var message = "Not a valid email address";
                     if ($this.data("validation" + name + "Message")) {
